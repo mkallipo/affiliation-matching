@@ -12,8 +12,7 @@ The corresponding values are the PIDs (Persistent Identifiers) associated with e
 
 - `dixOpenAIRE_id.pkl`: This file is another pickled dictionary that maps legalnames and alternativenames of organizations in the OpenAIRE database to their corresponding OpenAIRE IDs.
 
-- `Archive.zip`: This ZIP file contains a subset of JSON files from the Crossref database. 
-It includes `0.json` and `42.json`, which can be used for testing and validation purposes.
+- `Archive.zip`: This ZIP file contains a `0.json` and `42.json` from the Crossref database, which can be used for testing and validation purposes.
 
 ## Dependencies
 
