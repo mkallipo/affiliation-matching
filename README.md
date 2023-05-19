@@ -15,15 +15,24 @@ The corresponding values are the PIDs (Persistent Identifiers) associated with e
 - `Archive.zip`: This ZIP file contains a subset of JSON files from the Crossref database. 
 It includes `0.json` and `42.json`, which can be used for testing and validation purposes.
 
+## Dependencies
+
+Make sure you have the following dependencies installed before running the code:
+
+- pandas
+- re
+- pickle
+- scikit-learn (for `CountVectorizer` and `cosine_similarity`)
+- plotly (if you want to create an HTML file)
+- datapane (if you want to use datapane for reporting and sharing)
+
 ## Usage
 
-1. Ensure that you have the required dependencies installed. You can find the necessary dependencies listed in the `requirements.txt` file.
+1. Run the `matching.ipynb` notebook in a Jupyter environment. Make sure to provide the JSON files that you want to match as input.
 
-2. Run the `matching.ipynb` notebook in a Jupyter environment. Make sure to provide the JSON files that you want to match as input.
+2. The notebook will process the input JSON files and generate a JSON file with the matchings between DOIs and organization IDs from the OpenAIRE database.
 
-3. The notebook will process the input JSON files and generate a JSON file with the matchings between DOIs and organization IDs from the OpenAIRE database.
-
-4. You can access the generated matchings JSON file and use it for further analysis or any other required tasks.
+3. You can access the generated matchings JSON file and use it for further analysis or any other required tasks.
 
 ## Contact
 
