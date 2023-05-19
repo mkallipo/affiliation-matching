@@ -1,0 +1,31 @@
+# Matching Repository
+
+This repository contains code and data for matching DOIs of crossref JSON files with organization IDs from the OpenAIRE database.
+
+## Files
+
+- `matching.ipynb`: This Jupyter Notebook contains the main code for the matching process. It takes JSON files as input and returns JSON with matchings between the DOIs of the JSONs and IDs of organizations in the OpenAIRE database. 
+The organizations include universities, institutions, hospitals, labs, etc.
+
+- `dixOpenAIRE_Alletc.pkl`: This file is a pickled dictionary that contains keys representing legalnames and alternativenames of organizations in the OpenAIRE database. 
+The corresponding values are the PIDs (Persistent Identifiers) associated with each organization.
+
+- `dixOpenAIRE_id.pkl`: This file is another pickled dictionary that maps legalnames and alternativenames of organizations in the OpenAIRE database to their corresponding OpenAIRE IDs.
+
+- `Archive.zip`: This ZIP file contains a subset of JSON files from the Crossref database. 
+It includes `0.json` and `42.json`, which can be used for testing and validation purposes.
+
+## Usage
+
+1. Ensure that you have the required dependencies installed. You can find the necessary dependencies listed in the `requirements.txt` file.
+
+2. Run the `matching.ipynb` notebook in a Jupyter environment. Make sure to provide the JSON files that you want to match as input.
+
+3. The notebook will process the input JSON files and generate a JSON file with the matchings between DOIs and organization IDs from the OpenAIRE database.
+
+4. You can access the generated matchings JSON file and use it for further analysis or any other required tasks.
+
+## Contact
+
+If you have any questions, comments, or issues, please feel free to contact me. You can reach me via email at [myrto.kallipoliti@gmail.com]. Feedback and contributions are also welcome.
+
