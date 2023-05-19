@@ -23,8 +23,7 @@ Make sure you have the following dependencies installed before running the code:
 - re
 - pickle
 - scikit-learn (for `CountVectorizer` and `cosine_similarity`)
-- plotly (if you want to create an HTML file)
-- datapane (if you want to use datapane for reporting and sharing)
+- plotly and datapane (if you want to create an HTML file for reporting and sharing)
 
 ## Usage
 
