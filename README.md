@@ -11,9 +11,11 @@ The organizations include universities, institutions, hospitals, labs, etc.
 The corresponding values are the PIDs (Persistent Identifiers) associated with each organization.
 
 - `dixOpenAIRE_id.pkl`: This file is another pickled dictionary that maps legalnames and alternativenames of organizations in the OpenAIRE database to their corresponding OpenAIRE IDs.
+- 
+- `dixOpenOrgId1.pkl`: This file is one more pickled dictionary that maps legalnames and alternativenames of organizations in the OpenAIRE database to their corresponding OpenAIRE IDs and the prefix of the organizations is openorgs_.
 
 - `Archive.zip`: This ZIP file contains a `0.json` and `42.json` from the Crossref database, which can be used for testing and validation purposes.
-- 'json0.json': The output for the '0.json' file.
+- 'match0.json': The output for the '0.json' file.
 
 ## Dependencies
 
