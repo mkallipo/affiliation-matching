@@ -24,6 +24,7 @@ Make sure you have the following dependencies installed before running the code:
 - pandas
 - re
 - pickle
+- unicodedata
 - scikit-learn (for `CountVectorizer` and `cosine_similarity`)
 - Levenshtein
 - plotly and datapane (if you want to create an HTML file for reporting and sharing)
