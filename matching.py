@@ -248,7 +248,7 @@ def do(name, crossrefDF):
 
     for i in range(len(affilDF)):
         try:
-            uniqueAff.append(list(set([x[0] for x in [list(d.values()) for d in [item for sublist in affilDF['affiliations'].iloc[i] for item in sublist]]])))
+            uniqueAff.append(list(set([x[0] for x in [list(d.values()) for d in [item for sublist in affilDF['affiliations'].iloc[i] for item in sublist  if sublist !=[{}]]]])))
         except TypeError:
             error_indices.append(i)  # Save the index where the error occurred
 
