@@ -243,11 +243,18 @@ def do(name, crossrefDF):
     """
 
     # %%
-    uniqueAff = [] 
+    uniqueAff = []
+    error_indices = []  # New list to store error indices
 
     for i in range(len(affilDF)):
-        uniqueAff.append(list(set([x[0] for x in [list(d.values()) for d in  [item for sublist in affilDF['affiliations'].iloc[i] for item in sublist]]])))
+        try:
+            uniqueAff.append(list(set([x[0] for x in [list(d.values()) for d in [item for sublist in affilDF['affiliations'].iloc[i] for item in sublist]]])))
+        except TypeError:
+            error_indices.append(i)  # Save the index where the error occurred
 
+    affilDF.drop(error_indices, inplace = True)
+    affilDF.reset_index(inplace = True)
+    affilDF.drop(columns = ['index'], inplace = True)
 
     # %%
     affilDF.loc[:,'uniqueAff'] = uniqueAff
