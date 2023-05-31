@@ -156,7 +156,6 @@ def do(name, crossrefDF):
     len(possibleEmptyAff)
 
     # %%
-    crossrefAuth['affiliations'].iloc[2611]
 
     # %%
     nonEmptyAff = []
@@ -465,8 +464,8 @@ def do(name, crossrefDF):
 
     foundList =  ['foundation' , 'association','organization' ,'society', 'group' ]
 
-    deptList = ['district' , 'federation'  , 'government' , 'municipal' , 'county', 'ministry','council', 'agency']
-
+    deptList = ['district' , 'federation'  , 'government' , 'municipal' , 'county','council', 'agency']
+    # ministry
     unknownList = ['unknown']
 
     #######   Dictionaries ##########
@@ -725,7 +724,7 @@ def do(name, crossrefDF):
             l1: List of light affiliations.
             l2: List of matched OpenAIRE names.
             l3: List of pairs.
-            l4: mult
+            
 
         Returns:
             List: Resulting list containing OpenAIRE names and their similarity scores.
@@ -826,7 +825,7 @@ def do(name, crossrefDF):
 
     # %%
     def Doi_Ids(m, DF, dixOpenAIRE, simU, simG):
-        
+    
         """
         Matches affiliations in DataFrame 'DF' with names from dictionary 'dixOpenAIRE' and their openAIRE ids based on similarity scores.
 
@@ -840,14 +839,14 @@ def do(name, crossrefDF):
         Returns:
             DataFrame: The final DataFrame with matched affiliations and their corresponding similarity scores.
         """
-        
+
         lnamelist = list(dixOpenAIRE.keys())
         dix = {}    # will store indeces and legalnames of organizations of the DOI { i : [legalname1, legalname2,...]}
         deiktes = []  # stores indeces where a match is found
         vectorizer = CountVectorizer()
         similarity_ab = [] # stores lists of similarity scores of the mathces 
         pairs = [] #  pairs[i] =  [ [s,x,t] ] where (s,x) is a match and t the corresponding similarity score
-        
+
         for k in range(m):
             similar_k = []
             pairs_k = []
@@ -859,7 +858,7 @@ def do(name, crossrefDF):
                     deiktes.append(k)
                     similarity = 1
                     similar_k.append(similarity)
-                    
+
                     pairs_k.append((s,s,similarity))
 
                     if k not in dix:
@@ -869,7 +868,7 @@ def do(name, crossrefDF):
                 else:
 
                     for x in lnamelist:
-                        
+
                         if  is_contained(s, x):
                             x_vector = vectorizer.fit_transform([x]).toarray()
                             s_vector = vectorizer.transform([s]).toarray()
@@ -916,7 +915,7 @@ def do(name, crossrefDF):
                                                     dix[k] = [x]
                                                 else:
                                                     dix[k].append(x)
-                                
+
                                 else: 
                                     s_vector = vectorizer.fit_transform([s]).toarray()
                                     x_vector = vectorizer.transform([x]).toarray()
@@ -951,7 +950,7 @@ def do(name, crossrefDF):
                                                     dix[k] = [x]
                                                 else:
                                                     dix[k].append(x)
-                                
+
                                 else: 
                                     s_vector = vectorizer.fit_transform([s]).toarray()
                                     x_vector = vectorizer.transform([x]).toarray()
@@ -967,23 +966,23 @@ def do(name, crossrefDF):
                                             dix[k] = [x]
                                         else:
                                             dix[k].append(x)
-                                
+
             similarity_ab.append(similar_k)   
             similarity_ab = [lst for lst in similarity_ab if lst != []]
             pairs.append(pairs_k)
-            
+
         perc = 100*len(dix)/m
-        
+
         dixDoiAff = {DF['DOI'].iloc[key]: value for key, value in dix.items()} # dictionary {DOI : legalnames} 
-        
+
         #dixDoiPid1 = {key : [dixOpenAIRE[x] for x in value if x in  lnamelist] for key , value in dixDoiAff.items()}
-        
+
        # dixDoiPid = {key : [dixOpenAIRE[x] for x in value] for key , value in dixDoiAff.items()} # dictionary {DOI : PIDs} 
-        
-        
-        
+
+
+
     ## Define the new Dataframe
-        
+
         doiIdDF = pd.DataFrame()
         doiIdDF['DOI'] = list(dixDoiAff.keys())
         doiIdDF['Affiliations'] = list(DF['affiliations'].iloc[list(set(deiktes))])
@@ -991,7 +990,7 @@ def do(name, crossrefDF):
         doiIdDF['Unique affiliations'] = list(DF['uniqueAff2'].iloc[list(set(deiktes))])
         doiIdDF['light affiliations'] = list(DF['lightAff'].iloc[list(set(deiktes))])
 
-        
+
         doiIdDF['# Authors'] = list(DF['# authors'].iloc[list(set(deiktes))])
 
 
@@ -1001,7 +1000,7 @@ def do(name, crossrefDF):
 
         doiIdDF['Matched openAIRE names'] = list(dix.values())
         doiIdDF['# Matched orgs'] = [len(list(dix.values())[i]) for i in range(len(list(dix.values())))]
-        
+
 
         doiIdDF['Similarity score'] = similarity_ab
         perfectSim = [[1 if num >= 1 else 0 for num in inner_list] for inner_list in similarity_ab]
@@ -1011,55 +1010,59 @@ def do(name, crossrefDF):
         doiIdDF['Perfect sum'] = perfectSimSum
         Pairs = [lst for lst in pairs if lst]
         doiIdDF['Pairs'] = Pairs
-        
+        doiIdDF['mult'] = index_multipleMatchings(doiIdDF)[1]
+        #doiIdDF['Cleaning'] =  list(DF['Cleaning'].iloc[list(set(deiktes))])
+
+
+    
 
 
     ## Correct the matchings
-        
-        needCheck = [i for i  in range(len(doiIdDF)) if doiIdDF['# Matched orgs'].iloc[i] - max(doiIdDF['# Authors'].iloc[i],doiIdDF['# Unique affiliations'].iloc[i]) >0 or    i in index_multipleMatchings(doiIdDF)[0]]
+        needCheck = [i for i in range(len(doiIdDF)) for k in list(doiIdDF['mult'].iloc[i].values()) if k>1]
+
+        #needCheck = [i for i  in range(len(doiIdDF)) if doiIdDF['# Matched orgs'].iloc[i] - max(doiIdDF['# Authors'].iloc[i],doiIdDF['# Unique affiliations'].iloc[i]) >0 or    i in index_multipleMatchings(doiIdDF)[0]]
 
         ready = [i for i in range(len(doiIdDF)) if i not in needCheck]
-       
+
         best = [ bestSimScore(doiIdDF['light affiliations'].iloc[i], doiIdDF['Matched openAIRE names'].iloc[i], doiIdDF['Pairs'].iloc[i]) for i in needCheck]
         best_o = []
         best_s = []
-        
+
         for x in best:
             best_o.append([x[i][0]  for i in range(len(x))])
             best_s.append([round(x[i][1],2)  for i in range(len(x))])
         numMathced = [len(best_s[i]) for i in range(len(needCheck))]
-        
 
-        
+
+
         dfFinal0 = (doiIdDF.iloc[ready]).copy()
         dfFinal0['index'] = ready
-        
+
         dfFinal1 = (doiIdDF.iloc[needCheck]).copy()
         dfFinal1['index'] = needCheck
         dfFinal1['Matched openAIRE names'] = best_o
         dfFinal1['Similarity score'] = best_s
         dfFinal1['# Matched orgs'] = numMathced
-        
+
         finalDF =  pd.concat([dfFinal0, dfFinal1])
         finalDF.set_index('index', inplace=True)
         finalDF.sort_values('index', ascending=True, inplace = True)
-        
+
         ids = [[dixOpenAIRE[x] for x in v] for v in finalDF['Matched openAIRE names']]
         numIds = [len(x) for x in ids]
 
         finalDF['IDs'] = ids
         finalDF['# IDs'] = numIds
-        finalDF['mult'] = index_multipleMatchings(doiIdDF)[1]
-    # Assuming you want to remove rows where the 'column_name' meets a specific condition
         finalDF = finalDF[~(finalDF['# Matched orgs'] == 0)]
-        
+
         finalDF = finalDF.reset_index(drop=True)
 
 
-        
-        
-        return [perc, finalDF]# doiIdDF, needCheck]
-        
+    
+    
+        return [perc, finalDF]#, doiIdDF, needCheck]
+    
+
 
 
     # %%
@@ -1114,7 +1117,7 @@ def do(name, crossrefDF):
     """
 
     # %%
-    match0 = finaldf_output.to_json(orient='records')
+    match0 = finaldf_output.to_json(orient='records',lines=True)
 
     # Save the JSON to a file
     with open('output/' + name, 'w') as f:
@@ -1132,6 +1135,6 @@ with tarfile.open(sys.argv[2], "r:gz") as tar:
             print("processing " + member.name)
             current_file = tar.extractfile(member)
 
-            dfsList = pd.read_json(current_file, orient='records')
+            dfsList = pd.read_json(current_file, orient='records',lines=True)
             do(member.name, dfsList)
     print("Done")
