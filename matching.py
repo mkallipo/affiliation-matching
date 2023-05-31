@@ -1135,6 +1135,6 @@ with tarfile.open(sys.argv[2], "r:gz") as tar:
             print("processing " + member.name)
             current_file = tar.extractfile(member)
 
-            dfsList = pd.read_json(current_file, orient='records',lines=True)
+            dfsList = pd.read_json(current_file, orient='records')
             do(member.name, dfsList)
     print("Done")
