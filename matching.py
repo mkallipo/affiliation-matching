@@ -593,9 +593,8 @@ def do(name, crossrefDF):
 
     # %%
     for i in range(len(affilDF1)):
-        if affilDF1['category'].iloc[i] == [[]]:
+        if affilDF1['category'].iloc[i] == '':
             affilDF1.iloc[i, affilDF1.columns.get_loc('category')] = 'Rest'
-
 
     # %%
     affiliationsSimple = [
@@ -614,6 +613,29 @@ def do(name, crossrefDF):
     len(affilDF1[affilDF1['category'] == 'Rest'])
 
     # %%
+    
+    def strRadius(string):
+        string = string.lower()
+        radius = 5
+
+        strList = string.split()
+        indices = []
+        result = []
+
+        for i, x in enumerate(strList):
+            if x == 'university':
+                indices.append(i)
+
+        for r0 in indices:
+            lmin =max(0,r0-radius)
+            lmax =min(r0+radius+1, len(strList))
+            s = strList[lmin:lmax]
+
+            result.append(' '.join(s))
+    
+        return result 
+    
+    affilDF1.loc[:,'affilSimpleNew'] = affiliationsSimpleN
     """
     # UNIVS & LABS
     """
@@ -687,6 +709,10 @@ def do(name, crossrefDF):
     dixOpenOrgId1 = filter_dictionary_keys(dixOpenOrgId1)
 
 
+    dixOpenOrgId2 = {}
+    for key, value in dixOpenOrgId1.items():
+        updated_key = ' '.join([word for word in key.split() if word.lower() not in ["the"]])
+        dixOpenOrgId2[updated_key] = value
 
     # %%
     #del dixOpenAIRE_Alletc1['laboratory']
@@ -698,6 +724,7 @@ def do(name, crossrefDF):
 
     # %%
     del dixOpenOrgId1['university hospital']
+    del dixOpenOrgId2['university school']
 
     # %%
     """
@@ -922,7 +949,7 @@ def do(name, crossrefDF):
 
                                     # Compute similarity between the vectors
                                     similarity = cosine_similarity(s_vector, x_vector)[0][0]
-                                    if similarity > 0.81: #max(0.82,sim):
+                                    if similarity > simU: #max(0.82,sim):
                                         similar_k.append(similarity)
                                         deiktes.append(k)
                                         pairs_k.append((s,x,similarity))
@@ -1003,11 +1030,11 @@ def do(name, crossrefDF):
 
 
         doiIdDF['Similarity score'] = similarity_ab
-        perfectSim = [[1 if num >= 1 else 0 for num in inner_list] for inner_list in similarity_ab]
+ #        perfectSim = [[1 if num >= 1 else 0 for num in inner_list] for inner_list in similarity_ab]
 
-        doiIdDF['Perfect match'] = perfectSim
-        perfectSimSum = [sum(x) for x in perfectSim]
-        doiIdDF['Perfect sum'] = perfectSimSum
+ #       doiIdDF['Perfect match'] = perfectSim
+ #       perfectSimSum = [sum(x) for x in perfectSim]
+ #       doiIdDF['Perfect sum'] = perfectSimSum
         Pairs = [lst for lst in pairs if lst]
         doiIdDF['Pairs'] = Pairs
         doiIdDF['mult'] = index_multipleMatchings(doiIdDF)[1]
@@ -1019,8 +1046,6 @@ def do(name, crossrefDF):
 
     ## Correct the matchings
         needCheck = [i for i in range(len(doiIdDF)) for k in list(doiIdDF['mult'].iloc[i].values()) if k>1]
-
-        #needCheck = [i for i  in range(len(doiIdDF)) if doiIdDF['# Matched orgs'].iloc[i] - max(doiIdDF['# Authors'].iloc[i],doiIdDF['# Unique affiliations'].iloc[i]) >0 or    i in index_multipleMatchings(doiIdDF)[0]]
 
         ready = [i for i in range(len(doiIdDF)) if i not in needCheck]
 
