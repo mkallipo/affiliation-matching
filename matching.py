@@ -879,7 +879,7 @@ def do(name, crossrefDF):
             pairs_k = []
 
 
-            for s in DF['affilSimple'].iloc[k]:
+            for s in DF['affilSimpleNew'].iloc[k]:
 
                 if s in lnamelist:
                     deiktes.append(k)
@@ -1023,7 +1023,7 @@ def do(name, crossrefDF):
 
         doiIdDF['# Unique affiliations'] = list(DF['# uniqueAff'].iloc[list(set(deiktes))])
 
-        doiIdDF['Candidates for matching'] = list(DF['affilSimple'].iloc[list(set(deiktes))])
+        doiIdDF['Candidates for matching'] = list(DF['affilSimpleNew'].iloc[list(set(deiktes))])
 
         doiIdDF['Matched openAIRE names'] = list(dix.values())
         doiIdDF['# Matched orgs'] = [len(list(dix.values())[i]) for i in range(len(list(dix.values())))]
