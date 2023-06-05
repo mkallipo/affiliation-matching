@@ -1236,7 +1236,7 @@ def do(name, crossrefDF):
 
         ready = [i for i in range(len(doiIdDF)) if i not in needCheck]
     
-        best = [ bestSimScore1(doiIdDF['light affiliations'].iloc[i], len(doiIdDF['Candidates for matching'].iloc[i]), doiIdDF['Pairs'].iloc[i],doiIdDF['mult'].iloc[i], simU, simG) for i in needCheck]
+        best = [ bestSimScore(doiIdDF['light affiliations'].iloc[i], len(doiIdDF['Candidates for matching'].iloc[i]), doiIdDF['Pairs'].iloc[i],doiIdDF['mult'].iloc[i], simU, simG) for i in needCheck]
         #best = [ bestSimScore(doiIdDF['light affiliations'].iloc[i], doiIdDF['Matched openAIRE names'].iloc[i], doiIdDF['Pairs'].iloc[i]) for i in needCheck]
         best_o = []
         best_s = []
