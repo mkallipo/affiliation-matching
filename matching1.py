@@ -15,21 +15,16 @@ import sys
 # %%
 import re
 import unicodedata
-
 import pickle
 
 #import Levenshtein
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# %%
 """
 # Upload json files
 """
 
-# %%
-#files= ['0.json', '1.json', '2.json', '3.json', '4.json','42.json', '15693.json']
-#files = ['0.json']
 '''
 files = [ sys.argv[1] ]
 
@@ -53,116 +48,49 @@ def do(name, crossrefDF):
 
 # # Data preparation 
 
-
-
     noAuthors = [i for i in range(len(crossrefDF)) if 'author' not in crossrefDF['items'][i]]
-
     Authors = [i for i in range(len(crossrefDF)) if 'author'  in crossrefDF['items'][i]]
-
-
-
-
     len(noAuthors) + len(Authors) == len(crossrefDF)
 
 
     # ## Rows with authors
 
-
-
     crossrefAuth = crossrefDF.iloc[Authors].copy()
-
     crossrefAuth.reset_index(inplace= True)
     crossrefAuth.drop(columns = ['index'], inplace = True)
 
 
     # ## Extract 'DOI'
 
-
-
     crossrefAuth.loc[:, 'DOI'] = crossrefAuth['items'].apply(lambda x: x['DOI'])
-
-
-
-
-    crossrefAuth.head()
-
 
     # ## Extract 'authors' --- number of authors
 
-
-
     crossrefAuth.loc[:,'authors'] = crossrefAuth['items'].apply(lambda x: x['author'])
-
-
-
-
-    crossrefAuth.head()
-
-
-
-
     numAuthors = [len(crossrefAuth.iloc[i]['authors']) for i in range(len(crossrefAuth))]
-
-
-
 
     ## yparxoun lathi  ---> kalytera number of affiliations
     crossrefAuth.loc[:,'# authors'] = numAuthors
 
-
-
-
-    crossrefAuth.head()
-
-
     # ## Extract 'affiliations' --- number of affiliations
-
-
 
     def getAff(k):
         return [crossrefAuth['authors'][k][j]['affiliation'] for j in range(len(crossrefAuth['authors'][k]))]
         
-
-
-
-
     Affiliations = [getAff(k) for k in range(len(crossrefAuth))]
 
     crossrefAuth.loc[:,'affiliations'] = Affiliations
-
-
-
-
     numAffil = [len(Affiliations[i]) for i in range(len(crossrefAuth))]
-
-
-
-
     crossrefAuth.loc[:,'# Affil'] = numAffil
 
 
-
-
-    crossrefAuth.head()
-
-
     # ## Clean 'empty' affiliations
-
-
 
     possibleEmptyAff = []
 
     for k in range(len(crossrefAuth)):
         if len(crossrefAuth['affiliations'][k][0]) == 0:
             possibleEmptyAff.append(k)
-
-
-
-
-    len(possibleEmptyAff)
-
-
-
 
     nonEmptyAff = []
 
@@ -172,21 +100,11 @@ def do(name, crossrefDF):
                 nonEmptyAff.append(k)
         
         
-
-
-
-
     FinalEmptyyAff=  [x for x in possibleEmptyAff if x not in nonEmptyAff] 
-
-
-
-
     FinalNonEmptyAff = [x for x in range(len(crossrefAuth)) if x not in FinalEmptyyAff]
 
 
     # # affilDF: crossrefAuth subdataframe with nonpempty affiliation lists
-
-
 
     affilDF = crossrefAuth.iloc[FinalNonEmptyAff].copy()
     affilDF.reset_index(inplace = True)
@@ -195,58 +113,24 @@ def do(name, crossrefDF):
 
     # ## (still some cleaning: cases with empty brackets [{}])
 
-
-
-    affilDF[affilDF['DOI'] == '10.48130/emst-2022-0020']
-
-
-
-
     for k in range(len(affilDF)):
         if len(affilDF['affiliations'][k][0]) != 0 and affilDF['affiliations'][k][0][0] == {}:
             print(k)
 
-
-
-
     emptyBrackets = [k for k in range(len(affilDF)) if len(affilDF['affiliations'][k][0]) != 0 and affilDF['affiliations'][k][0][0] == {}]
 
-
-
-
     affilDF.iloc[emptyBrackets]
-
-
-
-
     affilDF.copy()
-
-
-
-
     affilDF.drop(emptyBrackets, inplace = True)
-
-
-
-
     affilDF.reset_index(inplace = True)
 
-
-
-
     affilDF.copy()
-
-
-
-
     affilDF.drop(columns = ['index'], inplace = True)
 
 
     # # Clean affiliations 
 
     # ## is_contained(a,b) map : returns true when a is a substring of b 
-
-
 
     def is_contained(s, w):
         words = s.split()  # Split the string 's' into a list of words
@@ -257,8 +141,6 @@ def do(name, crossrefDF):
 
 
     # ## 1. "Unique" affiliations --- number of unique affiliations
-
-
 
     uniqueAff = []
     error_indices =[] # New list to store error indices
@@ -276,43 +158,24 @@ def do(name, crossrefDF):
     # Print the error indices
     print("Error indices:", error_indices)
 
-
-
-
     affilDF.drop(error_indices, inplace = True)
     affilDF.reset_index(inplace = True)
     affilDF.drop(columns = ['index'], inplace = True)
 
-
-
-
     affilDF.loc[:,'uniqueAff'] = uniqueAff
 
-
-
-
     numUniqueAff = [len(affilDF['uniqueAff'].iloc[i]) for i in range(len(affilDF))]
-
-
-
-
     affilDF.loc[:,'# uniqueAff'] = numUniqueAff
 
 
     # ## 2. Remove stop words ['from', 'the']
 
-
-
     stopWords = ['from', 'the', 'From', 'The', 'of', 'at', 'de']
-
-
-
 
     def remove_stop_words(text):
         words = text.split()
         filtered_words = [word for word in words if word not in stopWords]
         return ' '.join(filtered_words)
-
 
     # apply the function to the column  affilDF['uniqueAff'] to create column affilDF.loc[:,'uniqueAff1']
 
@@ -320,8 +183,6 @@ def do(name, crossrefDF):
 
 
     # ## 3. Remove parenthesis 
-
-
 
     def remove_parentheses(text):
         return re.sub(r'\([^()]*\)', '', text)
@@ -332,8 +193,6 @@ def do(name, crossrefDF):
 
 
     # ## 4. Remove @#$%characters and umlauts
-
-
 
     def replace_umlauts(text):
         normalized_text = unicodedata.normalize('NFKD', text)
@@ -351,20 +210,12 @@ def do(name, crossrefDF):
         affNoSymbols.append(L)
 
 
-
-
-
     affNoSymbols = [[item for item in inner_list if item != "inc"] for inner_list in affNoSymbols]
-
-
-
 
     affilDF['uniqueAff1'] = affNoSymbols
 
 
     # ## 5. Check 'sub'-affiliations (affiliations that are contained in other affiliations of the same DOI)
-
-
 
     newAff0 = []
 
@@ -381,20 +232,12 @@ def do(name, crossrefDF):
                 L2.append(s1)
         newAff0.append(L2)
 
-
-
-
     newAffList = [list(set(newAff0[k])) for k in range(len(newAff0))]
-
-
-
 
     affilDF['uniqueAff2'] = newAffList
 
 
     # ## 6. Split strings where ',' or ';' appears    | Apply .lower()
-
-
 
     def substringsDict(string):
         split_strings = [re.sub(r'^[\s.]+|[\s.]+$', '', s.strip()) for s in re.split(r'[,;]', string)]
@@ -409,9 +252,6 @@ def do(name, crossrefDF):
 
         return dict_string
 
-
-
-
     newAffkomma = []
 
     for k in range(len(affilDF)):
@@ -422,9 +262,6 @@ def do(name, crossrefDF):
 
 
         newAffkomma.append(new_list)
-
-
-
 
 
     for j in range(len(newAffkomma)):
@@ -443,14 +280,8 @@ def do(name, crossrefDF):
                         del y[i]
                     elif is_contained('inst', y[i]) and (is_contained('dep', y[i+1]) or is_contained('acad', y[i+1]) or is_contained('hosp', y[i+1]) or is_contained('fac', y[i+1]) or is_contained('cent', y[i+1]) or is_contained('div', y[i+1])):
                         del y[i]
-                #    elif y[i] in city_names+removeList:
-                #       del y[i]
-
                 
-
-
-
-
+                
     lightAff = []
     for j in range(len(newAffkomma)):
         lightAffj = []
@@ -458,13 +289,9 @@ def do(name, crossrefDF):
             lightAffj.append(', '.join(list(y.values())))
         lightAff.append(lightAffj)
 
-
-
-
     lightAff0 = []
-
     for k in range(len(lightAff)):
-        
+      
         L2 = []
         for s1 in lightAff[k]:
             is_substring = False
@@ -482,8 +309,6 @@ def do(name, crossrefDF):
     affilDF['lightAff'] = lightAff0
 
 
-
-
     removeList = ['university','research institute','laboratory' , 'universit','gmbh', 'inc', 'university of', 'research center', 
     'university college','national institute of', 'school of medicine', "university school", 'graduate school of', 'graduate school of engineering', 
     'institute of tropical medicine', 'institute of virology', 'faculty of medicine','laboratory', 'university park', 'institute of science','Polytechnic University']
@@ -491,8 +316,6 @@ def do(name, crossrefDF):
     city_names = ["Aberdeen", "Abilene", "Akron", "Albany", "Albuquerque", "Alexandria", "Allentown", "Amarillo", "Anaheim", "Anchorage", "Ann Arbor", "Antioch", "Apple Valley", "Appleton", "Arlington", "Arvada", "Asheville", "Athens", "Atlanta", "Atlantic City", "Augusta", "Aurora", "Austin", "Bakersfield", "Baltimore", "Barnstable", "Baton Rouge", "Beaumont", "Bel Air", "Bellevue", "Berkeley", "Bethlehem", "Billings", "Birmingham", "Bloomington", "Boise", "Boise City", "Bonita Springs", "Boston", "Boulder", "Bradenton", "Bremerton", "Bridgeport", "Brighton", "Brownsville", "Bryan", "Buffalo", "Burbank", "Burlington", "Cambridge", "Canton", "Cape Coral", "Carrollton", "Cary", "Cathedral City", "Cedar Rapids", "Champaign", "Chandler", "Charleston", "Charlotte", "Chattanooga", "Chesapeake", "Chicago", "Chula Vista", "Cincinnati", "Clarke County", "Clarksville", "Clearwater", "Cleveland", "College Station", "Colorado Springs", "Columbia", "Columbus", "Concord", "Coral Springs", "Corona", "Corpus Christi", "Costa Mesa", "Dallas", "Daly City", "Danbury", "Davenport", "Davidson County", "Dayton", "Daytona Beach", "Deltona", "Denton", "Denver", "Des Moines", "Detroit", "Downey", "Duluth", "Durham", "El Monte", "El Paso", "Elizabeth", "Elk Grove", "Elkhart", "Erie", "Escondido", "Eugene", "Evansville", "Fairfield", "Fargo", "Fayetteville", "Fitchburg", "Flint", "Fontana", "Fort Collins", "Fort Lauderdale", "Fort Smith", "Fort Walton Beach", "Fort Wayne", "Fort Worth", "Frederick", "Fremont", "Fresno", "Fullerton", "Gainesville", "Garden Grove", "Garland", "Gastonia", "Gilbert", "Glendale", "Grand Prairie", "Grand Rapids", "Grayslake", "Green Bay", "GreenBay", "Greensboro", "Greenville", "Gulfport-Biloxi", "Hagerstown", "Hampton", "Harlingen", "Harrisburg", "Hartford", "Havre de Grace", "Hayward", "Hemet", "Henderson", "Hesperia", "Hialeah", "Hickory", "High Point", "Hollywood", "Honolulu", "Houma", "Houston", "Howell", "Huntington", "Huntington Beach", "Huntsville", "Independence", "Indianapolis", "Inglewood", "Irvine", "Irving", "Jackson", "Jacksonville", "Jefferson", "Jersey City", "Johnson City", "Joliet", "Kailua", "Kalamazoo", "Kaneohe", "Kansas City", "Kennewick", "Kenosha", "Killeen", "Kissimmee", "Knoxville", "Lacey", "Lafayette", "Lake Charles", "Lakeland", "Lakewood", "Lancaster", "Lansing", "Laredo", "Las Cruces", "Las Vegas", "Layton", "Leominster", "Lewisville", "Lexington", "Lincoln", "Little Rock", "Long Beach", "Lorain", "Los Angeles", "Louisville", "Lowell", "Lubbock", "Macon", "Madison", "Manchester", "Marina", "Marysville", "McAllen", "McHenry", "Medford", "Melbourne", "Memphis", "Merced", "Mesa", "Mesquite", "Miami", "Milwaukee", "Minneapolis", "Miramar", "Mission Viejo", "Mobile", "Modesto", "Monroe", "Monterey", "Montgomery", "Moreno Valley", "Murfreesboro", "Murrieta", "Muskegon", "Myrtle Beach", "Naperville", "Naples", "Nashua", "Nashville", "New Bedford", "New Haven", "New London", "New Orleans", "New York", "New York City", "Newark", "Newburgh", "Newport News", "Norfolk", "Normal", "Norman", "North Charleston", "North Las Vegas", "North Port", "Norwalk", "Norwich", "Oakland", "Ocala", "Oceanside", "Odessa", "Ogden", "Oklahoma City", "Olathe", "Olympia", "Omaha", "Ontario", "Orange", "Orem", "Orlando", "Overland Park", "Oxnard", "Palm Bay", "Palm Springs", "Palmdale", "Panama City", "Pasadena", "Paterson", "Pembroke Pines", "Pensacola", "Peoria", "Philadelphia", "Phoenix", "Pittsburgh", "Plano", "Pomona", "Pompano Beach", "Port Arthur", "Port Orange", "Port Saint Lucie", "Port St. Lucie", "Portland", "Portsmouth", "Poughkeepsie", "Providence", "Provo", "Pueblo", "Punta Gorda", "Racine", "Raleigh", "Rancho Cucamonga", "Reading", "Redding", "Reno", "Richland", "Richmond", "Richmond County", "Riverside", "Roanoke", "Rochester", "Rockford", "Roseville", "Round Lake Beach", "Sacramento", "Saginaw", "Saint Louis", "Saint Paul", "Saint Petersburg", "Salem", "Salinas", "Salt Lake City", "San Antonio", "San Bernardino", "San Buenaventura", "San Diego", "San Francisco", "San Jose", "Santa Ana", "Santa Barbara", "Santa Clara", "Santa Clarita", "Santa Cruz", "Santa Maria", "Santa Rosa", "Sarasota", "Savannah", "Scottsdale", "Scranton", "Seaside", "Seattle", "Sebastian", "Shreveport", "Simi Valley", "Sioux City", "Sioux Falls", "South Bend", "South Lyon", "Spartanburg", "Spokane", "Springdale", "Springfield", "St. Louis", "St. Paul", "St. Petersburg", "Stamford", "Sterling Heights", "Stockton", "Sunnyvale", "Syracuse", "Tacoma", "Tallahassee", "Tampa", "Temecula", "Tempe", "Thornton", "Thousand Oaks", "Toledo", "Topeka", "Torrance", "Trenton", "Tucson", "Tulsa", "Tuscaloosa", "Tyler", "Utica", "Vallejo", "Vancouver", "Vero Beach", "Victorville", "Virginia Beach", "Visalia", "Waco", "Warren", "Washington", "Waterbury", "Waterloo", "West Covina", "West Valley City", "Westminster", "Wichita", "Wilmington", "Winston", "Winter Haven", "Worcester", "Yakima", "Yonkers", "York", "Youngstown"]
 
     city_names = [x.lower() for x in city_names]
-
-
 
 
     for j in range(len(newAffkomma)):
@@ -503,14 +326,10 @@ def do(name, crossrefDF):
                     del y[i]
 
 
-
-
     affilDF['uniqueAff4'] =  [[list(d.values()) for d in sublist] for sublist in newAffkomma]
 
 
     # # Labels based on legalnames of openAIRE's organizations
-
-
 
     uniList = ['escuela','institu', 'istituto','univ', 'college', 'center', 'centre' , 'cnrs', 'faculty','school' , 'academy' , 'école', 'hochschule' , 'ecole' ]
 
@@ -561,21 +380,13 @@ def do(name, crossrefDF):
         i = i+1
         
         
-
-
     # ## affiliationsDict
-
-
 
     affiliationsDict = {}
 
     for i in range(len(affilDF)):
         affiliationsDict[i] = affilDF['uniqueAff4'].iloc[i]
         
-
-
-
-
     d_new = {}
 
     # iterate over the keys of affiliationsDict
@@ -592,90 +403,35 @@ def do(name, crossrefDF):
         d_new[k] = mappedk
 
 
-
-
     affilDF['Dictionary'] = d_new
-
-
-
-
-    notInList = [i for i in range(len(affilDF)) if affilDF['Dictionary'].iloc[i] == [[]]]
-        
-
-
-
-
-    len(affilDF)  - len(notInList)
-
-
-
-
-    len(notInList)
 
 
     # # affilDF1 ['DOI', 'affiliations', 'Dictionary','uniqueAff4', 'uniqueAff2','# authors','# uniqueAff']
 
-
-
-    affilDF.head(10)
-
-
-
-
     affilDF1 = affilDF[['DOI', 'affiliations','lightAff','Dictionary','uniqueAff4', 'uniqueAff2','# authors','# uniqueAff']]
 
-
-
-
-    len(affilDF1)
-
-
-
-
-    len(affilDF1.drop_duplicates(subset=['DOI']))
-
-
     # ## New column: category based on the labels 
-
-
 
     category = [', '.join(list(set([x[1] for y in affilDF1['Dictionary'].iloc[i] for x in y]))) for i in range(len(affilDF1))]
         
 
-
-
-
     affilDF1 = affilDF1.copy()
-
-
-
 
     affilDF1.loc[:, 'category'] = category
 
 
     # ### new label: rest
 
-
-
     for i in range(len(affilDF1)):
         if affilDF1['category'].iloc[i] == '':
             affilDF1.iloc[i, affilDF1.columns.get_loc('category')] = 'Rest'
-
-
-
 
     affiliationsSimple = [
         list(set([inner_list[0] for outer_list in affilDF1['Dictionary'].iloc[i] for inner_list in outer_list]))
         for i in range(len(affilDF1))
     ]
 
-
-
-
     affilDF1.loc[:,'affilSimple'] = affiliationsSimple
-
-
-
 
     def strRadiusU(string):
         string = string.lower()
@@ -697,9 +453,6 @@ def do(name, crossrefDF):
             result.append(' '.join(s))
         
         return result 
-
-
-
 
     def strRadiusH(string):
         string = string.lower()
@@ -723,8 +476,6 @@ def do(name, crossrefDF):
         return result 
 
 
-
-
     affiliationsSimpleN = []
 
     for i in range(len(affiliationsSimple)):
@@ -741,55 +492,25 @@ def do(name, crossrefDF):
         
         affiliationsSimpleN.append(inner)      
                 
-                
-        
-
-
-
-
+    
     affilDF1.loc[:,'affilSimpleNew'] = affiliationsSimpleN
-
-
-
 
     len(affilDF1[affilDF1['category'] == 'Rest'])
 
 
     # # UNIVS & LABS
 
-
-
     univLabs = [i for i in range(len(affilDF1)) if 'Laboratory' in affilDF1['category'].iloc[i] 
                 or 'Univ/Inst' in  affilDF1['category'].iloc[i]]
 
-
-
-
     univLabsDF = affilDF1.iloc[univLabs].copy()
 
-
-
-
     univLabsDF.reset_index(inplace = True)
-
-
-
 
     univLabsDF.drop(columns = ['index'], inplace = True)
 
 
     # # Load files from openAIRE
-
-
-
-    #with open('dixOpenAIRE_Alletc.pkl', 'rb') as f:
-    #    dixOpenAIRE_Alletc = pickle.load(f)
-
-    #with open('dixOpenAIRE_id.pkl', 'rb') as f:
-    #    dixOpenAIRE_id = pickle.load(f)
-
-
-
 
     with open('dixOpenOrgId.pkl', 'rb') as f:
         dixOpenOrgId = pickle.load(f)
@@ -798,24 +519,11 @@ def do(name, crossrefDF):
     # ## Clean/modify the files
 
 
-
-    #dixOpenAIRE_Alletc1 =  {k.replace(',', ''): v for k, v in dixOpenAIRE_Alletc.items()}
-    #dixOpenAIRE_id1 = {k.replace(',', ''): v for k, v in dixOpenAIRE_id.items()}
-
-
-
-
     dixOpenOrgId1 = {k.replace(',', ''): v for k, v in dixOpenOrgId.items()}
-
-
-
-
     dixOpenOrgId1 = {
         replace_umlauts(key): value
         for key, value in dixOpenOrgId1.items()
     }
-
-
 
 
     def filter_key(key):
@@ -838,70 +546,24 @@ def do(name, crossrefDF):
     dixOpenOrgId1 = filter_dictionary_keys(dixOpenOrgId1)
 
 
-
-
-
     dixOpenOrgId2 = {}
     for key, value in dixOpenOrgId1.items():
         updated_key = ' '.join([word for word in key.split() if word.lower() not in ['of', 'at', "the", 'de']])
         dixOpenOrgId2[updated_key] = value
 
-
-
-
-    #del dixOpenAIRE_Alletc1['laboratory']
-    #del dixOpenAIRE_Alletc1['university hospital']
-
-
-
-
-    #del dixOpenAIRE_id1['laboratory']
-    #del dixOpenAIRE_id1['university hospital']
-
-
-
-
     del dixOpenOrgId2['universit hospital']
-
-
-
-
     del dixOpenOrgId2['universit school']
-
-
-
-
     del dixOpenOrgId2['us']
-
-
-
-
     del dixOpenOrgId2['ni universit']
     del dixOpenOrgId2['s v universit']
-
-
-
-
     del dixOpenOrgId2['k l universit']
 
-
-
-
-    def findID(name):
-        lnames = []
-        for x in list(dixOpenOrgId2.keys()):
-            if name.lower() in x:
-                lnames.append(x)
-        return lnames
-
-
+    
     # # MATCHINGS
 
     # ## Helper functions
 
     # ### Clean the matchings
-
-
 
     def bestSimScore(l1, l2, l3, l4, simU, simG):
         """
@@ -924,7 +586,6 @@ def do(name, crossrefDF):
         for i in range(len(l1)):
             best = [] 
             s = l1[i]
-        # s_contains_university = is_contained("university", s.lower())  
             
         # if not is_contained("univ", s.lower()):
         #     continue  # Skip if s does not contain "university" or "univ"
@@ -949,7 +610,6 @@ def do(name, crossrefDF):
                     result.append([l3[j][1], 1])
                     
                 else:
-            #        x_contains_university = is_contained("university", x.lower())
                     if not is_contained("univ", x.lower()):
                         continue  # Skip if x does not contain "university" or "univ"
                     
@@ -957,11 +617,8 @@ def do(name, crossrefDF):
                         continue
                     s_vector = vectorizer.fit_transform([s]).toarray() #Else we compute the similarity of s with the original affiiation name
                     x_vector = vectorizer.transform([x]).toarray()
-                #  s_vector1 =  vectorizer.transform([s]).toarray()
-                #  x_vector1 =  vectorizer.fit_transform([s]).toarray()
-                    
-
-                    # Compute similarity between the vectors
+               
+            # Compute similarity between the vectors
                     similarity = cosine_similarity(x_vector, s_vector)[0][0]
                     if similarity> 0.31:
                 # similarity1 = cosine_similarity(x_vector1, s_vector1)[0][0]
@@ -979,13 +636,7 @@ def do(name, crossrefDF):
     # Create a new list with the elements having the maximum number for each string
                 reduced_best = [[string, number] for string, number in best if number == max_numbers[string]]
 
-    #            max_score = max(best, key=lambda x: x[1])[1]
-    #            max_results = [(x[0], x[1]) for x in best if x[1] == max_score]
-            # if len(reduced_best) > 1:
                 reduced_best.sort(key=lambda x: x[1], reverse=True)
-                #reduced_best.sort(key=lambda x: (l2.index(x[0]), -x[1]), reverse=False)
-            #     result.append(reduced_best[-1])
-                #else:
                 result = result + reduced_best
                     
         univ_list = []
@@ -1007,8 +658,6 @@ def do(name, crossrefDF):
 
     # ### Find rows with multiple mathcings
 
-
-
     def index_multipleMatchings(df):
         multipleMatchings = []
         mult = []
@@ -1028,12 +677,8 @@ def do(name, crossrefDF):
             mult.append(result_dict)
         return [list(set(multipleMatchings)), mult]
                     
-            
-
-
+  
     # ## Main map
-
-
 
     def Doi_Ids(m, DF, dixOpenAIRE, simU, simG):
         
@@ -1185,11 +830,6 @@ def do(name, crossrefDF):
         
         dixDoiAff = {DF['DOI'].iloc[key]: value for key, value in dix.items()} # dictionary {DOI : legalnames} 
         
-        #dixDoiPid1 = {key : [dixOpenAIRE[x] for x in value if x in  lnamelist] for key , value in dixDoiAff.items()}
-        
-    # dixDoiPid = {key : [dixOpenAIRE[x] for x in value] for key , value in dixDoiAff.items()} # dictionary {DOI : PIDs} 
-        
-        
         
     ## Define the new Dataframe
         
@@ -1226,9 +866,6 @@ def do(name, crossrefDF):
         #doiIdDF['Cleaning'] =  list(DF['Cleaning'].iloc[list(set(deiktes))])
 
 
-        
-
-
     ## Correct the matchings
         needCheck = list(set([i for i in range(len(doiIdDF)) for k in list(doiIdDF['mult'].iloc[i].values()) if k>1]))
         
@@ -1245,8 +882,6 @@ def do(name, crossrefDF):
             best_o.append([x[i][0]  for i in range(len(x))])
             best_s.append([round(x[i][1],2)  for i in range(len(x))])
         numMathced = [len(best_s[i]) for i in range(len(needCheck))]
-        
-
         
         dfFinal0 = (doiIdDF.iloc[ready]).copy()
         dfFinal0['index'] = ready
@@ -1270,20 +905,10 @@ def do(name, crossrefDF):
         
         finalDF = finalDF.reset_index(drop=True)
         perc = 100*len(finalDF)/m
-
-
-
-        
-        
+       
         return [perc,finalDF,doiIdDF, needCheck]
-        
-
-
-
-
+   
     result = Doi_Ids(len(univLabsDF), univLabsDF, dixOpenOrgId2, 0.7,0.82)
-
-
 
 
     result[0]
