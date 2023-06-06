@@ -558,6 +558,7 @@ def do(name, crossrefDF):
     del dixOpenOrgId2['ni universit']
     del dixOpenOrgId2['s v universit']
     del dixOpenOrgId2['k l universit']
+    del dixOpenOrgId2['']
 
     
     # # MATCHINGS
