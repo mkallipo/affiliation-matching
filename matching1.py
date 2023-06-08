@@ -249,9 +249,9 @@ def do(name, crossrefDF):
         newAffkomma.append(new_list)
 
 
-    for j in range(len(newAffkomma)):
-        for y in newAffkomma[j]:
-            if len(y)>1:
+    for y_list in newAffkomma:
+        for y in y_list:
+             if len(y)>1:
                 for i in range(len(y)-1):
                     if is_contained('progr', y[i]) and is_contained('dep', y[i+1]):
                         del y[i]
@@ -265,6 +265,7 @@ def do(name, crossrefDF):
                         del y[i]
                     elif is_contained('inst', y[i]) and (is_contained('dep', y[i+1]) or is_contained('acad', y[i+1]) or is_contained('hosp', y[i+1]) or is_contained('fac', y[i+1]) or is_contained('cent', y[i+1]) or is_contained('div', y[i+1])):
                         del y[i]
+
                 
                 
     lightAff = []
@@ -316,20 +317,21 @@ def do(name, crossrefDF):
 
     # # Labels based on legalnames of openAIRE's organizations
 
-    uniList = ['escuela','institu', 'istituto','univ', 'college', 'center', 'centre' , 'cnrs', 'faculty','school' , 'academy' , 'école', 'hochschule' , 'ecole' ]
+    uniList = ['institu', 'istitut', 'univ', 'coll', 'center', 'centre' , 'cnrs', 'faculty','school' , 'academy' , 'akadem','école', 'hochschule' , 'ecole', 'tech', 'observ']
 
     labList = ['lab']
 
-    hosplList = ['hospital' ,'clinic', 'hôpital']
+    hosplList = ['hospital' ,'clinic', 'hôpital', 'oncol']
 
     gmbhList = ['gmbh', 'company' , 'industr', 'etaireia' , 'corporation', 'inc']
 
     musList =  ['museum', 'library']
 
+    #schoolList =  []
+
     foundList =  ['foundation' , 'association','organization' ,'society', 'group' ]
 
-    deptList = ['district' , 'federation'  , 'government' , 'municipal' , 'county','council', 'agency']
-    # miistry -> out
+    deptList = ['district' , 'federation'  , 'government' , 'municipal' , 'county', 'ministry','council', 'agency']
 
     unknownList = ['unknown']
 
@@ -354,7 +356,11 @@ def do(name, crossrefDF):
     unknownDict =  {k: 'Unknown' for k in unknownList}   
 
     categDictsList = [uniDict, labDict, hosplDict, gmbhDict, musDict, #schoolDict, 
-                    foundDict, deptDict, unknownDict]
+                      foundDict, deptDict, unknownDict]
+
+    
+    
+
 
     ################# Final Dictionary #####################
 
@@ -535,14 +541,17 @@ def do(name, crossrefDF):
     for key, value in dixOpenOrgId1.items():
         updated_key = ' '.join([word for word in key.split() if word.lower() not in ['of', 'at', "the", 'de']])
         dixOpenOrgId2[updated_key] = value
+        
+    for x in list(dixOpenOrgId2.keys()):
+    if len(x) <3:
+        del dixOpenOrgId2[x]
+
 
     del dixOpenOrgId2['universit hospital']
     del dixOpenOrgId2['universit school']
-    del dixOpenOrgId2['us']
     del dixOpenOrgId2['ni universit']
     del dixOpenOrgId2['s v universit']
     del dixOpenOrgId2['k l universit']
-    del dixOpenOrgId2['']
 
     
     # # MATCHINGS
@@ -573,10 +582,6 @@ def do(name, crossrefDF):
             best = [] 
             s = l1[i]
             
-        # if not is_contained("univ", s.lower()):
-        #     continue  # Skip if s does not contain "university" or "univ"
-            
-        
             for j in range(len(l3)):
                 x = l3[j][1] 
             
@@ -590,28 +595,28 @@ def do(name, crossrefDF):
                     elif  l3[j][2] >simG:
                         result.append([x, l3[j][2]])
 
-                    
                 
                 elif l3[j][2] >=0.99 and (is_contained("univ", x.lower()) or is_contained("college", x.lower()) or  is_contained("center", x.lower()) or  is_contained("schule", x.lower())): # If the similarity score of a pair (s,x) was 1, we store it to results list
                     result.append([l3[j][1], 1])
                     
                 else:
-                    if not is_contained("univ", x.lower()):
-                        continue  # Skip if x does not contain "university" or "univ"
-                    
-                    if (is_contained('hosp', x.lower()) and not is_contained('hosp', s)) or (not is_contained('hosp', x.lower()) and is_contained('hosp', s)):
-                        continue
-                    s_vector = vectorizer.fit_transform([s]).toarray() #Else we compute the similarity of s with the original affiiation name
-                    x_vector = vectorizer.transform([x]).toarray()
-               
-            # Compute similarity between the vectors
-                    similarity = cosine_similarity(x_vector, s_vector)[0][0]
-                    if similarity> 0.31:
-                # similarity1 = cosine_similarity(x_vector1, s_vector1)[0][0]
-                    #similarity2 = Levenshtein.ratio(s,x)
+                    try:
 
+                        if not is_contained("univ", x.lower()):
+                            continue  # Skip if x does not contain "university" or "univ"
 
-                        best.append([x, similarity])#(similarity+similarity2)/2])
+                        if (is_contained('hosp', x.lower()) and not is_contained('hosp', s)) or (not is_contained('hosp', x.lower()) and is_contained('hosp', s)):
+                            continue
+                        s_vector = vectorizer.fit_transform([s]).toarray() #Else we compute the similarity of s with the original affiiation name
+                        x_vector = vectorizer.transform([x]).toarray()
+
+                # Compute similarity between the vectors
+                        similarity = cosine_similarity(x_vector, s_vector)[0][0]
+                        if similarity> 0.31:
+                            
+                            best.append([x, similarity])
+                    except:
+                        KeyError
             
             if best:
                 max_numbers = defaultdict(float)
@@ -833,19 +838,12 @@ def do(name, crossrefDF):
         doiIdDF['# Unique affiliations'] = list(DF['# uniqueAff'].iloc[list(set(deiktes))])
 
         doiIdDF['Candidates for matching'] = list(DF['affilSimpleNew'].iloc[list(set(deiktes))])
-        doiIdDF['Candidates old'] = list(DF['affilSimple'].iloc[list(set(deiktes))])
-
 
         doiIdDF['Matched openAIRE names'] = list(dix.values())
         doiIdDF['# Matched orgs'] = [len(list(dix.values())[i]) for i in range(len(list(dix.values())))]
         
-
         doiIdDF['Similarity score'] = similarity_ab
-        #perfectSim = [[1 if num >= 1 else 0 for num in inner_list] for inner_list in similarity_ab]
-
-        #doiIdDF['Perfect match'] = perfectSim
-        #perfectSimSum = [sum(x) for x in perfectSim]
-        #doiIdDF['Perfect sum'] = perfectSimSum
+      
         Pairs = [lst for lst in pairs if lst]
         doiIdDF['Pairs'] = Pairs
         doiIdDF['mult'] = index_multipleMatchings(doiIdDF)[1]
@@ -855,12 +853,9 @@ def do(name, crossrefDF):
     ## Correct the matchings
         needCheck = list(set([i for i in range(len(doiIdDF)) for k in list(doiIdDF['mult'].iloc[i].values()) if k>1]))
         
-        #needCheck = [i for i  in range(len(doiIdDF)) if doiIdDF['# Matched orgs'].iloc[i] - max(doiIdDF['# Authors'].iloc[i],doiIdDF['# Unique affiliations'].iloc[i]) >0 or    i in index_multipleMatchings(doiIdDF)[0]]
-
         ready = [i for i in range(len(doiIdDF)) if i not in needCheck]
     
-        best = [ bestSimScore(doiIdDF['light affiliations'].iloc[i], len(doiIdDF['Candidates for matching'].iloc[i]), doiIdDF['Pairs'].iloc[i],doiIdDF['mult'].iloc[i], simU, simG) for i in needCheck]
-        #best = [ bestSimScore(doiIdDF['light affiliations'].iloc[i], doiIdDF['Matched openAIRE names'].iloc[i], doiIdDF['Pairs'].iloc[i]) for i in needCheck]
+        best = [bestSimScore(doiIdDF['light affiliations'].iloc[i], len(doiIdDF['Candidates for matching'].iloc[i]), doiIdDF['Pairs'].iloc[i],doiIdDF['mult'].iloc[i], simU, simG) for i in needCheck]
         best_o = []
         best_s = []
         
