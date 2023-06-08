@@ -21,31 +21,15 @@ import pickle
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from collections import defaultdict
+from concurrent.futures import ProcessPoolExecutor,wait,ALL_COMPLETED
 
 """
 # Upload json files
 """
 
-'''
-files = [ sys.argv[1] ]
-
-with tarfile.open(sys.argv[2], "r:gz") as tar:
-    while True:
-        member = tar.next()
-        # returns None if end of tar
-        if not member:
-            break
-        if member.isfile():
-            print("processing " + member.name)
-            current_file = tar.extractfile(member)
-
-            dfsList = pd.read_json(current_file, orient='records')
-            do(member.name, dfsList)
-    print("Done")
-'''
-
 def do(name, crossrefDF):
 
+    print("processing file:" + name)
 
 # # Data preparation 
 
@@ -149,7 +133,7 @@ def do(name, crossrefDF):
         try:
             uniqueAff.append(list(set([x[0] for x in [list(d.values()) for d in [item for sublist in affilDF['affiliations'].iloc[i] for item in sublist if sublist !=[{}]]]])))
         except TypeError:
-            print("Error occurred for i =", i)
+            print(name + ": Error occurred for i =", i)
             error_indices.append(i)  # Save the index where the error occurred
         #except IndexError:
         #   print("IndexError occurred for i =", i)
@@ -157,7 +141,7 @@ def do(name, crossrefDF):
 
 
     # Print the error indices
-    print("Error indices:", error_indices)
+    print(name + ": Error indices:", error_indices)
 
     affilDF.drop(error_indices, inplace = True)
     affilDF.reset_index(inplace = True)
@@ -948,19 +932,46 @@ def do(name, crossrefDF):
         f.write(match0)
 
     
+executor = ProcessPoolExecutor(max_workers=15)
+i = 1
+data = []
 
-with tarfile.open(sys.argv[2], "r:gz") as tar:
+with tarfile.open(sys.argv[1], "r:gz") as tar:
     while True:
         member = tar.next()
         # returns None if end of tar
         if not member:
             break
         if member.isfile():
-            print("processing " + member.name)
-            current_file = tar.extractfile(member)
+            # print("processing " + member.name)
+            # current_file = tar.extractfile(member)
 
-            dfsList = pd.read_json(current_file, orient='records')
-            do(member.name, dfsList)
+            # dfsList = pd.read_json(current_file, orient='records')
+            # do(member.name, dfsList)
+            
+            print("reading file: " + member.name)
+
+            current_file = tar.extractfile(member)
+            crossrefDF = pd.read_json(current_file, orient='records')
+            # print(crossrefDF)
+            data.append((member.name, crossrefDF))
+            i += 1
+
+            if (i > 15):
+                print("execute batch: " + str([name for (name, d) in data]))
+                futures = [executor.submit(do, name, d) for (name, d) in data]
+                done, not_done = wait(futures)
+                
+                # print(done)
+                print(not_done)
+
+                data = []
+                i = 0
+
+    futures = [executor.submit(do, name, d) for (name, d) in data]
+    done, not_done = wait(futures)
+    print(not_done)
+
     print("Done")
 
 
