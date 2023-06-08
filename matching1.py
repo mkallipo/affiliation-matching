@@ -317,7 +317,7 @@ def do(name, crossrefDF):
 
     # # Labels based on legalnames of openAIRE's organizations
 
-    uniList = ['institu', 'istitut', 'univ', 'coll', 'center', 'centre' , 'cnrs', 'faculty','school' , 'academy' , 'akadem','école', 'hochschule' , 'ecole', 'tech', 'observ']
+    uniList = ['institu', 'istitut', 'univ', 'coll', 'center', 'centre' ,'polytechnic','cnrs', 'faculty','school' , 'academy' , 'akadem','école', 'hochschule' , 'ecole', 'tech', 'observ']
 
     labList = ['lab']
 
