@@ -543,9 +543,8 @@ def do(name, crossrefDF):
         dixOpenOrgId2[updated_key] = value
         
     for x in list(dixOpenOrgId2.keys()):
-    if len(x) <3:
-        del dixOpenOrgId2[x]
-
+        if len(x) <3:
+            del dixOpenOrgId2[x]
 
     del dixOpenOrgId2['universit hospital']
     del dixOpenOrgId2['universit school']
@@ -938,11 +937,6 @@ with tarfile.open(sys.argv[1], "r:gz") as tar:
         if not member:
             break
         if member.isfile():
-            # print("processing " + member.name)
-            # current_file = tar.extractfile(member)
-
-            # dfsList = pd.read_json(current_file, orient='records')
-            # do(member.name, dfsList)
             
             print("reading file: " + member.name)
 
