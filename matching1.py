@@ -888,7 +888,8 @@ def do(name, crossrefDF):
         
             return [perc,finalDF,doiIdDF, needCheck]
     
-        result = Doi_Ids(len(univLabsDF), univLabsDF, dixOpenOrgId2, 0.7,0.82)
+        if len(univLabsDF)>0:
+            result = Doi_Ids(len(univLabsDF), univLabsDF, dixOpenOrgId2, 0.7,0.82)
 
 
         result[0]
