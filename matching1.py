@@ -131,7 +131,7 @@ def do(name, crossrefDF):
     error_indices =[] # New list to store error indices
     for i in range(len(affilDF)):
         try:
-            uniqueAff.append(list(set([x[0] for x in [list(d.values()) for d in [item for sublist in affilDF['affiliations'].iloc[i] for item in sublist if sublist !=[{}]]]])))
+            uniqueAff.append(list(set([x[0] for x in [list(d.values()) for d in [item for sublist in affilDF['affiliations'].iloc[i] for item in sublist if sublist !=[{}]  and item !={}]]])))
         except TypeError:
             print(name + ": Error occurred for i =", i)
             error_indices.append(i)  # Save the index where the error occurred
