@@ -888,45 +888,30 @@ def do(name, crossrefDF):
         
             return [perc,finalDF,doiIdDF, needCheck]
     
-        if len(univLabsDF)>0:
-            result = Doi_Ids(len(univLabsDF), univLabsDF, dixOpenOrgId2, 0.7,0.82)
-
-
-        result[0]
-
-
-        # # HTML
-
-
-
-        finaldf = result[1]
-        
+                  
         def update_Z(row):
             new_Z = []
             for i in range(len(row['IDs'])):
                 entry = {'openaireId': row['IDs'][i], 'confidence': row['Similarity score'][i]}
                 new_Z.append(entry)
             return new_Z
+ 
+        if len(univLabsDF)>0:
+            result = Doi_Ids(len(univLabsDF), univLabsDF, dixOpenOrgId2, 0.7,0.82)
+            finaldf = result[1]
+        
+            finaldf['affiliations'] = finaldf.apply(update_Z, axis=1)
 
-        # Update the values in column 'Z' using 'apply'
-        finaldf['affiliations'] = finaldf.apply(update_Z, axis=1)
+            finaldf_output = finaldf[['DOI','affiliations']]
+            finaldf_output = finaldf_output.rename(columns={'DOI': 'doi'}).copy()
 
-        finaldf_output = finaldf[['DOI','affiliations']]
-        finaldf_output = finaldf_output.rename(columns={'DOI': 'doi'}).copy()
+            match0 = finaldf_output.to_json(orient='records',lines=True)
 
-
-        """
-        # JSON
-        """
-
-
-        match0 = finaldf_output.to_json(orient='records',lines=True)
-
-        # Save the JSON to a file
-        with open('output/' + name, 'w') as f:
-            f.write(match0)
-    except Exception as Argument:
-        logging.exception("Error in thred code for file: " + name)
+            # Save the JSON to a file
+            with open('output/' + name, 'w') as f:
+                f.write(match0)
+        except Exception as Argument:
+            logging.exception("Error in thred code for file: " + name)
 
 
 executor = ProcessPoolExecutor(max_workers=5)
