@@ -496,6 +496,9 @@ def do(name, crossrefDF):
 
         univLabs = [i for i in range(len(affilDF1)) if 'Laboratory' in affilDF1['category'].iloc[i] 
                     or 'Univ/Inst' in  affilDF1['category'].iloc[i]]
+        
+        if (len(univLabs) == 0):
+            return
 
         univLabsDF = affilDF1.iloc[univLabs].copy()
 
