@@ -855,7 +855,7 @@ def do(name, crossrefDF):
             
             
             if len(doiIdDF)==0:
-                return
+                return []
 
         ## Correct the matchings
             needCheck = list(set([i for i in range(len(doiIdDF)) for k in list(doiIdDF['mult'].iloc[i].values()) if k>1]))
@@ -905,6 +905,10 @@ def do(name, crossrefDF):
             return new_Z
  
         result = Doi_Ids(len(univLabsDF), univLabsDF, dixOpenOrgId2, 0.7,0.82)
+    
+        if len(result) == 0:
+            return
+        
         finaldf = result[1]
 
         finaldf['affiliations'] = finaldf.apply(update_Z, axis=1)
