@@ -89,6 +89,9 @@ def do(name, crossrefDF):
         FinalEmptyyAff=  [x for x in possibleEmptyAff if x not in nonEmptyAff] 
         FinalNonEmptyAff = [x for x in range(len(crossrefAuth)) if x not in FinalEmptyyAff]
 
+        # skip file when this list is empty
+        if (len(FinalNonEmptyAff) == 0):
+            return
 
         # # affilDF: crossrefAuth subdataframe with nonpempty affiliation lists
 
@@ -910,8 +913,8 @@ def do(name, crossrefDF):
             # Save the JSON to a file
             with open('output/' + name, 'w') as f:
                 f.write(match0)
-        except Exception as Argument:
-            logging.exception("Error in thred code for file: " + name)
+    except Exception as Argument:
+        logging.exception("Error in thred code for file: " + name)
 
 
 executor = ProcessPoolExecutor(max_workers=5)
@@ -931,7 +934,7 @@ with tarfile.open(sys.argv[1], "r:gz") as tar:
             current_file = tar.extractfile(member)
 
             crossrefDF = pd.read_json(current_file, orient='records')
-            print(crossrefDF)
+            # print(crossrefDF)
             data.append((member.name, crossrefDF))
             i += 1
 
