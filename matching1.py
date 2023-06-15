@@ -902,20 +902,19 @@ def do(name, crossrefDF):
                 new_Z.append(entry)
             return new_Z
  
-        if len(univLabsDF)>0:
-            result = Doi_Ids(len(univLabsDF), univLabsDF, dixOpenOrgId2, 0.7,0.82)
-            finaldf = result[1]
-        
-            finaldf['affiliations'] = finaldf.apply(update_Z, axis=1)
+        result = Doi_Ids(len(univLabsDF), univLabsDF, dixOpenOrgId2, 0.7,0.82)
+        finaldf = result[1]
 
-            finaldf_output = finaldf[['DOI','affiliations']]
-            finaldf_output = finaldf_output.rename(columns={'DOI': 'doi'}).copy()
+        finaldf['affiliations'] = finaldf.apply(update_Z, axis=1)
 
-            match0 = finaldf_output.to_json(orient='records',lines=True)
+        finaldf_output = finaldf[['DOI','affiliations']]
+        finaldf_output = finaldf_output.rename(columns={'DOI': 'doi'}).copy()
 
-            # Save the JSON to a file
-            with open('output/' + name, 'w') as f:
-                f.write(match0)
+        match0 = finaldf_output.to_json(orient='records',lines=True)
+
+        # Save the JSON to a file
+        with open('output/' + name, 'w') as f:
+            f.write(match0)
     except Exception as Argument:
         logging.exception("Error in thred code for file: " + name)
 
