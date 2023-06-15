@@ -852,8 +852,10 @@ def do(name, crossrefDF):
             Pairs = [lst for lst in pairs if lst]
             doiIdDF['Pairs'] = Pairs
             doiIdDF['mult'] = index_multipleMatchings(doiIdDF)[1]
-            #doiIdDF['Cleaning'] =  list(DF['Cleaning'].iloc[list(set(deiktes))])
-
+            
+            
+            if len(doiIdDF)==0:
+                return
 
         ## Correct the matchings
             needCheck = list(set([i for i in range(len(doiIdDF)) for k in list(doiIdDF['mult'].iloc[i].values()) if k>1]))
