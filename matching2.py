@@ -661,7 +661,7 @@ def do(name, crossrefDF):
             """
             
             lnamelist = list(dixOpenAIRE.keys())
-            dix = {}    # will store indeces and legalnames of organizations of the DOI { i : [legalname1, legalname2,...]}
+            dix = {}    # will store indeces and legalnames of organizations { i : [legalname1, legalname2,...]}
             deiktes = []  # stores indeces where a match is found
             vectorizer = CountVectorizer()
             similarity_ab = [] # stores lists of similarity scores of the mathces 
@@ -719,23 +719,26 @@ def do(name, crossrefDF):
 
                                     if 'and' in s:
                                         list_s = s.split(' and ')
-                                        for t in list_s:
-                                            if is_contained(x, t) and is_contained('univ', t):
-                                                t_vector = vectorizer.fit_transform([t]).toarray()
-                                                x_vector = vectorizer.transform([x]).toarray()
-
-                                    # Compute similarity between the vectors
-                                                similarity = cosine_similarity(t_vector, x_vector)[0][0]
-                                                if similarity > simU:
-                                                    similar_k.append(similarity)
-                                                    deiktes.append(k)
-                                                    pairs_k.append((s,x,similarity))
-
-                                                    if k not in dix:
-                                                        dix[k] = [x]
-                                                    else:
-                                                        dix[k].append(x)
                                     
+                                        if list_s:
+                                            for q in list_s:
+                                                if is_contained('univ', q):
+
+                                                    q_vector = vectorizer.fit_transform([q]).toarray()
+                                                    x_vector = vectorizer.transform([x]).toarray()
+
+                                        # Compute similarity between the vectors
+                                                    similarity = cosine_similarity(q_vector, x_vector)[0][0]
+                                                    if similarity > simU:
+                                                        similar_k.append(similarity)
+                                                        deiktes.append(k)
+                                                        pairs_k.append((s,x,similarity))
+
+                                                        if k not in dix:
+                                                            dix[k] = [x]
+                                                        else:
+                                                            dix[k].append(x)
+                                        
                                     else: 
                                         s_vector = vectorizer.fit_transform([s]).toarray()
                                         x_vector = vectorizer.transform([x]).toarray()
@@ -754,10 +757,13 @@ def do(name, crossrefDF):
                                 elif not is_contained('univ', s) and not is_contained('univ', x):
                                     if 'and' in s:
                                         list_s = s.split(' and ')
-                                        for t in list_s:
-                                            if is_contained(x, t):
-                                                t_vector = vectorizer.fit_transform([t]).toarray()
-                                                x_vector = vectorizer.transform([x]).toarray()
+                                        
+                                        if list_s:
+                                            for t in list_s:
+                                                if is_contained(x, t):
+                                                    
+                                                    t_vector = vectorizer.fit_transform([t]).toarray()
+                                                    x_vector = vectorizer.transform([x]).toarray()
 
                                     # Compute similarity between the vectors
                                                 similarity = cosine_similarity(t_vector, x_vector)[0][0]
@@ -791,43 +797,39 @@ def do(name, crossrefDF):
                 similarity_ab = [lst for lst in similarity_ab if lst != []]
                 pairs.append(pairs_k)
                 
-            
-            dixDoiAff = {DF['DOI'].iloc[key]: value for key, value in dix.items()} # dictionary {DOI : legalnames} 
-            
+                        
             
         ## Define the new Dataframe
             
-            doiIdDF = pd.DataFrame()
-            doiIdDF['DOI'] = list(dixDoiAff.keys())
-            doiIdDF['Original affiliations'] = list(DF['Original affiliations'].iloc[list(set(deiktes))])
+            affIdDF = pd.DataFrame()
+            affIdDF['Original affiliations'] = list(DF['Original Affiliations'].iloc[list(set(deiktes))])
 
-            doiIdDF['light affiliations'] = list(DF['lightAff'].iloc[list(set(deiktes))])
+            affIdDF['Light affiliations'] = list(DF['Light Affiliations'].iloc[list(set(deiktes))])
 
+            affIdDF['Candidates for matching'] = list(DF['Keywords'].iloc[list(set(deiktes))])
+
+
+            affIdDF['Matched openAIRE names'] = list(dix.values())
+            affIdDF['# Matched orgs'] = [len(list(dix.values())[i]) for i in range(len(list(dix.values())))]
             
-            doiIdDF['Candidates for matching'] = list(DF['Keywords'].iloc[list(set(deiktes))])
 
+            affIdDF['Similarity score'] = similarity_ab
 
-            doiIdDF['Candidates for matching'] = list(DF['affilSimpleNew'].iloc[list(set(deiktes))])
-
-            doiIdDF['Matched openAIRE names'] = list(dix.values())
-            doiIdDF['# Matched orgs'] = [len(list(dix.values())[i]) for i in range(len(list(dix.values())))]
-            
-            doiIdDF['Similarity score'] = similarity_ab
-        
             Pairs = [lst for lst in pairs if lst]
-            doiIdDF['Pairs'] = Pairs
-            doiIdDF['mult'] = index_multipleMatchings(doiIdDF)[1]
+            affIdDF['Pairs'] = Pairs
+            affIdDF['mult'] = index_multipleMatchings(affIdDF)[1]
             
-            
-            if len(doiIdDF)==0:
+            if len(affIdDF)==0:
                 return []
 
         ## Correct the matchings
-            needCheck = list(set([i for i in range(len(doiIdDF)) for k in list(doiIdDF['mult'].iloc[i].values()) if k>1]))
+            needCheck = list(set([i for i in range(len(affIdDF)) for k in list(affIdDF['mult'].iloc[i].values()) if k>1]))
             
-            ready = [i for i in range(len(doiIdDF)) if i not in needCheck]
+
+            ready = [i for i in range(len(affIdDF)) if i not in needCheck]
+            
         
-            best = [ bestSimScore([doiIdDF['Light affiliations'].iloc[i]], len(doiIdDF['Candidates for matching'].iloc[i]), doiIdDF['Pairs'].iloc[i],doiIdDF['mult'].iloc[i], simU, simG) for i in needCheck]
+            best = [ bestSimScore([affIdDF['Light affiliations'].iloc[i]], len(affIdDF['Candidates for matching'].iloc[i]), affIdDF['Pairs'].iloc[i],affIdDF['mult'].iloc[i], simU, simG) for i in needCheck]
             best_o = []
             best_s = []
             
@@ -836,10 +838,12 @@ def do(name, crossrefDF):
                 best_s.append([round(x[i][1],2)  for i in range(len(x))])
             numMathced = [len(best_s[i]) for i in range(len(needCheck))]
             
-            dfFinal0 = (doiIdDF.iloc[ready]).copy()
+
+            
+            dfFinal0 = (affIdDF.iloc[ready]).copy()
             dfFinal0['index'] = ready
             
-            dfFinal1 = (doiIdDF.iloc[needCheck]).copy()
+            dfFinal1 = (affIdDF.iloc[needCheck]).copy()
             dfFinal1['index'] = needCheck
             dfFinal1['Matched openAIRE names'] = best_o
             dfFinal1['Similarity score'] = best_s
@@ -858,10 +862,14 @@ def do(name, crossrefDF):
             
             finalDF = finalDF.reset_index(drop=True)
             perc = 100*len(finalDF)/m
-        
-            return [perc,finalDF] #,doiIdDF, needCheck]
+
+
+
     
-                 
+            return [perc,finalDF] #,affIdDF, needCheck]
+    
+                  
+        
  
         result = Aff_Ids(len(univLabsDF), univLabsDF, dixOpenOrgId2, 0.7,0.82)
     
