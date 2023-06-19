@@ -861,13 +861,7 @@ def do(name, crossrefDF):
         
             return [perc,finalDF] #,doiIdDF, needCheck]
     
-                  
-        def update_Z(row):
-            new_Z = []
-            for i in range(len(row['IDs'])):
-                entry = {'openaireId': row['IDs'][i], 'confidence': row['Similarity score'][i]}
-                new_Z.append(entry)
-            return new_Z
+                 
  
         result = Aff_Ids(len(univLabsDF), univLabsDF, dixOpenOrgId2, 0.7,0.82)
     
