@@ -766,16 +766,16 @@ def do(name, crossrefDF):
                                                     x_vector = vectorizer.transform([x]).toarray()
 
                                     # Compute similarity between the vectors
-                                                similarity = cosine_similarity(t_vector, x_vector)[0][0]
-                                                if similarity > simG:
-                                                    similar_k.append(similarity)
-                                                    deiktes.append(k)
-                                                    pairs_k.append((s,x,similarity))
+                                                    similarity = cosine_similarity(t_vector, x_vector)[0][0]
+                                                    if similarity > simG:
+                                                        similar_k.append(similarity)
+                                                        deiktes.append(k)
+                                                        pairs_k.append((s,x,similarity))
 
-                                                    if k not in dix:
-                                                        dix[k] = [x]
-                                                    else:
-                                                        dix[k].append(x)
+                                                        if k not in dix:
+                                                            dix[k] = [x]
+                                                        else:
+                                                            dix[k].append(x)
                                     
                                     else: 
                                         s_vector = vectorizer.fit_transform([s]).toarray()
