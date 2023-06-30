@@ -152,17 +152,18 @@ def do(name, crossrefDF):
         numUniqueAff = [len(doiDF['uniqueAff'].iloc[i]) for i in range(len(doiDF))]
         doiDF.loc[:,'# uniqueAff'] = numUniqueAff
 
+        doiDF.loc[:,'uniqueAff1'] = doiDF['uniqueAff'].apply(lambda x: [s.lower() for s in x])
 
-        # ## 2. Remove stop words ['from', 'the']
 
-        stopWords = ['from', 'the', 'From', 'The', 'of', 'at', 'de']
+        # ## 2. Remove stop words 
+
+        stopWords = ['from', 'the', 'of', 'at', 'de','for','et','für','des', 'in','as','a','and']
 
         def remove_stop_words(text):
             words = text.split()
             filtered_words = [word for word in words if word not in stopWords]
             return ' '.join(filtered_words)
 
-        # apply the function to the column  doiDF['uniqueAff'] to create column doiDF.loc[:,'uniqueAff1']
 
         doiDF.loc[:,'uniqueAff1'] = doiDF['uniqueAff'].apply(lambda x: [remove_stop_words(s) for s in x])
 
@@ -172,7 +173,6 @@ def do(name, crossrefDF):
         def remove_parentheses(text):
             return re.sub(r'\([^()]*\)', '', text)
 
-        # apply the function to each list element of column doiDF['uniqueAff1'] to remove substrings inside parentheses
 
         doiDF.loc[:,'uniqueAff1'] = doiDF['uniqueAff1'].apply(lambda x: [remove_parentheses(s) for s in x])
 
@@ -190,6 +190,7 @@ def do(name, crossrefDF):
             L = list(doiDF['uniqueAff1'])[i]
             for j in range(len(L)):
                 L[j] = re.sub(r'[^\w\s,Α-Ωα-ωぁ-んァ-ン一-龯，]', '', L[j])
+                L[j] = L[j].replace("  ", " ")
                 L[j] = replace_umlauts(L[j])
                 
             affNoSymbols.append(L)
@@ -249,9 +250,8 @@ def do(name, crossrefDF):
             newAffkomma.append(substringsDict(aff))
 
 
-
         for dict in newAffkomma:
-            
+    
             if len(dict)>1:
                 for i in range(len(dict)-1):
                     if is_contained('progr', dict[i]) and is_contained('dep', dict[i+1]):
@@ -262,11 +262,14 @@ def do(name, crossrefDF):
                         del dict[i]
                     elif is_contained('lab', dict[i]) and (is_contained('college', dict[i+1]) or is_contained('inst', dict[i+1]) or is_contained('dep', dict[i+1]) or is_contained('school', dict[i+1])):
                         del dict[i]
-                    elif is_contained('dep', dict[i]) and (is_contained('college', dict[i+1]) or is_contained('inst', dict[i+1]) or  is_contained('hosp', dict[i+1]) or  is_contained('school', dict[i+1]) or  is_contained('fac', dict[i+1])):
+                    elif is_contained('dep', dict[i]) and (is_contained('tech', dict[i+1]) or is_contained('college', dict[i+1]) or is_contained('inst', dict[i+1]) or  is_contained('hosp', dict[i+1]) or  is_contained('school', dict[i+1]) or  is_contained('fac', dict[i+1])):
                         del dict[i]
                     elif is_contained('inst',dict[i]) and (is_contained('dep', dict[i+1]) or is_contained('acad', dict[i+1]) or is_contained('hosp', dict[i+1]) or is_contained('fac', dict[i+1]) or is_contained('cent', dict[i+1]) or is_contained('div', dict[i+1])):
                         del dict[i]
-                        
+                    elif is_contained('hosp',dict[i]) and is_contained('school', dict[i+1]):
+                        del dict[i]
+                
+
                     
         lightAff = []
         
@@ -296,24 +299,23 @@ def do(name, crossrefDF):
         affDF['Original Affiliations'] = allAffsList
         affDF['Light Affiliations'] = lightAff
         affDF['Keywords'] =  [list(d.values()) for d in newAffkomma]
+        
 
         # # Labels based on legalnames of openAIRE's organizations
-
-        uniList = ['institu', 'istitut', 'univ', 'coll', 'center', 'centre' ,'polytechnic','cnrs', 'faculty','school' , 'academy' , 'akadem','école', 'hochschule' , 'ecole', 'tech', 'observ']
-
+        
+        uniList = ['institu', 'istitut', 'univ', 'coll', 'center','polytechnic', 'centre' , 'cnrs', 'faculty','school' , 'academy' , 'akadem','école', 'hochschule' , 'ecole', 'tech', 'observ']
+        
         labList = ['lab']
-
-        hosplList = ['hospital' ,'clinic', 'hôpital', 'oncol']
-
+        
+        hosplList = ['hospital' ,'clinic', 'hôpital', 'klinik','oncol','medical']
+        
         gmbhList = ['gmbh', 'company' , 'industr', 'etaireia' , 'corporation', 'inc']
-
+        
         musList =  ['museum', 'library']
-
-        #schoolList =  []
-
+        
         foundList =  ['foundation' , 'association','organization' ,'society', 'group' ]
-
-        deptList = ['district' , 'federation'  , 'government' , 'municipal' , 'county', 'ministry','council', 'agency']
+        
+        deptList = ['district' , 'federation'  , 'government' , 'municipal' , 'county','council', 'agency']
 
         unknownList = ['unknown']
 
@@ -440,6 +442,29 @@ def do(name, crossrefDF):
             
             return result 
 
+        
+        def strRadiusC(string):
+            string = string.lower()
+            radius = 2
+            
+            strList = string.split()
+            indices = []
+            result = []
+        
+            for i, x in enumerate(strList):
+                if is_contained('clinic',x) or is_contained('klinik',x):
+                    indices.append(i)
+                    
+            for r0 in indices:
+                lmin =max(0,r0-radius-1)
+                lmax =min(r0+radius, len(strList))
+                s = strList[lmin:lmax]
+                
+                result.append(' '.join(s))
+            
+            return result 
+            
+
         affiliationsSimpleN = []
 
         for i in range(len(affiliationsSimple)):
@@ -448,9 +473,13 @@ def do(name, crossrefDF):
                 if 'university' in str.split():
                     for x in strRadiusU(str):
                         inner.append(x)
-                elif 'hospital' in str.split():
+                elif 'hospital' in str or 'hôpital' in str:
                     for x in strRadiusH(str):
                         inner.append(x)
+                elif 'clinic' in str or 'klinik' in str:
+                    for x in strRadiusH(str):
+                        inner.append(x)
+                
                 else:
                     inner.append(str)
             
@@ -484,17 +513,11 @@ def do(name, crossrefDF):
         # ## Clean/modify the files
 
 
-        dixOpenOrgId1 = {k.replace(',', ''): v for k, v in dixOpenOrgId.items()}
-        dixOpenOrgId1 = {
-            replace_umlauts(key): value
-            for key, value in dixOpenOrgId1.items()
-        }
-
-
         def filter_key(key):
-            # Remove all non-alphanumeric characters except Greek letters and Chinese characters
+          # Remove all non-alphanumeric characters except Greek letters and Chinese characters
             modified_key = re.sub(r'[^\w\s,Α-Ωα-ωぁ-んァ-ン一-龯，]', '', key)
             modified_key = re.sub(r'\buniversit\w*', 'universit', modified_key, flags=re.IGNORECASE)
+            modified_key = modified_key.replace(' and ', ' ')
             return modified_key
 
             
@@ -506,27 +529,43 @@ def do(name, crossrefDF):
             return filtered_dict
 
 
-        #dixOpenAIRE_Alletc1 = filter_dictionary_keys(dixOpenAIRE_Alletc1)
-        #dixOpenAIRE_id1 = filter_dictionary_keys(dixOpenAIRE_id1)
-        dixOpenOrgId1 = filter_dictionary_keys(dixOpenOrgId1)
-
-
-        dixOpenOrgId2 = {}
-        for key, value in dixOpenOrgId1.items():
-            updated_key = ' '.join([word for word in key.split() if word.lower() not in ['of', 'at', "the", 'de']])
-            dixOpenOrgId2[updated_key] = value
+        def cleanDict(dix):
+            dix1 =  {k.replace(',', ''): v for k, v in dix.items()}
             
-        for x in list(dixOpenOrgId2.keys()):
-            if len(x) <3:
-                del dixOpenOrgId2[x]
-
-        del dixOpenOrgId2['universit hospital']
-        del dixOpenOrgId2['universit school']
-        del dixOpenOrgId2['ni universit']
-        del dixOpenOrgId2['s v universit']
-        del dixOpenOrgId2['k l universit']
-
+            dix1 = {replace_umlauts(key): value
+            for key, value in dix1.items()}
+            
+            dix1 = filter_dictionary_keys(dix1)
+            
+            dix2 = {}
+            
+            for key, value in dix1.items():
+                updated_key = ' '.join([word for word in key.split() if word.lower() not in stopWords])
+                dix2[updated_key] = value
+                
+            for x in list(dix2.keys()):
+                if len(x) <3:
+                    del dix2[x]
+                    
+            if 'universit hospital' in list(dix2.keys()):
+                del dix2['universit hospital']
+                
+            if 'universit school' in list(dix2.keys()):
+                del dix2['universit school']
+                
+            if 'ni universit' in list(dix2.keys()):
+                del dix2['ni universit']
         
+                
+            if 's v universit' in list(dix2.keys()):
+                del dix2['s v universit']
+        
+            if 'k l universit' in list(dix2.keys()):
+                del dix2['k l universit']
+                
+            return dix2
+    
+        dixOpenOrgId2 = cleanDict(dixOpenOrgId)
         # # MATCHINGS
 
         # ## Helper functions
@@ -537,13 +576,13 @@ def do(name, crossrefDF):
             """
             Finds the best match between a 'key word' and several legal names from the OpenAIRE database.
             ---> corrects special cases in the main map that follows
-
+        
             Args:
                 l1: List of light affiliations.
                 l2: number of candidates.
                 l3: List of pairs.
                 l4: mult
-
+        
             Returns:
                 List: Resulting list containing OpenAIRE names and their similarity scores.
             """
@@ -554,53 +593,71 @@ def do(name, crossrefDF):
             for i in range(len(l1)):
                 best = [] 
                 s = l1[i]
+               # s_contains_university = is_contained("university", s.lower())  
                 
+               # if not is_contained("univ", s.lower()):
+               #     continue  # Skip if s does not contain "university" or "univ"
+                
+            
                 for j in range(len(l3)):
                     x = l3[j][1] 
-                
+                   
                     if [x, l3[j][2]] in result:
                             continue
                     
                     if l4[l3[j][0]] == 1:
-                    
+                       
                         if  is_contained('univ', x.lower()) and  l3[j][2]> simU:
                             result.append([x, l3[j][2]])
                         elif  l3[j][2] >simG:
                             result.append([x, l3[j][2]])
-
-                    
+        
+                        
+                      
                     elif l3[j][2] >=0.99 and (is_contained("univ", x.lower()) or is_contained("college", x.lower()) or  is_contained("center", x.lower()) or  is_contained("schule", x.lower())): # If the similarity score of a pair (s,x) was 1, we store it to results list
                         result.append([l3[j][1], 1])
                         
                     else:
                         try:
-
+                    #        x_contains_university = is_contained("university", x.lower())
                             if not is_contained("univ", x.lower()):
                                 continue  # Skip if x does not contain "university" or "univ"
-
+                            
                             if (is_contained('hosp', x.lower()) and not is_contained('hosp', s)) or (not is_contained('hosp', x.lower()) and is_contained('hosp', s)):
                                 continue
                             s_vector = vectorizer.fit_transform([s]).toarray() #Else we compute the similarity of s with the original affiiation name
                             x_vector = vectorizer.transform([x]).toarray()
-
-                    # Compute similarity between the vectors
+                        #  s_vector1 =  vectorizer.transform([s]).toarray()
+                        #  x_vector1 =  vectorizer.fit_transform([s]).toarray()
+                            
+        
+                            # Compute similarity between the vectors
                             similarity = cosine_similarity(x_vector, s_vector)[0][0]
-                            if similarity> 0.31:
-                                
-                                best.append([x, similarity])
+                            if similarity> 0.1:
+                        # similarity1 = cosine_similarity(x_vector1, s_vector1)[0][0]
+                            #similarity2 = Levenshtein.ratio(s,x)
+        
+        
+                                best.append([x, similarity])#(similarity+similarity2)/2])
                         except:
                             KeyError
-                
+                            
                 if best:
                     max_numbers = defaultdict(float)
                     for item in best:
                         string, number = item
                         max_numbers[string] = max(max_numbers[string], number)
-
+        
         # Create a new list with the elements having the maximum number for each string
                     reduced_best = [[string, number] for string, number in best if number == max_numbers[string]]
-
+        
+        #            max_score = max(best, key=lambda x: x[1])[1]
+        #            max_results = [(x[0], x[1]) for x in best if x[1] == max_score]
+                   # if len(reduced_best) > 1:
                     reduced_best.sort(key=lambda x: x[1], reverse=True)
+                    #reduced_best.sort(key=lambda x: (l2.index(x[0]), -x[1]), reverse=False)
+                   #     result.append(reduced_best[-1])
+                    #else:
                     result = result + reduced_best
                         
             univ_list = []
@@ -613,12 +670,14 @@ def do(name, crossrefDF):
                     other_list.append(r)
             
             limit =  min(numUniv, l2)
-
+        
             if len(univ_list)> limit:
                 result = univ_list[:limit] + other_list
                         
             return result
+    
 
+ 
 
         # ### Find rows with multiple mathcings
 
@@ -643,56 +702,57 @@ def do(name, crossrefDF):
                         
     
         # ## Main map
-
+        
         def Aff_Ids(m, DF, dixOpenAIRE, simU, simG):
             
             """
             Matches affiliations in DataFrame 'DF' with names from dictionary 'dixOpenAIRE' and their openAIRE ids based on similarity scores.
-
+        
             Args:
                 m (int): The number of DOIs to check.
                 DF (DataFrame): The input DataFrame containing affiliation data.
                 dixOpenAIRE (dict): A dictionary of names from OpenAIRE.
                 simU (float): Similarity threshold for universities.
                 simG (float): Similarity threshold for non-universities.
-
+        
             Returns:
                 DataFrame: The final DataFrame with matched affiliations and their corresponding similarity scores.
             """
-            
-            lnamelist = list(dixOpenAIRE.keys())
-            dix = {}    # will store indeces and legalnames of organizations { i : [legalname1, legalname2,...]}
-            deiktes = []  # stores indeces where a match is found
             vectorizer = CountVectorizer()
+        
+            lnamelist = list(dixOpenAIRE.keys())
+            dix = {}    # will store indeces and legalnames of organizations of the DOI { i : [legalname1, legalname2,...]}
+            deiktes = []  # stores indeces where a match is found
             similarity_ab = [] # stores lists of similarity scores of the mathces 
             pairs = [] #  pairs[i] =  [ [s,x,t] ] where (s,x) is a match and t the corresponding similarity score
             
             for k in range(m):
                 similar_k = []
                 pairs_k = []
-
-
+        
+        
                 for s in DF['Keywords'].iloc[k]:
-
+        
                     if s in lnamelist:
                         deiktes.append(k)
                         similarity = 1
                         similar_k.append(similarity)
                         
                         pairs_k.append((s,s,similarity))
-
+        
                         if k not in dix:
                             dix[k] = [s]
                         else:
                             dix[k].append(s)
                     else:
-
+        
                         for x in lnamelist:
                             
                             if  is_contained(s, x):
+        
                                 x_vector = vectorizer.fit_transform([x]).toarray()
                                 s_vector = vectorizer.transform([s]).toarray()
-
+        
                                 # Compute similarity between the vectors
                                 similarity = cosine_similarity(x_vector, s_vector)[0][0]
                                 if similarity > min(simU, simG):
@@ -700,7 +760,7 @@ def do(name, crossrefDF):
                                         similar_k.append(similarity)
                                         deiktes.append(k)
                                         pairs_k.append((s,x,similarity))
-
+        
                                         if k not in dix:
                                             dix[k] = [x]
                                         else:
@@ -709,126 +769,145 @@ def do(name, crossrefDF):
                                         similar_k.append(similarity)
                                         deiktes.append(k)
                                         pairs_k.append((s,x,similarity))
-
+        
                                         if k not in dix:
                                             dix[k] = [x]
                                         else:
                                             dix[k].append(x)
+                                            
                             elif is_contained(x, s):
                                 if (is_contained('univ', s) and is_contained('univ', x)):
-
-                                    if 'and' in s:
+        
+                                    if ' and ' in s:
                                         list_s = s.split(' and ')
-                                    
+                                        
                                         if list_s:
                                             for q in list_s:
                                                 if is_contained('univ', q):
-
+        
                                                     q_vector = vectorizer.fit_transform([q]).toarray()
                                                     x_vector = vectorizer.transform([x]).toarray()
-
+        
                                         # Compute similarity between the vectors
                                                     similarity = cosine_similarity(q_vector, x_vector)[0][0]
                                                     if similarity > simU:
                                                         similar_k.append(similarity)
                                                         deiktes.append(k)
                                                         pairs_k.append((s,x,similarity))
-
+        
                                                         if k not in dix:
                                                             dix[k] = [x]
                                                         else:
                                                             dix[k].append(x)
-                                        
+                                    
                                     else: 
+        
                                         s_vector = vectorizer.fit_transform([s]).toarray()
                                         x_vector = vectorizer.transform([x]).toarray()
-
+        
                                         # Compute similarity between the vectors
                                         similarity = cosine_similarity(s_vector, x_vector)[0][0]
                                         if similarity > simU: #max(0.82,sim):
                                             similar_k.append(similarity)
                                             deiktes.append(k)
                                             pairs_k.append((s,x,similarity))
-
+        
                                             if k not in dix:
                                                 dix[k] = [x]
                                             else:
                                                 dix[k].append(x)
                                 elif not is_contained('univ', s) and not is_contained('univ', x):
-                                    if 'and' in s:
-                                        list_s = s.split(' and ')
-                                        
-                                        if list_s:
-                                            for t in list_s:
-                                                if is_contained(x, t):
-                                                    
-                                                    t_vector = vectorizer.fit_transform([t]).toarray()
-                                                    x_vector = vectorizer.transform([x]).toarray()
-
-                                    # Compute similarity between the vectors
-                                                    similarity = cosine_similarity(t_vector, x_vector)[0][0]
-                                                    if similarity > simG:
-                                                        similar_k.append(similarity)
-                                                        deiktes.append(k)
-                                                        pairs_k.append((s,x,similarity))
-
-                                                        if k not in dix:
-                                                            dix[k] = [x]
-                                                        else:
-                                                            dix[k].append(x)
-                                    
-                                    else: 
-                                        s_vector = vectorizer.fit_transform([s]).toarray()
-                                        x_vector = vectorizer.transform([x]).toarray()
-
+                                   # if 'and' in s:
+                                   #     list_s = s.split(' and ')
+                                   #     if list_s:
+                                   #         for t in list_s:
+                                   #             if is_contained(x, t):
+        
+                                   #                 t_vector = vectorizer.fit_transform([t]).toarray()
+                                   #                 x_vector = vectorizer.transform([x]).toarray()
+        
                                         # Compute similarity between the vectors
-                                        similarity = cosine_similarity(s_vector, x_vector)[0][0]
-                                        if similarity > simG: #max(0.82,sim):
-                                            similar_k.append(similarity)
-                                            deiktes.append(k)
-                                            pairs_k.append((s,x,similarity))
-
-                                            if k not in dix:
-                                                dix[k] = [x]
-                                            else:
-                                                dix[k].append(x)
+                                   #                 similarity = cosine_similarity(t_vector, x_vector)[0][0]
+                                   #                 if similarity > simG:
+                                   #                     similar_k.append(similarity)
+                                   #                     deiktes.append(k)
+                                   #                     pairs_k.append((s,x,similarity))
+        
+                                   #                     if k not in dix:
+                                #                        dix[k] = [x]
+                                    #                    else:
+                                    #                        dix[k].append(x)
+                                    #            
+                                    #            if is_contained(t, x):
+        
+                                    #                x_vector = vectorizer.fit_transform([x]).toarray()
+                                    #                t_vector = vectorizer.transform([t]).toarray()
+        
+                                        # Compute similarity between the vectors
+                                    #                similarity = cosine_similarity(t_vector, x_vector)[0][0]
+                                    #                if similarity > simG:
+                                    #                    similar_k.append(similarity)
+                                    #                    deiktes.append(k)
+                                    #                    pairs_k.append((s,x,similarity))
+        
+                                     #                   if k not in dix:
+                                     #                       dix[k] = [x]
+                                     #                   else:
+                                     #                       dix[k].append(x)
+                                   # else: 
+        
+                                    s_vector = vectorizer.fit_transform([s]).toarray()
+                                    x_vector = vectorizer.transform([x]).toarray()
+        
+                                    # Compute similarity between the vectors
+                                    similarity = cosine_similarity(s_vector, x_vector)[0][0]
+                                    if similarity > simG: #max(0.82,sim):
+                                        similar_k.append(similarity)
+                                        deiktes.append(k)
+                                        pairs_k.append((s,x,similarity))
+        
+                                        if k not in dix:
+                                            dix[k] = [x]
+                                        else:
+                                            dix[k].append(x)
                                     
                 similarity_ab.append(similar_k)   
                 similarity_ab = [lst for lst in similarity_ab if lst != []]
                 pairs.append(pairs_k)
                 
-                        
+         
+            
             
         ## Define the new Dataframe
             
             affIdDF = pd.DataFrame()
             affIdDF['Original affiliations'] = list(DF['Original Affiliations'].iloc[list(set(deiktes))])
-
+        
             affIdDF['Light affiliations'] = list(DF['Light Affiliations'].iloc[list(set(deiktes))])
-
+        
             affIdDF['Candidates for matching'] = list(DF['Keywords'].iloc[list(set(deiktes))])
-
-
+        
+        
             affIdDF['Matched openAIRE names'] = list(dix.values())
             affIdDF['# Matched orgs'] = [len(list(dix.values())[i]) for i in range(len(list(dix.values())))]
             
-
+        
             affIdDF['Similarity score'] = similarity_ab
-
+        
             Pairs = [lst for lst in pairs if lst]
             affIdDF['Pairs'] = Pairs
             affIdDF['mult'] = index_multipleMatchings(affIdDF)[1]
-            
-            if len(affIdDF)==0:
-                return []
-
+        
+        
+        
+        
         ## Correct the matchings
             needCheck = list(set([i for i in range(len(affIdDF)) for k in list(affIdDF['mult'].iloc[i].values()) if k>1]))
             
-
+        
             ready = [i for i in range(len(affIdDF)) if i not in needCheck]
             
-        
+           
             best = [ bestSimScore([affIdDF['Light affiliations'].iloc[i]], len(affIdDF['Candidates for matching'].iloc[i]), affIdDF['Pairs'].iloc[i],affIdDF['mult'].iloc[i], simU, simG) for i in needCheck]
             best_o = []
             best_s = []
@@ -838,7 +917,7 @@ def do(name, crossrefDF):
                 best_s.append([round(x[i][1],2)  for i in range(len(x))])
             numMathced = [len(best_s[i]) for i in range(len(needCheck))]
             
-
+        
             
             dfFinal0 = (affIdDF.iloc[ready]).copy()
             dfFinal0['index'] = ready
@@ -855,18 +934,20 @@ def do(name, crossrefDF):
             
             ids = [[dixOpenAIRE[x] for x in v] for v in finalDF['Matched openAIRE names']]
             numIds = [len(x) for x in ids]
-
+        
             finalDF['IDs'] = ids
             finalDF['# IDs'] = numIds
             finalDF = finalDF[~(finalDF['# Matched orgs'] == 0)]
             
             finalDF = finalDF.reset_index(drop=True)
             perc = 100*len(finalDF)/m
+        
+        
+        
+            
+            
+            return [perc,finalDF]
 
-
-
-    
-            return [perc,finalDF] #,affIdDF, needCheck]
     
                   
         
