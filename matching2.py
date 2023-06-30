@@ -946,9 +946,10 @@ def do(name, crossrefDF):
         logging.exception("Error in thred code for file: " + name)
 
 
-executor = ProcessPoolExecutor(max_workers=5)
 i = 1
 data = []
+numberOfThreads = int(sys.argv[2])
+executor = ProcessPoolExecutor(max_workers=numberOfThreads)
 
 with tarfile.open(sys.argv[1], "r:gz") as tar:
     while True:
@@ -967,7 +968,7 @@ with tarfile.open(sys.argv[1], "r:gz") as tar:
             data.append((member.name, crossrefDF))
             i += 1
 
-            if (i > 5):
+            if (i > numberOfThreads):
                 print("execute batch: " + str([name for (name, d) in data]))
                 futures = [executor.submit(do, name, d) for (name, d) in data]
                 done, not_done = wait(futures)
