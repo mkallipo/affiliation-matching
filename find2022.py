@@ -57,9 +57,14 @@ doiDF.drop(emptyBrackets, inplace = True)
 doiDF.reset_index(inplace = True)
 doiDF.drop(columns = ['index'], inplace = True)
 
-year = [(doiDF['items'].iloc[i]['published']['date-parts'][0][0]) for i in range(len(doiDF))]
+year = [(doiDF['items'].iloc[i]['issued']['date-parts'][0][0]) for i in range(len(doiDF))]
 
 doiDF['year'] = year
+num_22_23 = len(doiDF[doiDF['year'] > 2021])
 
-if 20022 in year:
-    print('yes')
+
+
+if 2022 in year or 2023 in year:
+  return num_22_23
+else:
+  return 0
