@@ -18,7 +18,9 @@ The corresponding values are the PIDs (Persistent Identifiers) associated with e
 
 - `sample.json`: Is a sample of 1000 DOIs obtained from 300 json files from the Crossref database, which can be used for testing and validation purposes.
   
-- `output.json`: The output for the `sample.json` file.
+- `output.json`, `affilMatch` and `doisMatch`: The outputs for the `sample.json` file as described above.
+
+
 
 ## Dependencies
 
