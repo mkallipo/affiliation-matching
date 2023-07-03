@@ -4,8 +4,10 @@ This repository contains code and data for matching DOIs of crossref JSON files 
 
 ## Files
 
-- `matching.ipynb`: This Jupyter Notebook contains the main code for the matching process. It takes JSON files as input and returns JSON with matchings between the DOIs of the JSONs and IDs of organizations in the OpenAIRE database. 
-The organizations include universities, institutions, hospitals, labs, etc.
+- `matching.py`: This is the main code for the matching process. It takes JSON files as input and returns JSON with matchings between the DOIs of the JSONs and IDs of organizations in the OpenAIRE database. 
+The organizations include universities, institutions, hospitals, labs.
+
+- `matching.ipynb`: Is a Jupyter Notebook for testing the code. In addition to the JSON file it returns two EXCEL files, one with the distinct affiliations of the JSON input, the matched openAIRE organizations and the corresponding similarity scores and one with the DOIs of the JSON input and the matched openAIRE organizations and the similarity scores.
 
 - `dixOpenAIRE_Alletc.pkl`: This file is a pickled dictionary that contains keys representing legalnames and alternativenames of organizations in the OpenAIRE database. 
 The corresponding values are the PIDs (Persistent Identifiers) associated with each organization.
@@ -14,8 +16,9 @@ The corresponding values are the PIDs (Persistent Identifiers) associated with e
 
 - `dixOpenOrgId.pkl`: This file is one more pickled dictionary that maps legalnames and alternativenames of organizations in the OpenAIRE database to their corresponding OpenAIRE IDs and the prefix of the organizations is openorgs_.
 
-- `Archive.zip`: This ZIP file contains a `0.json` and `42.json` from the Crossref database, which can be used for testing and validation purposes.
-- `match0.json`: The output for the `0.json` file.
+- `sample.json`: Is a sample of 1000 DOIs obtained from 300 json files from the Crossref database, which can be used for testing and validation purposes.
+  
+- `output.json`: The output for the `sample.json` file.
 
 ## Dependencies
 
