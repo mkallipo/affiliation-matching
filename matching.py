@@ -506,7 +506,7 @@ def do(name, crossrefDF):
 
         # # Load files from openAIRE
 
-        with open('dixOpenOrgId.pkl', 'rb') as f:
+        with open('dixAcadRor.pkl', 'rb') as f:
             dixOpenOrgId = pickle.load(f)
 
 
