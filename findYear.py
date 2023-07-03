@@ -1,13 +1,10 @@
 import pandas as pd
 
-#files= ['0.json', '1.json', '2.json', '3.json', '4.json','42.json', '15693.json']
-files = ['42.json']
-# create an empty list to store the DataFrames
-dfsList = [pd.read_json(file, orient='records') for file in files]
+
+file = '42.json'
 
 
-# combine all DataFrames into a single DataFrame
-crossrefDF = pd.concat(dfsList, ignore_index=True)
+crossrefDF = pd.read_json(file, orient='records')
 
 
 
