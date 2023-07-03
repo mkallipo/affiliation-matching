@@ -60,11 +60,12 @@ doiDF.drop(columns = ['index'], inplace = True)
 year = [(doiDF['items'].iloc[i]['issued']['date-parts'][0][0]) for i in range(len(doiDF))]
 
 doiDF['year'] = year
-num_22_23 = len(doiDF[doiDF['year'] > 2021])
+#num_22_23 = len(doiDF[doiDF['year'] > 2021])
 
 
 
- if 2022 in year or 2023 in year:
-     return [num_22_23, str(100*round(num_22_23/len(doiDF),2))+'%', set(year)]
- else:
-     return [0,set(year)]
+result = doiDF.groupby('year')['DOI'].count()
+
+result_df = result.reset_index()
+
+result_df.to_csv('output.csv', index=False)
