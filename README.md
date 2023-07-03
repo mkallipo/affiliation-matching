@@ -4,10 +4,10 @@ This repository contains code and data for matching DOIs of crossref JSON files 
 
 ## Files
 
-- `matching.py`: This is the main code for the matching process. It takes JSON files as input and returns JSON with matchings between the DOIs of the JSONs and IDs of organizations in the OpenAIRE database. 
+- `matching.py`: This is the main code for the matching process. It takes JSON files as input and returns a JSON (`output.json`) with matchings between the DOIs of the JSONs and IDs of organizations in the OpenAIRE database. 
 The organizations include universities, institutions, hospitals, labs.
 
-- `matching.ipynb`: Is a Jupyter Notebook for testing the code. In addition to the JSON file it returns two EXCEL files, one with the distinct affiliations of the JSON input, the matched openAIRE organizations and the corresponding similarity scores and one with the DOIs of the JSON input and the matched openAIRE organizations and the similarity scores.
+- `matching.ipynb`: Is a Jupyter Notebook for testing the code. In addition to the JSON file (`output.json`) it returns two EXCEL files (`affilMatch` and `doisMatch` respectively), one with the distinct affiliations of the JSON input, the matched openAIRE organizations and the corresponding similarity scores and one with the DOIs of the JSON input and the matched openAIRE organizations and the similarity scores.
 
 - `dixOpenAIRE_Alletc.pkl`: This file is a pickled dictionary that contains keys representing legalnames and alternativenames of organizations in the OpenAIRE database. 
 The corresponding values are the PIDs (Persistent Identifiers) associated with each organization.
@@ -29,8 +29,6 @@ Make sure you have the following dependencies installed before running the code:
 - pickle
 - unicodedata
 - scikit-learn (for `CountVectorizer` and `cosine_similarity`)
-- Levenshtein
-- plotly and datapane (if you want to create an HTML file for reporting and sharing)
 
 ## Usage
 
@@ -38,7 +36,6 @@ Make sure you have the following dependencies installed before running the code:
 
 2. The notebook will process the input JSON files and generate a JSON file with the matchings between DOIs and organization IDs from the OpenAIRE database.
 
-3. You can access the generated matchings JSON file and use it for further analysis or any other required tasks.
 
 ## Contact
 
