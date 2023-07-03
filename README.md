@@ -20,6 +20,11 @@ The corresponding values are the PIDs (Persistent Identifiers) associated with e
   
 - `output.json`, `affilMatch` and `doisMatch`: The outputs for the `sample.json` file as described above.
 
+- `findOrg.ipynb`: Is another Jupyter Notebook for evaluating the results of the matching algorithm.
+
+- `findYear`: Is a Python script that takes a JSON file as input and generates a CSV file containing the years from the issued date field and the corresponding number of DOIs.
+
+- `description.txt`: Is a description of the main code.
 
 
 ## Dependencies
