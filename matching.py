@@ -1006,7 +1006,7 @@ def do(name, crossrefDF):
         def update_Z(row):
             new_Z = []
             for i in range(len(row['IDs'])):
-                entry = {'OpenAIREid': row['IDs'][i], 'Confidence': row['Scores'][i]}
+                entry = {'RORid': row['IDs'][i], 'Confidence': row['Scores'][i]}
                 new_Z.append(entry)
             return new_Z
 
