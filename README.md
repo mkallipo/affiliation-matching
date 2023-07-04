@@ -9,12 +9,9 @@ The organizations include universities, institutions, hospitals, labs.
 
 - `matching.ipynb`: Is a Jupyter Notebook for testing the code. In addition to the JSON file (`output.json`) it returns two EXCEL files (`affilMatch` and `doisMatch` respectively), one with the distinct affiliations of the JSON input, the matched openAIRE organizations and the corresponding similarity scores and one with the DOIs of the JSON input and the matched openAIRE organizations and the similarity scores.
 
-- `dixOpenAIRE_Alletc.pkl`: This file is a pickled dictionary that contains keys representing legalnames and alternativenames of organizations in the OpenAIRE database. 
-The corresponding values are the PIDs (Persistent Identifiers) associated with each organization.
-
-- `dixOpenAIRE_id.pkl`: This file is another pickled dictionary that maps legalnames and alternativenames of organizations in the OpenAIRE database to their corresponding OpenAIRE IDs.
-
-- `dixOpenOrgId.pkl`: This file is one more pickled dictionary that maps legalnames and alternativenames of organizations in the OpenAIRE database to their corresponding OpenAIRE IDs and the prefix of the organizations is openorgs_.
+- `dixAcadRor.pkl`: This file is a pickled dictionary that contains keys representing legalnames and alternativenames of organizations in the OpenAIRE database. 
+The corresponding values are the ROR PIDs (Persistent Identifiers) associated with each organization.
+Note: the prefix of the openAIRE id of all organizations considered is `openorgs_`.
 
 - `sample.json`: Is a sample of 1000 DOIs obtained from 300 json files from the Crossref database, which can be used for testing and validation purposes.
   
