@@ -967,8 +967,8 @@ def do(name, crossrefDF):
             for aff in doiDF['Unique affiliations'].iloc[i]:
                 if aff in list(dict_aff_id.keys()):
                     pidsi = pidsi + dict_aff_id[aff]
-                elif 'unmatched organization(s)' not in pidsi:
-                    pidsi = pidsi + ['unmatched organization(s)']
+               # elif 'unmatched organization(s)' not in pidsi:
+                #    pidsi = pidsi + ['unmatched organization(s)']
             pids.append(pidsi)
             
             
@@ -978,8 +978,8 @@ def do(name, crossrefDF):
             for aff in doiDF['Unique affiliations'].iloc[i]:
                 if aff in list(dict_aff_open.keys()):
                     namesi = namesi +  dict_aff_open[aff]
-                elif 'unmatched organization(s)' not in namesi:
-                    namesi = namesi + ['unmatched organization(s)']
+              #  elif 'unmatched organization(s)' not in namesi:
+               #     namesi = namesi + ['unmatched organization(s)']
             names.append(namesi)    
             
         scores = []
@@ -988,8 +988,8 @@ def do(name, crossrefDF):
             for aff in doiDF['Unique affiliations'].iloc[i]:
                 if aff in list(dict_aff_score.keys()):
                     scoresi = scoresi +  dict_aff_score[aff]
-                elif 'unmatched organization(s)' not in scoresi:
-                    scoresi = scoresi + ['-']
+              #  elif 'unmatched organization(s)' not in scoresi:
+               #     scoresi = scoresi + ['-']
             scores.append(scoresi)
      
             
@@ -997,7 +997,7 @@ def do(name, crossrefDF):
         doiDF['IDs'] = pids
         doiDF['Scores'] = scores
         
-        unmatched = [i for i in range(len(doiDF)) if doiDF['Matched openAIRE names'].iloc[i] == ['unmatched organization(s)']]
+        unmatched = [i for i in range(len(doiDF)) if doiDF['Matched openAIRE names'].iloc[i] == []]
         matched = [i for i in range(len(doiDF))  if i not in unmatched]
             
         finalDF =  doiDF[['DOI',"Unique affiliations",'Matched openAIRE names','IDs', 'Scores']].iloc[matched]
