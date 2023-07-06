@@ -477,7 +477,7 @@ def do(name, crossrefDF):
                     for x in strRadiusH(str):
                         inner.append(x)
                 elif 'clinic' in str or 'klinik' in str:
-                    for x in strRadiusH(str):
+                    for x in strRadiusC(str):
                         inner.append(x)
                 
                 else:
