@@ -56,7 +56,8 @@ Output 3. Json filie
 Steps
 
 1. After importing, cleaning, tokenizing the affiliations’ strings and removing certain stopwords, the algorithm categorizes the affiliations them based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs’ data has been already carried out. The categories are Univisties/Instirutions, Laboratories, Hospitals, Companies, Museums, Governments, and Rest). For example, the affiliations:
-  A1. 'Obstetrical Perinatal Pediatric Epidemiology Research Team Institute Health Medical Research Centre Research Epidemiology     Statistics Universite Paris Cite Paris France'
+
+* A1. 'Obstetrical Perinatal Pediatric Epidemiology Research Team Institute Health Medical Research Centre Research Epidemiology     Statistics Universite Paris Cite Paris France'
 
   A2. 'From Department Cardiovascular Science Medicine, Chiba University Graduate School Medicine, Chiba, Japan Department Cardiovascular Medicine, Graduate School Medicine, University Tokyo, Tokyo, Japan Department Metabolic Diseases, Graduate School Medicine, University Tokyo, Tokyo, Japan '
 
