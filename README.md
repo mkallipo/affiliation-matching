@@ -43,17 +43,15 @@ Make sure you have the following dependencies installed before running the code:
 
 ## Description of the algorithm -- examples. 
 
-Goal: recognize openAIREs organizations [having a prefix '20|openorgs____’ and ROR ids] inside the crossref affiliations data and match the corresponding ROR ids.
+__Goal__: Recognize openAIREs organizations [having a prefix '20|openorgs____’ and ROR ids] inside the crossref affiliations data and match the corresponding ROR ids.
 
-Input: a json file from Crossref's data
+__Input__: A json file from Crossref's data
+{"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["https:\/\/ror.org\/01teme464"],"Confidence":0.73},{"RORid":["https:\/\/ror.org\/03yxnpp24"],"Confidence":0.7071067812}]}
 
-Output: 1. Excel file containing the crossref’s affiliations matched to the openAIREs organizations and the corresponding similarity score. 
+__Output__: A json file containing DOIs from Crossref data and their matchings to openAIRE's organization and the corresponding confidence scores, for example: {"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["https:\/\/ror.org\/01teme464"],"Confidence":0.73},{"RORid":["https:\/\/ror.org\/03yxnpp24"],"Confidence":0.7071067812}]}.
 
-Output 2. Excel file containing does and the ,,,
 
-Output 3. Json filie 
-
-Steps
+__Steps:__
 
 1. After importing, cleaning, tokenizing the affiliations’ strings and removing certain stopwords, the algorithm categorizes the affiliations them based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs’ data has been already carried out. The categories are Univisties/Instirutions, Laboratories, Hospitals, Companies, Museums, Governments, and Rest). For example, the affiliations:
 
@@ -73,8 +71,8 @@ Steps
 
   In the same way the openAIREs organizations are grouped. 
 
-  *Fact*: the 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’
-  More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
+  __Fact__: * The 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’. 
+            * More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
 
   We focus on these cases and filter the openAIRE orgs to those that are under the ‘Rest’ label. In this way we reduce by 40% the data in which we search to find the matchings.
 
