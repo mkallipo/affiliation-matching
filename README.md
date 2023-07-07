@@ -71,9 +71,8 @@ __Steps:__
 
   In the same way the openAIREs organizations are grouped. 
 
-  __Fact__: * The 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’.
-  
-            * More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
+  __Facts__:         * The 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’.   
+              * More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
 
   We focus on these cases and filter the openAIRE orgs to those that are under the ‘Rest’ label. In this way we reduce by 40% the data in which we search to find the matchings.
 
