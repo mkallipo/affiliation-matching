@@ -80,17 +80,18 @@ Steps
 
 2. In the next phase the goal is to shorten the strings: the average length of a string is ~84  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
 The task now is to extract only the essential information from each affiliation string. 
-This is be done by splitting the string whenever a , or ; is found, then apply certain ‘association rules’ to these substrings, then keep only the substrings that contain ‘keywords’, and finally cut even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital' etc. 
-After this procedure the average length is reduced to ~32 (the affiliation A1 becomes _'research epidemiology statistics universit paris cite'_ with length 53, 
-while A2 is split to _'graduate school medicine',
- 'universit tokyo',
- 'chiba universit graduate school'_ (of lengths 24, 15, 31 respectively, 
-and finally A4 becomes _‘univerit california'_ (length 20)
+This is be done by splitting the string whenever a , or ; is found, then apply certain ‘association rules’ to these substrings, then keep only the substrings that contain ‘keywords’, and finally cut even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital' etc.
 
-3. Then the algorithm checks whether a substring that contains a keyword is contained to (or contains one) legal name/alternative name of an organization in the openAIRE database and if so, it applies cosine similarity to find which is the best match. 
+  After this procedure the average length is reduced to ~32 (the affiliation A1 becomes _'research epidemiology statistics universit   paris cite'_ with length 53, 
+  while A2 is split to _'graduate school medicine',
+   'universit tokyo',
+   'chiba universit graduate school'_ (of lengths 24, 15, 31 respectively, 
+  and finally A4 becomes _‘univerit california'_ (length 20)
+
+4. Then the algorithm checks whether a substring that contains a keyword is contained to (or contains one) legal name/alternative name of an organization in the openAIRE database and if so, it applies cosine similarity to find which is the best match. 
 After several experiments the threshold for organizations contain the substring ‘universit’ is set to 0.7 while for all others is set to 0.82.
 
-4. Final step. It is possible that several matches are found whose similarity scores are above the thresholds. 
+5. Final step. It is possible that several matches are found whose similarity scores are above the thresholds. 
 In this case, another check is essential for the effectiveness of the method: the algorithm applies again cosine similarity between the organizations found in the openAIRE database on the one hand, and on the other hand the original affiliation from which the substring containing the keyword was obtained. The idea behind this is that the original affiliation contain information like addresses or city names that can help decide which one from the openAIREs organizations is the best fit. For example, ‘universit California’ is matched to 40 organizations from openAIREs database. In the second round, the original A3 string is considered, where the information _San Diego_ helps the algorithm decide to finally match this affiliation to _'universit california san diego’_.
 
 
