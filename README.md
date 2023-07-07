@@ -48,7 +48,7 @@ __Goal__: Recognize openAIREs organizations [having a prefix '20|openorgs____’
 __Input__: A json file from Crossref's data
 
 
-__Output__: A json file containing DOIs from Crossref data and their matchings to openAIRE's organization and the corresponding confidence scores, for example: {"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["<https:\/\/ror.org\/01teme464>"],"Confidence":0.73},{"RORid":["<https:\/\/ror.org\/03yxnpp24>"],"Confidence":0.7071067812}]}.
+__Output__: A json file containing DOIs from Crossref data and their matchings to openAIRE's organization and the corresponding confidence scores, for example: `{"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["<https:\/\/ror.org\/01teme464>"],"Confidence":0.73},{"RORid":["<https:\/\/ror.org\/03yxnpp24>"],"Confidence":0.7071067812}]}`.
 
 
 __Steps:__
