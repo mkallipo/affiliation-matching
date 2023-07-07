@@ -55,33 +55,29 @@ Output 3. Json filie
 
 Steps
 
-1. After importing, cleaning, tokenizing the affiliations’ strings and removing certain stopwords, the algorithm categorizes the affiliations them based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs’ data has been already carried out. The categories are Univisties/Instirutions, Laboratories, Hospitals, Companies, Museums, Governments, and Rest).
+1. After importing, cleaning, tokenizing the affiliations’ strings and removing certain stopwords, the algorithm categorizes the affiliations them based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs’ data has been already carried out. The categories are Univisties/Instirutions, Laboratories, Hospitals, Companies, Museums, Governments, and Rest). For example, the affiliations:
+  A1. 'Obstetrical Perinatal Pediatric Epidemiology Research Team Institute Health Medical Research Centre Research Epidemiology     Statistics Universite Paris Cite Paris France'
 
-For example, the affiliations 
+  A2. 'From Department Cardiovascular Science Medicine, Chiba University Graduate School Medicine, Chiba, Japan Department Cardiovascular Medicine, Graduate School Medicine, University Tokyo, Tokyo, Japan Department Metabolic Diseases, Graduate School Medicine, University Tokyo, Tokyo, Japan '
 
-A1. 'Obstetrical Perinatal Pediatric Epidemiology Research Team Institute Health Medical Research Centre Research Epidemiology Statistics Universite Paris Cite Paris France'
+  A3. Department Biology, University California, San Diego, La Jolla 920930063
 
-A2. 'From Department Cardiovascular Science Medicine, Chiba University Graduate School Medicine, Chiba, Japan Department Cardiovascular Medicine, Graduate School Medicine, University Tokyo, Tokyo, Japan Department Metabolic Diseases, Graduate School Medicine, University Tokyo, Tokyo, Japan '
+  are under the Univisties/Instirutions label, while
 
-A3. Department Biology, University California, San Diego, La Jolla 920930063
+  A4 'Laboratoire Central dImmunologie dHistocompatibilite, INSERM U93, Paris, France' is under the Laboratories label
 
-are under the Univisties/Instirutions label, while
+  and the 
 
-A4 'Laboratoire Central dImmunologie dHistocompatibilite, INSERM U93, Paris, France' is under the Laboratories label
+  A5 'advancecsg lisbon portugal' is under the Rest label. 
 
-and the 
+  In the same way the openAIREs organizations are grouped. 
 
-A5 'advancecsg lisbon portugal' is under the Rest label. 
+  *Fact*: the 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’
+  More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
 
+  We focus on these cases and filter the openAIRE orgs to those that are under the ‘Rest’ label. In this way we reduce by 40% the data in which we search to find the matchings.
 
-In the same way the openAIREs organizations are grouped. 
-
-*Fact*: the 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’
-More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
-
-We focus on these cases and filter the openAIRE orgs to those that are under the ‘Rest’ label. In this way we reduce by 40% the data in which we search to find the matchings.
-
-2) In the next phase the goal is to shorten the strings: the average length of a string is ~84  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
+2. In the next phase the goal is to shorten the strings: the average length of a string is ~84  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
 The task now is to extract only the essential information from each affiliation string. 
 This is be done by splitting the string whenever a , or ; is found, then apply certain ‘association rules’ to these substrings, then keep only the substrings that contain ‘keywords’, and finally cut even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital' etc. 
 
