@@ -46,10 +46,9 @@ Make sure you have the following dependencies installed before running the code:
 __Goal__: Recognize openAIREs organizations [having a prefix '20|openorgs____’ and ROR ids] inside the crossref affiliations data and match the corresponding ROR ids.
 
 __Input__: A json file from Crossref's data
-{"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["https:\/\/ror.org\/01teme464"],"Confidence":0.73},{"RORid":["https:\/\/ror.org\/03yxnpp24"],"Confidence":0.7071067812}]}
 
-__Output__: A json file containing DOIs from Crossref data and their matchings to openAIRE's organization and the corresponding confidence scores, for example: {"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["[https:\/\/ror.org\/01teme464
-"],"Confidence":0.73},{"RORid":["[https:\/\/ror.org\/03yxnpp24]"],"Confidence":0.7071067812}]}.
+
+__Output__: A json file containing DOIs from Crossref data and their matchings to openAIRE's organization and the corresponding confidence scores, for example: {"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["<https:\/\/ror.org\/01teme464>"],"Confidence":0.73},{"RORid":["<https:\/\/ror.org\/03yxnpp24>"],"Confidence":0.7071067812}]}.
 
 
 __Steps:__
@@ -72,7 +71,8 @@ __Steps:__
 
   In the same way the openAIREs organizations are grouped. 
 
-  __Fact__: * The 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’. 
+  __Fact__: * The 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’.
+  
             * More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
 
   We focus on these cases and filter the openAIRE orgs to those that are under the ‘Rest’ label. In this way we reduce by 40% the data in which we search to find the matchings.
@@ -80,6 +80,7 @@ __Steps:__
 2. In the next phase the goal is to shorten the strings: the average length of a string is ~84  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
 The task now is to extract only the essential information from each affiliation string. 
 This is be done by splitting the string whenever a , or ; is found, then apply certain ‘association rules’ to these substrings, then keep only the substrings that contain ‘keywords’, and finally cut even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital' etc.
+
 After this procedure the average length is reduced to ~32 (the affiliation A1 becomes _'research epidemiology statistics universit   paris cite'_ with length 53, 
   while A2 is split to _'graduate school medicine',
    'universit tokyo',
