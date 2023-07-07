@@ -59,17 +59,17 @@ Steps
 
 * A1. 'Obstetrical Perinatal Pediatric Epidemiology Research Team Institute Health Medical Research Centre Research Epidemiology     Statistics Universite Paris Cite Paris France'
 
-  A2. 'From Department Cardiovascular Science Medicine, Chiba University Graduate School Medicine, Chiba, Japan Department Cardiovascular Medicine, Graduate School Medicine, University Tokyo, Tokyo, Japan Department Metabolic Diseases, Graduate School Medicine, University Tokyo, Tokyo, Japan '
+* A2. 'From Department Cardiovascular Science Medicine, Chiba University Graduate School Medicine, Chiba, Japan Department Cardiovascular Medicine, Graduate School Medicine, University Tokyo, Tokyo, Japan Department Metabolic Diseases, Graduate School Medicine, University Tokyo, Tokyo, Japan '
 
-  A3. Department Biology, University California, San Diego, La Jolla 920930063
+* A3. Department Biology, University California, San Diego, La Jolla 920930063
 
   are under the Univisties/Instirutions label, while
 
-  A4 'Laboratoire Central dImmunologie dHistocompatibilite, INSERM U93, Paris, France' is under the Laboratories label
+* A4 'Laboratoire Central dImmunologie dHistocompatibilite, INSERM U93, Paris, France' is under the Laboratories label
 
   and the 
 
-  A5 'advancecsg lisbon portugal' is under the Rest label. 
+* A5 'advancecsg lisbon portugal' is under the Rest label. 
 
   In the same way the openAIREs organizations are grouped. 
 
