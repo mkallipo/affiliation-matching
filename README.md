@@ -75,7 +75,7 @@ __Steps:__
 > - The 40% of the organizations in the openAIRE’s database lie in the category _Rest_.
 > - More than 80% of Crossref's affiliations lie in the categories _Universities/Institutes_ and _Laboratories_.
 
-We focus on these cases and filter the openAIRE organizations to those that are under the _Rest_ label. This significantly reduces the dataset we need to search.
+We focus on these cases and filter the openAIRE organizations to those that are __not__ under the _Rest_ label. This significantly reduces the dataset we need to search.
 
 2. In the next phase the goal is to shorten the strings: the average length of a string is ~84  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
 The task now is to extract only the essential information from each affiliation string. 
