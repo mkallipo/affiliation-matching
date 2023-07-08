@@ -39,7 +39,7 @@ Make sure you have the following dependencies installed before running the code:
 2. The notebook will process the input JSON files and generate a JSON file with the matchings between DOIs and organization IDs from the OpenAIRE database.
 
 
-## Description of the algorithm -- examples. 
+## Description of the algorithm -- examples
 
 __Goal__: Recognize openAIRE's organizations inside the Crossref's data and match the corresponding ROR ids.
 
