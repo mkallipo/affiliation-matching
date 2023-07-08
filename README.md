@@ -1,6 +1,6 @@
 # Matching Repository
 
-This repository contains code and data for matching DOIs of crossref JSON files with organization IDs from the OpenAIRE database.
+This repository contains code and data for matching DOIs of Crossref JSON files with organization IDs from the OpenAIRE database.
 
 ## Files
 
@@ -41,17 +41,18 @@ Make sure you have the following dependencies installed before running the code:
 
 ## Description of the algorithm -- examples. 
 
-__Goal__: Recognize openAIRE's organizations inside the crossref affiliations data and match the corresponding ROR ids.
+__Goal__: Recognize openAIRE's organizations inside the Crossref's data and match the corresponding ROR ids.
 
 __Input__: A JSON file from Crossref's data.
 
 
-__Output__: A JSON file containing DOIs from Crossref data and their matchings to openAIRE's organization and the corresponding confidence scores, for example: `{"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["https:\/\/ror.org\/01teme464"],"Confidence":0.73},{"RORid":["https:\/\/ror.org\/03yxnpp24"],"Confidence":0.7071067812}]}`.
+__Output__: A JSON file containing DOIs from Crossref's data and their matchings to openAIRE's organizations and the corresponding confidence scores, for example: 
+>`{"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["https:\/\/ror.org\/01teme464"],"Confidence":0.73},{"RORid":["https:\/\/ror.org\/03yxnpp24"],"Confidence":0.7071067812}]}`.
 
 
 __Steps:__
 
-1. After importing, cleaning, tokenizing the affiliations’ strings and removing certain stopwords, the algorithm categorizes the affiliations based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs data has already been carried out. The categories are _Univisties/Instirutions_, _Laboratories_, _Hospitals_, _Companies_, _Museums_, _Governments_, and _Rest_). For example, the affiliations:
+1. After __importing__, __cleaning__, __tokenizing__ the affiliations’ strings and __removing stopwords__, the algorithm __categorizes the affiliations__ based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs data has already been carried out. The categories are _Univisties/Instirutions_, _Laboratories_, _Hospitals_, _Companies_, _Museums_, _Governments_, and _Rest_). For example, the affiliations:
 
 * A1. `"Obstetrical Perinatal Pediatric Epidemiology Research Team Institute Health Medical Research Centre Research Epidemiology     Statistics Universite Paris Cite Paris France"`
 
@@ -74,12 +75,12 @@ __Steps:__
 
 - **Note:** We focus on these cases and filter the openAIRE organizations to those that are __not__ under the _Rest_ label. This reduces significantly the dataset we need to search.
 
-2. In the next phase the goal is to shorten the strings: the average length of a string of an affiliation is ~85  and often contains unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
-The task now is to extract only the essential information from each affiliation string. 
+2. In the next phase the goal is to __shorten the strings__: the average length of a string of an affiliation is ~85  and often contains unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
+The task now is to __extract only the essential information__ from each affiliation string. 
 This is done by splitting the string whenever a , or ; is found, then apply certain ‘association rules’ to these substrings, then keep only the substrings that contain ‘keywords’, and finally cut even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital'.  
 After this procedure the average length is reduced to ~35 (for example, the affiliation A1 becomes `"research epidemiology statistics universit paris cite"` with length 53, while A2 is split to `["graduate school medicine","universit tokyo","chiba universit graduate school"` with lengths 24, 15, 31 respectively, and finally A3 becomes `"universit california`" with length 20).
 
-4. Now the algorithm checks whether a substring, that has a keyword, is contained to (or contains) one legal name/alternative name of an organization in the openAIRE database and if so, it applies cosine similarity to find which is the best match. 
+4. Now the algorithm __checks__ whether a substring, that has a keyword, is __contained__ to (or __contains__) a legal name/alternative name of an organization in the openAIRE database and if so, it applies __cosine similarity__ to find which is the best match. 
 After several experiments the threshold for strings containing ‘universit’ is set to 0.7 while for all others is set to 0.82.
 
 5. Final step. It is possible that several matchings are found whose similarity scores are above the thresholds. 
