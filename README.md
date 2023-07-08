@@ -71,16 +71,15 @@ __Steps:__
 
   In the same way the openAIREs organizations are grouped. 
 
-  __Facts__:  > * The 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’.   
-              > * More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
+  __Facts__:  > - The 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’.   
+              > - More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
 
   We focus on these cases and filter the openAIRE orgs to those that are under the ‘Rest’ label. In this way we reduce by 40% the data in which we search to find the matchings.
 
 2. In the next phase the goal is to shorten the strings: the average length of a string is ~84  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
 The task now is to extract only the essential information from each affiliation string. 
 This is be done by splitting the string whenever a , or ; is found, then apply certain ‘association rules’ to these substrings, then keep only the substrings that contain ‘keywords’, and finally cut even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital' etc.  
-
-  After this procedure the average length is reduced to ~32 (the affiliation A1 becomes `"research epidemiology statistics universit     paris cite"` with length 53, 
+After this procedure the average length is reduced to ~32 (the affiliation A1 becomes `"research epidemiology statistics universit     paris cite"` with length 53, 
   while A2 is split to `["graduate school medicine","universit tokyo","chiba universit graduate school"` (of lengths 24, 15, 31 respectively, and finally A3 becomes `"univerit california`" (length 20)
 
 4. Then the algorithm checks whether a substring that contains a keyword is contained to (or contains one) legal name/alternative name of an organization in the openAIRE database and if so, it applies cosine similarity to find which is the best match. 
