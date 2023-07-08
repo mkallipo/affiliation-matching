@@ -77,7 +77,7 @@ __Steps:__
 
 We focus on these cases and filter the openAIRE organizations to those that are __not__ under the _Rest_ label. This significantly reduces the dataset we need to search.
 
-2. In the next phase the goal is to shorten the strings: the average length of a string is ~84  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
+2. In the next phase the goal is to shorten the strings: the average length of a string of an affiliation is ~84  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
 The task now is to extract only the essential information from each affiliation string. 
 This is be done by splitting the string whenever a , or ; is found, then apply certain ‘association rules’ to these substrings, then keep only the substrings that contain ‘keywords’, and finally cut even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital' etc.  
 After this procedure the average length is reduced to ~32 (the affiliation A1 becomes `"research epidemiology statistics universit     paris cite"` with length 53, 
