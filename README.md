@@ -41,7 +41,7 @@ Make sure you have the following dependencies installed before running the code:
 
 ## Description of the algorithm -- examples
 
-__Goal__: Recognize openAIRE's organizations inside the Crossref's data and match the corresponding ROR ids.
+__Goal__: Recognize openAIRE's organizations inside the Crossref's data and match to each DOI the corresponding ROR ids.
 
 __Input__: A JSON file from Crossref's data.
 
