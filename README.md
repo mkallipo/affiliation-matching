@@ -43,7 +43,20 @@ Make sure you have the following dependencies installed before running the code:
 
 __Goal__: Recognize openAIRE's organizations inside the Crossref's data and match to each DOI the corresponding ROR ids.
 
-__Input__: A JSON file from Crossref's data.
+__Input__: A JSON file from Crossref's data. Here is an example of the part where the affiliations and DOI information are found. 
+`'author': [{'given': 'Orlando',
+   'family': 'Maeso',
+   'sequence': 'first',
+   'affiliation': [{'name': 'Escuela Técnica Superior de Ingenieros Industriales, Univ. de Las Palmas de Gran Canaria, Tafira Baja, 35017-Las Palmas de Gran Canaria, Spain.'}]},
+  {'given': 'Juan J.',
+   'family': 'Aznárez',
+   'sequence': 'additional',
+   'affiliation': [{'name': 'Escuela Técnica Superior de Ingenieros Industriales, Univ. de Las Palmas de Gran Canaria, Tafira Baja, 35017-Las Palmas de Gran Canaria, Spain.'}]},
+  {'given': 'José',
+   'family': 'Domnguez',
+   'sequence': 'additional',
+   'affiliation': [{'name': 'Escuela Superior de Ingenieros, Univ. de Sevilla, Camino de los Descubrimientos s/n, 41092-Sevilla, Spain.'}]}],
+ 'DOI': '10.1061/(asce)0733-9399(2002)128:7(759)`
 
 
 __Output__: A JSON file containing DOIs from Crossref's data and their matchings to openAIRE's organizations and the corresponding confidence scores, for example: 
