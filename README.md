@@ -53,7 +53,7 @@ __Output__: A JSON file containing DOIs from Crossref data and their matchings t
 
 __Steps:__
 
-1. After importing, cleaning, tokenizing the affiliations’ strings and removing certain stopwords, the algorithm categorizes the affiliations based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs data has already been carried out. The categories are Univisties/Instirutions, Laboratories, Hospitals, Companies, Museums, Governments, and Rest). For example, the affiliations:
+1. After importing, cleaning, tokenizing the affiliations’ strings and removing certain stopwords, the algorithm categorizes the affiliations based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs data has already been carried out. The categories are _Univisties/Instirutions_, _Laboratories_, _Hospitals_, _Companies_, _Museums_, _Governments_, and _Rest_). For example, the affiliations:
 
 * A1. `"Obstetrical Perinatal Pediatric Epidemiology Research Team Institute Health Medical Research Centre Research Epidemiology     Statistics Universite Paris Cite Paris France"`
 
@@ -72,11 +72,10 @@ __Steps:__
   In the same way the openAIREs organizations are grouped. 
 
 > #### Facts:
->
 > - The 40% of the organizations in the openAIRE’s database lie in the category _Rest_.
-> - More than 80% of the affiliations in the openAIRE’s database lie in the categories _Universities/Institutes_ and _Laboratories_.
+> - More than 80% of Crossref's affiliations lie in the categories _Universities/Institutes_ and _Laboratories_.
 
-We focus on these cases and filter the openAIRE orgs to those that are under the ‘Rest’ label. In this way we reduce by 40% the data in which we search to find the matchings.
+We focus on these cases and filter the openAIRE organizations to those that are under the _Rest_ label. This significantly reduces the dataset we need to search.
 
 2. In the next phase the goal is to shorten the strings: the average length of a string is ~84  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
 The task now is to extract only the essential information from each affiliation string. 
