@@ -43,7 +43,7 @@ Make sure you have the following dependencies installed before running the code:
 
 __Goal__: Recognize openAIRE's organizations inside the Crossref's data and match to each DOI the corresponding ROR ids.
 
-__Input__: A JSON file from Crossref's data. Here is an example of the part where the affiliations and DOI information are found. 
+__Input__: A JSON file from Crossref's data. Here is an example of the part where the affiliations and DOI information is found. 
 `'author': [{'given': 'Orlando',
    'family': 'Maeso',
    'sequence': 'first',
