@@ -4,6 +4,14 @@ This repository contains code and data for matching DOIs of crossref JSON files 
 
 ## Files
 
+> #### The quarterly results look great!
+>
+> - Revenue was off the chart.
+> - Profits were higher than ever.
+>
+>  *Everything* is going according to **plan**.
+
+
 - `matching.py`: This is the main code for the matching process. It takes JSON files as input and returns a JSON (`output.json`) with matchings between the DOIs of the JSONs and IDs of organizations in the OpenAIRE database. 
 The organizations include universities, institutions, hospitals, labs.
 
