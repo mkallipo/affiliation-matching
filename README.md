@@ -4,14 +4,6 @@ This repository contains code and data for matching DOIs of crossref JSON files 
 
 ## Files
 
-> #### The quarterly results look great!
->
-> - Revenue was off the chart.
-> - Profits were higher than ever.
->
->  *Everything* is going according to **plan**.
-
-
 - `matching.py`: This is the main code for the matching process. It takes JSON files as input and returns a JSON (`output.json`) with matchings between the DOIs of the JSONs and IDs of organizations in the OpenAIRE database. 
 The organizations include universities, institutions, hospitals, labs.
 
@@ -79,10 +71,12 @@ __Steps:__
 
   In the same way the openAIREs organizations are grouped. 
 
-  __Facts__:  > - The 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’.   
-              > - More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
+> #### Facts
+>
+> - The 40% of the organizations in the openAIRE’s database lie in the categories _Rest_.
+> - More than 80% of the affiliations in the openAIRE’s database lie in the categories _Universities/Institutes_ and _Laboratories_.
 
-  We focus on these cases and filter the openAIRE orgs to those that are under the ‘Rest’ label. In this way we reduce by 40% the data in which we search to find the matchings.
+We focus on these cases and filter the openAIRE orgs to those that are under the ‘Rest’ label. In this way we reduce by 40% the data in which we search to find the matchings.
 
 2. In the next phase the goal is to shorten the strings: the average length of a string is ~84  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
 The task now is to extract only the essential information from each affiliation string. 
