@@ -72,14 +72,14 @@ __Steps:__
 > - The 40% of the organizations in the openAIRE’s database lie in the category _Rest_.
 > - More than 80% of Crossref's affiliations lie in the categories _Universities/Institutes_ and _Laboratories_.
 
-:memo: **Note:** We focus on these cases and filter the openAIRE organizations to those that are __not__ under the _Rest_ label. This reduces significantly the dataset we need to search.
+- **Note:** We focus on these cases and filter the openAIRE organizations to those that are __not__ under the _Rest_ label. This reduces significantly the dataset we need to search.
 
 2. In the next phase the goal is to shorten the strings: the average length of a string of an affiliation is ~85  and often contain unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
 The task now is to extract only the essential information from each affiliation string. 
 This is done by splitting the string whenever a , or ; is found, then apply certain ‘association rules’ to these substrings, then keep only the substrings that contain ‘keywords’, and finally cut even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital'.  
 After this procedure the average length is reduced to ~35 (for example, the affiliation A1 becomes `"research epidemiology statistics universit paris cite"` with length 53, while A2 is split to `["graduate school medicine","universit tokyo","chiba universit graduate school"` (of lengths 24, 15, 31 respectively, and finally A3 becomes `"univerit california`" (length 20)).
 
-4. Now the algorithm checks whether a substring that contains a keyword is contained to (or contains one) legal name/alternative name of an organization in the openAIRE database and if so, it applies cosine similarity to find which is the best match. 
+4. Now the algorithm checks whether a substring that has a keyword is contained to (or contains one) legal name/alternative name of an organization in the openAIRE database and if so, it applies cosine similarity to find which is the best match. 
 After several experiments the threshold for strings containing the substring ‘universit’ is set to 0.7 while for all others is set to 0.82.
 
 5. Final step. It is possible that several matchings are found whose similarity scores are above the thresholds. 
