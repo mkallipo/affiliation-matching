@@ -69,7 +69,7 @@ __Steps:__
 
   In the same way the openAIREs organizations are grouped. 
 > #### Facts:
-> - The 40% of the organizations in the openAIRE’s database lie in the category _Rest_.
+> - The 50% of the organizations in the openAIRE’s database lie in the category _Rest_.
 > - More than 80% of Crossref's affiliations lie in the categories _Universities/Institutes_ and _Laboratories_.
 
 - **Note:** We focus on these cases and filter the openAIRE organizations to those that are __not__ under the _Rest_ label. This reduces significantly the dataset we need to search.
