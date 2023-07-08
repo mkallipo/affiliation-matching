@@ -45,15 +45,15 @@ Make sure you have the following dependencies installed before running the code:
 
 __Goal__: Recognize openAIREs organizations having a openAIRE inside the crossref affiliations data and match the corresponding ROR ids.
 
-__Input__: A json file from Crossref's data.
+__Input__: A JSON file from Crossref's data.
 
 
-__Output__: A json file containing DOIs from Crossref data and their matchings to openAIRE's organization and the corresponding confidence scores, for example: `{"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["https:\/\/ror.org\/01teme464"],"Confidence":0.73},{"RORid":["https:\/\/ror.org\/03yxnpp24"],"Confidence":0.7071067812}]}`.
+__Output__: A JSON file containing DOIs from Crossref data and their matchings to openAIRE's organization and the corresponding confidence scores, for example: `{"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["https:\/\/ror.org\/01teme464"],"Confidence":0.73},{"RORid":["https:\/\/ror.org\/03yxnpp24"],"Confidence":0.7071067812}]}`.
 
 
 __Steps:__
 
-1. After importing, cleaning, tokenizing the affiliations’ strings and removing certain stopwords, the algorithm categorizes the affiliations based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs’ data has been already carried out. The categories are Univisties/Instirutions, Laboratories, Hospitals, Companies, Museums, Governments, and Rest). For example, the affiliations:
+1. After importing, cleaning, tokenizing the affiliations’ strings and removing certain stopwords, the algorithm categorizes the affiliations based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs data has already been carried out. The categories are Univisties/Instirutions, Laboratories, Hospitals, Companies, Museums, Governments, and Rest). For example, the affiliations:
 
 * A1. `"Obstetrical Perinatal Pediatric Epidemiology Research Team Institute Health Medical Research Centre Research Epidemiology     Statistics Universite Paris Cite Paris France"`
 
@@ -61,18 +61,18 @@ __Steps:__
 
 * A3. `"Department Biology, University California, San Diego, La Jolla 920930063"`
 
-  are under the Univisties/Instirutions label, while
+  lie in the _Univisties/Instirutions_ category, while
 
-* A4 `"Laboratoire Central dImmunologie dHistocompatibilite, INSERM U93, Paris, France' is under the Laboratories label"`
+* A4 `"Laboratoire Central dImmunologie dHistocompatibilite, INSERM U93, Paris, France"` lies in the _Laboratories_ category
 
   and the 
 
-* A5 `"advancecsg lisbon portugal"` is under the Rest label. 
+* A5 `"advancecsg lisbon portugal"` is in the _Rest_. 
 
   In the same way the openAIREs organizations are grouped. 
 
-  __Facts__:  >* The 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’.   
-              >* More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
+  __Facts__:  > * The 40% of the organizations in the openAIRE’s database lie in the categories ‘Rest’.   
+              > * More than 80% of the affiliations in the openAIRE’s database lie in the categories ‘Universities/Institutes’ and ‘Laboratories’
 
   We focus on these cases and filter the openAIRE orgs to those that are under the ‘Rest’ label. In this way we reduce by 40% the data in which we search to find the matchings.
 
