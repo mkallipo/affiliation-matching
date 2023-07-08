@@ -52,7 +52,7 @@ __Output__: A JSON file containing DOIs from Crossref's data and their matchings
 
 __Steps:__
 
-1. After __importing__, __cleaning__, __tokenizing__ the affiliations’ strings and __removing stopwords__, the algorithm __categorizes the affiliations__ based on the frequency of words appearing in the legal names of openAIREs organizations (a preparatory work with the openAIREs data has already been carried out. The categories are _Univisties/Instirutions_, _Laboratories_, _Hospitals_, _Companies_, _Museums_, _Governments_, and _Rest_). For example, the affiliations:
+1. After __importing__, __cleaning__, __tokenizing__ the affiliations’ strings and __removing stopwords__, the algorithm __categorizes the affiliations__ based on the frequency of words appearing in the legal names of openAIRE's organizations (a preparatory work with the openAIRE's data has already been carried out. The categories are _Univisties/Instirutions_, _Laboratories_, _Hospitals_, _Companies_, _Museums_, _Governments_, and _Rest_). For example, the affiliations:
 
 * A1. `"Obstetrical Perinatal Pediatric Epidemiology Research Team Institute Health Medical Research Centre Research Epidemiology     Statistics Universite Paris Cite Paris France"`
 
@@ -68,7 +68,7 @@ __Steps:__
 
 * A5 `"advancecsg lisbon portugal"` is in the _Rest_. 
 
-  In the same way the openAIREs organizations are grouped. 
+  In the same way the openAIRE's organizations are grouped. 
 > #### Facts:
 > - The 50% of the organizations in the openAIRE’s database lie in the category _Rest_.
 > - More than 80% of Crossref's affiliations lie in the categories _Universities/Institutes_ and _Laboratories_.
@@ -84,7 +84,7 @@ After this procedure the average length is reduced to ~35 (for example, the affi
 After several experiments the threshold for strings containing ‘universit’ is set to 0.7 while for all others is set to 0.82.
 
 5. Final step. It is possible that several matchings are found whose similarity scores are above the thresholds. 
-In this case, another check is essential for the effectiveness of the method: the algorithm applies again cosine similarity between the organizations found in the openAIRE database on the one hand, and on the other hand the __original affiliation__ from which the substring containing the keyword was obtained. The idea behind this is that the original affiliations contain information like addresses or city names that can help decide which one from the openAIREs organizations is the best fit. For example, `"universit california"` is matched to 40 organizations from openAIREs database. In this second round, the original A3 string is considered, where the information `"San Diego"` helps the algorithm decide to finally match this affiliation to `"universit california san diego"`.
+In this case, another check is essential for the effectiveness of the method: the algorithm applies again cosine similarity between the organizations found in the openAIRE database on the one hand, and on the other hand the __original affiliation__ from which the substring containing the keyword was obtained. The idea behind this is that the original affiliations contain information like addresses or city names that can help decide which one from the openAIRE's organizations is the best fit. For example, `"universit california"` is matched to 40 organizations from openAIRE's database. In this second round, the original A3 string is considered, where the information `"San Diego"` helps the algorithm decide to finally match this affiliation to `"universit california san diego"`.
 
 
 ## Contact
