@@ -59,7 +59,7 @@ __Input__: A JSON file from Crossref's data. Here is an example of the part wher
  'DOI': '10.1061/(asce)0733-9399(2002)128:7(759)`
 
 
-__Output__: A JSON file containing DOIs from Crossref's data and their matchings to openAIRE's organizations and the corresponding confidence scores, for example: 
+__Output__: A JSON file containing DOIs from Crossref's data and their matchings to ROR ids frop openAIRE's organizations and the corresponding confidence scores, for example: 
 >`{"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["https:\/\/ror.org\/01teme464"],"Confidence":0.73},{"RORid":["https:\/\/ror.org\/03yxnpp24"],"Confidence":0.7071067812}]}`.
 
 
@@ -82,7 +82,7 @@ __Steps:__
 * A5 `"advancecsg lisbon portugal"` is in the _Rest_. 
 
   In the same way the openAIRE's organizations are grouped. 
-> #### Facts:
+>  **Facts**:
 > - The 50% of the organizations in the openAIRE’s database lie in the category _Rest_.
 > - More than 80% of Crossref's affiliations lie in the categories _Universities/Institutes_ and _Laboratories_.
 
