@@ -67,11 +67,11 @@ __Steps:__
 
 1. After __importing__, __cleaning__, __tokenizing__ the affiliations’ strings and __removing stopwords__, the algorithm __categorizes the affiliations__ based on the frequency of words appearing in the legal names of openAIRE's organizations (a preparatory work with the openAIRE's data has already been carried out. The categories are _Univisties/Instirutions_, _Laboratories_, _Hospitals_, _Companies_, _Museums_, _Governments_, and _Rest_). For example, the affiliations:
 
-* A1. `"Obstetrical Perinatal Pediatric Epidemiology Research Team Institute Health Medical Research Centre Research Epidemiology     Statistics Universite Paris Cite Paris France"`
+* A1. `"'Obstetrical Perinatal and Pediatric Epidemiology Research Team Institute of Health and Medical Research Centre of Research in Epidemiology and Statistics Université Paris Cité  Paris France"`
 
-* A2. `"From Department Cardiovascular Science Medicine, Chiba University Graduate School Medicine, Chiba, Japan Department Cardiovascular Medicine, Graduate School Medicine, University Tokyo, Tokyo, Japan Department Metabolic Diseases, Graduate School Medicine, University Tokyo, Tokyo, Japan"`
+* A2. `"From the Department of Cardiovascular Science and Medicine, Chiba University Graduate School of Medicine, Chiba, Japan (M.A., H.T., T.N., H.H., T.S., Y.M., I.K.); the Department of Cardiovascular Medicine, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (H.U.); and the Department of Metabolic Diseases, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (N.K., T.K.)."`
 
-* A3. `"Department Biology, University California, San Diego, La Jolla 920930063"`
+* A3. `"Department of Biology, University of California, San Diego, La Jolla 92093-0063."`
 
   lie in the _Univisties/Instirutions_ category, while
 
@@ -88,7 +88,7 @@ __Steps:__
 
 - **Note:** We focus on these cases and filter the openAIRE organizations to those that are __not__ under the _Rest_ label. This reduces significantly the dataset we need to search.
 
-2. In the next phase the goal is to __shorten the strings__: the average length of a string of an affiliation is ~85  and often contains unnecessary details. See for example the affiliations A1 (length 167), A2 (length 286), A3 (length 72) above. 
+2. In the next phase the goal is to __shorten the strings__: the average length of a string of an affiliation is ~90  and often contains unnecessary details. See for example the affiliations A1 (length 189), A2 (length 395), A3 (length 80) above. 
 The task now is to __extract only the essential information__ from each affiliation string. 
 This is done by splitting the string whenever a , or ; is found, then apply certain ‘association rules’ to these substrings, then keep only the substrings that contain ‘keywords’, and finally cut even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital'.  
 After this procedure the average length is reduced to ~35 (for example, the affiliation A1 becomes `"research epidemiology statistics universit paris cite"` with length 53, while A2 is split to `["graduate school medicine","universit tokyo","chiba universit graduate school"` with lengths 24, 15, 31 respectively, and finally A3 becomes `"universit california`" with length 20).
