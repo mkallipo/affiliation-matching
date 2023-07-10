@@ -89,7 +89,7 @@ __Steps:__
 
 2. In the next phase the goal is to __shorten the strings__: the average length of a string of an affiliation is ~90  and this string often contains insignificant details. See for example the affiliations A1 (length 189), A2 (length 395), A3 (length 80) above. 
 The task now is to __extract only the essential information__ from each affiliation string.
-For this first the algorithms splits the string whenever a , or ; is found and applies certain ‘association rules’ to these substrings, then keeps only the substrings that contain ‘keywords’, and finally cuts even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital'.  
+For this, the algorithms first splits the string whenever a , or ; is present and applies certain ‘association rules’ to these substrings, then keeps only the substrings that contain ‘keywords’, and finally cuts even more the strings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital'.  
 After this procedure the average length is reduced to ~35 (for example, the affiliation A1 becomes `"research epidemiology statistics universit paris cite"` with length 53, while A2 is split to `["graduate school medicine","universit tokyo","chiba universit graduate school"` with lengths 24, 15, 31 respectively, and finally A3 becomes `"universit california`" with length 20).
 
 4. Now the algorithm __checks__ whether a substring, that has a keyword, is __contained__ to (or __contains__) a legal name/alternative name of an organization in the openAIRE database and if so, it applies __cosine similarity__ to find which is the best match. 
