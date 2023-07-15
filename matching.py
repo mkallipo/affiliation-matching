@@ -933,10 +933,17 @@ def do(name, crossrefDF):
             finalDF.sort_values('index', ascending=True, inplace = True)
             
             ids = [[dixOpenAIRE[x] for x in v] for v in finalDF['Matched openAIRE names']]
+
+            new_ror = []
+            for v in ids: 
+                v1 = [item for sublist in v for item in sublist]
+                new_ror.append(list(set(v1)))
+            new_ror
+    
             numIds = [len(x) for x in ids]
         
-            finalDF['IDs'] = ids
-            finalDF['# IDs'] = numIds
+            finalDF['ROR'] = new_ror
+            finalDF['# RORs'] = numIds
             finalDF = finalDF[~(finalDF['# Matched orgs'] == 0)]
             
             finalDF = finalDF.reset_index(drop=True)
@@ -958,7 +965,7 @@ def do(name, crossrefDF):
             return
         
         dict_aff_open = {x: y for x, y in zip(result[1]['Original affiliations'], result[1]['Matched openAIRE names'])}
-        dict_aff_id = {x: y for x, y in zip(result[1]['Original affiliations'], result[1]['IDs'])}
+        dict_aff_id = {x: y for x, y in zip(result[1]['Original affiliations'], result[1]['ROR'])}
         dict_aff_score = {x: y for x, y in zip(result[1]['Original affiliations'], result[1]['Similarity score'])}
 
         pids = []
@@ -994,19 +1001,19 @@ def do(name, crossrefDF):
      
             
         doiDF['Matched openAIRE names'] = names
-        doiDF['IDs'] = pids
+        doiDF['ROR'] = pids
         doiDF['Scores'] = scores
         
         unmatched = [i for i in range(len(doiDF)) if doiDF['Matched openAIRE names'].iloc[i] == []]
         matched = [i for i in range(len(doiDF))  if i not in unmatched]
             
-        finalDF =  doiDF[['DOI',"Unique affiliations",'Matched openAIRE names','IDs', 'Scores']].iloc[matched]
+        finalDF =  doiDF[['DOI',"Unique affiliations",'Matched openAIRE names','ROR', 'Scores']].iloc[matched]
         finalDF.reset_index(inplace = True)
 
         def update_Z(row):
             new_Z = []
-            for i in range(len(row['IDs'])):
-                entry = {'RORid': row['IDs'][i], 'Confidence': row['Scores'][i]}
+            for i in range(len(row['ROR'])):
+                entry = {'RORid': row['ROR'][i], 'Confidence': row['Scores'][i]}
                 new_Z.append(entry)
             return new_Z
 
