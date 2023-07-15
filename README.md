@@ -75,11 +75,11 @@ __Steps:__
 
   lie in the _Univisties/Instirutions_ category, while
 
-* A4 `"Laboratoire Central d'Immunologie et d'istocompatibilite, INSERM U93, Paris, France"` lies in the _Laboratories_ category
+* A4 `"Laboratoire Central d'Immunologie et d'istocompatibilite, INSERM U93, Paris, France"`  (length(A4) = 83) lies in the _Laboratories_ category
 
   and the 
 
-* A5 `"AdvanceCSG Lisbon Portugal"` is in the _Rest_. 
+* A5 `"AdvanceCSG Lisbon Portugal"` (length(A5) = 26) is in the _Rest_. 
 
   In the same way the openAIRE's organizations are grouped. 
 >  **Note**:
@@ -87,7 +87,7 @@ __Steps:__
 > - More than 80% of Crossref's affiliations lie in the categories _Universities/Institutes_ and _Laboratories_.  
 > - We focus on these cases and filter the openAIRE organizations to those that are __not__ under the _Rest_ label. This reduces significantly the dataset we need to search.
 
-2. In the next phase the goal is to __shorten the strings__: the average length of a string of an affiliation is ~90. See for example the affiliations A1 (length 189), A2 (length 395), A3 (length 80) above. 
+2. In the next phase the goal is to __shorten the strings__: the average length of a string of an affiliation is ~90. 
 The task now is to __extract only the essential information__ from each affiliation string.
 For this, the algorithms first splits the string whenever a , or ; is present and applies certain ‘association rules’ to these substrings, then keeps only the substrings that contain ‘keywords’, and finally cuts even more the substrings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital'.  
 After this procedure the average length is reduced to ~35 (for example, the affiliation A1 becomes `"research epidemiology statistics universit paris cite"` with length 53, while A2 is split to `["graduate school medicine","universit tokyo","chiba universit graduate school"` with lengths 24, 15, 31 respectively, and finally A3 becomes `"universit california`" with length 20).
