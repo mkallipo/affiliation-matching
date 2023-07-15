@@ -67,11 +67,11 @@ __Steps:__
 
 1. After __importing__, __cleaning__, __tokenizing__ the affiliations’ strings and __removing stopwords__, the algorithm __categorizes the affiliations__ based on the frequency of words appearing in the legal names of openAIRE's organizations (a preparatory work with the openAIRE's data has already been carried out. The categories are _Univisties/Instirutions_, _Laboratories_, _Hospitals_, _Companies_, _Museums_, _Governments_, and _Rest_). For example, the affiliations:
 
-* A1. `"Obstetrical Perinatal and Pediatric Epidemiology Research Team Institute of Health and Medical Research Centre of Research in Epidemiology and Statistics Université Paris Cité  Paris France"`
+* A1. `"Obstetrical Perinatal and Pediatric Epidemiology Research Team Institute of Health and Medical Research Centre of Research in Epidemiology and Statistics Université Paris Cité  Paris France"`  (length(A1) = 189)
 
-* A2. `"From the Department of Cardiovascular Science and Medicine, Chiba University Graduate School of Medicine, Chiba, Japan (M.A., H.T., T.N., H.H., T.S., Y.M., I.K.); the Department of Cardiovascular Medicine, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (H.U.); and the Department of Metabolic Diseases, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (N.K., T.K.)."`
+* A2. `"From the Department of Cardiovascular Science and Medicine, Chiba University Graduate School of Medicine, Chiba, Japan (M.A., H.T., T.N., H.H., T.S., Y.M., I.K.); the Department of Cardiovascular Medicine, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (H.U.); and the Department of Metabolic Diseases, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (N.K., T.K.)."`    (length(A2) = 395)
 
-* A3. `"Department of Biology, University of California, San Diego, La Jolla 92093-0063."`
+* A3. `"Department of Biology, University of California, San Diego, La Jolla 92093-0063."`  (length(A3) = 80)
 
   lie in the _Univisties/Instirutions_ category, while
 
