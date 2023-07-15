@@ -75,7 +75,7 @@ __Steps:__
 
   lie in the _Univisties/Instirutions_ category, while
 
-* A4 `"Laboratoire Central dImmunologie dHistocompatibilite, INSERM U93, Paris, France"` lies in the _Laboratories_ category
+* A4 `"Laboratoire Central d'Immunologie et d'istocompatibilite, INSERM U93, Paris, France"` lies in the _Laboratories_ category
 
   and the 
 
