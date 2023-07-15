@@ -79,7 +79,7 @@ __Steps:__
 
   and the 
 
-* A5 `"advancecsg lisbon portugal"` is in the _Rest_. 
+* A5 `"AdvanceCSG Lisbon Portugal"` is in the _Rest_. 
 
   In the same way the openAIRE's organizations are grouped. 
 >  **Note**:
