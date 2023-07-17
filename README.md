@@ -39,9 +39,9 @@ Make sure you have the following dependencies installed before running the code:
 2. The notebook will process the input JSON files and generate a JSON file with the matchings between DOIs and organization IDs from the OpenAIRE database.
 
 
-## Description of the algorithm -- examples
+## Description of the algorithm
 
-### Goal: Recognize openAIRE's organizations inside the Crossref's data and match to each DOI the corresponding ROR ids.
+### Goal: Recognize openAIRE's organizations inside the Crossref's data and match to each DOI the corresponding ROR ids
 
 __Input__: A JSON file from Crossref's data. Here is an example of the part where the affiliations and DOI information is found. 
 > `'author': [{'given': 'Orlando',
@@ -73,13 +73,6 @@ In the same way the openAIRE's organizations are grouped.
 5. **Matching with openAIRE's Database:** The algorithm checks if a substring containing a keyword matches (or is contained in) a legal name or alternative name of an organization in the xxx database. It applies cosine similarity to find the best match. The similarity threshold for strings containing 'universit' is set to 0.7, while for all other keywords, it is set to 0.82.
 6. **Refinement with openAIRE's Database:** If multiple matches are found above the similarity thresholds, the algorithm performs another check. It applies cosine similarity between the organizations found in the openAIRE database and the original affiliation string. This comparison takes into account additional information present in the original affiliation, such as addresses or city names. The algorithm aims to identify the best fit among the potential matches.
 
-### Examples:
-* A1. `"Obstetrical Perinatal and Pediatric Epidemiology Research Team Institute of Health and Medical Research Centre of Research in Epidemiology and Statistics Université Paris Cité  Paris France"`, length(A1) = 189. After the string shortening A1 becomes `"research epidemiology statistics universit paris cite"` (length 53). 
-
-* A2. `"From the Department of Cardiovascular Science and Medicine, Chiba University Graduate School of Medicine, Chiba, Japan (M.A., H.T., T.N., H.H., T.S., Y.M., I.K.); the Department of Cardiovascular Medicine, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (H.U.); and the Department of Metabolic Diseases, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (N.K., T.K.)."`, length(A2) = 395. After the string shortening it becomes `["graduate school medicine","universit tokyo","chiba universit graduate school"]` (lengths 24, 15, 31 respectively). 
-
-* A3. `"Department of Biology, University of California, San Diego, La Jolla 92093-0063."`, length(A3) = 80. After the string shortening it becomes  `"universit california`" (length 20).
-Moreover, `"universit california"` is matched to 40 organizations from openAIRE's database. In this _refinement_ phase, the original A3 string is considered, where the information `"San Diego"` helps the algorithm decide to finally match this affiliation to `"universit california san diego"`.
 
 ## Contact
 
