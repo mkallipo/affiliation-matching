@@ -627,16 +627,11 @@ def do(name, crossrefDF):
                                 continue
                             s_vector = vectorizer.fit_transform([s]).toarray() #Else we compute the similarity of s with the original affiiation name
                             x_vector = vectorizer.transform([x]).toarray()
-                        #  s_vector1 =  vectorizer.transform([s]).toarray()
-                        #  x_vector1 =  vectorizer.fit_transform([s]).toarray()
-                            
+                    
         
                             # Compute similarity between the vectors
                             similarity = cosine_similarity(x_vector, s_vector)[0][0]
                             if similarity> 0.1:
-                        # similarity1 = cosine_similarity(x_vector1, s_vector1)[0][0]
-                            #similarity2 = Levenshtein.ratio(s,x)
-        
         
                                 best.append([x, similarity])#(similarity+similarity2)/2])
                         except:
@@ -673,8 +668,22 @@ def do(name, crossrefDF):
         
             if len(univ_list)> limit:
                 result = univ_list[:limit] + other_list
+
+            result_dict = {}
+            pairs_dict = {}
+            
+            
+            for l in l3:
+                pairs_dict[l[1]] = l[2]
+                
+            for p in result:
+                result_dict[p[0]]= pairs_dict[p[0]]
+                
+            result_dict_list = [[y[0],result_dict[y[0]]] for y in result]  
+                
                         
-            return result
+            return result_dict_list
+                        
     
 
  
