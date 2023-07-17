@@ -41,7 +41,7 @@ Make sure you have the following dependencies installed before running the code:
 
 ## Description of the algorithm -- examples
 
-__Goal__: Recognize openAIRE's organizations inside the Crossref's data and match to each DOI the corresponding ROR ids.
+### Goal: Recognize openAIRE's organizations inside the Crossref's data and match to each DOI the corresponding ROR ids.
 
 __Input__: A JSON file from Crossref's data. Here is an example of the part where the affiliations and DOI information is found. 
 > `'author': [{'given': 'Orlando',
@@ -63,41 +63,23 @@ __Output__: A JSON file containing DOIs from Crossref's data and their matchings
 >`{"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["https:\/\/ror.org\/01teme464"],"Confidence":0.73},{"RORid":["https:\/\/ror.org\/03yxnpp24"],"Confidence":0.7071067812}]}`.
 
 
-__Steps:__
+### Steps:
 
-1. After __importing__, __cleaning__, __tokenizing__ the affiliations’ strings and __removing stopwords__, the algorithm __categorizes the affiliations__ based on the frequency of words appearing in the legal names of openAIRE's organizations (a preparatory work with the openAIRE's data has already been carried out. The categories are _Univisties/Instirutions_, _Laboratories_, _Hospitals_, _Companies_, _Museums_, _Governments_, and _Rest_). For example, the affiliations:
+1. **Data Preprocessing:** The affiliations' strings are imported and undergo cleaning, tokenization, and removal of stopwords.
+2. **Categorization:** The algorithm categorizes the affiliations based on the frequency of words appearing in the legal names of openAIRE's organizations (a preparatory work with the openAIRE's data has already been carried out. The categories are _Univisties/Instirutions_, _Laboratories_, _Hospitals_, _Companies_, _Museums_, _Governments_, and _Rest_). 
+In the same way the openAIRE's organizations are grouped.
+3. **Filtering:** The 50% of the organizations in the openAIRE’s database lie in the category _Rest_. More than 80% of Crossref's affiliations lie in the categories _Universities/Institutes_ and _Laboratories_. The algorithm focuses on these cases and filters the openAIRE organizations to those that are __not__ under the _Rest_ label. This reduces significantly the dataset we need to search.
+4. **String Shortening:** The goal is to extract only essential information from each affiliation string. The algorithm splits the string whenever a comma (,) or semicolon (;) is present. It applies certain 'association rules' to these substrings and keeps only the ones containing 'keywords.' It further shortens the substrings by retaining only words close to specific keywords like 'university,' 'institute,' or 'hospital.' The average length of the strings is reduced from ~90 to ~35 characters.
+5. **Matching with openAIRE's Database:** The algorithm checks if a substring containing a keyword matches (or is contained in) a legal name or alternative name of an organization in the xxx database. It applies cosine similarity to find the best match. The similarity threshold for strings containing 'universit' is set to 0.7, while for all other keywords, it is set to 0.82.
+6. **Refinement with openAIRE's Database:** If multiple matches are found above the similarity thresholds, the algorithm performs another check. It applies cosine similarity between the organizations found in the openAIRE database and the original affiliation string. This comparison takes into account additional information present in the original affiliation, such as addresses or city names. The algorithm aims to identify the best fit among the potential matches.
 
-* A1. `"Obstetrical Perinatal and Pediatric Epidemiology Research Team Institute of Health and Medical Research Centre of Research in Epidemiology and Statistics Université Paris Cité  Paris France"`  (length(A1) = 189)
+### Examples:
+* A1. `"Obstetrical Perinatal and Pediatric Epidemiology Research Team Institute of Health and Medical Research Centre of Research in Epidemiology and Statistics Université Paris Cité  Paris France"`, length(A1) = 189. After the string shortening A1 becomes `"research epidemiology statistics universit paris cite"` (length 53). 
 
-* A2. `"From the Department of Cardiovascular Science and Medicine, Chiba University Graduate School of Medicine, Chiba, Japan (M.A., H.T., T.N., H.H., T.S., Y.M., I.K.); the Department of Cardiovascular Medicine, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (H.U.); and the Department of Metabolic Diseases, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (N.K., T.K.)."`    (length(A2) = 395)
+* A2. `"From the Department of Cardiovascular Science and Medicine, Chiba University Graduate School of Medicine, Chiba, Japan (M.A., H.T., T.N., H.H., T.S., Y.M., I.K.); the Department of Cardiovascular Medicine, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (H.U.); and the Department of Metabolic Diseases, Graduate School of Medicine, University of Tokyo, Tokyo, Japan (N.K., T.K.)."`, length(A2) = 395. After the string shortening it becomes `["graduate school medicine","universit tokyo","chiba universit graduate school"]` (lengths 24, 15, 31 respectively). 
 
-* A3. `"Department of Biology, University of California, San Diego, La Jolla 92093-0063."`  (length(A3) = 80)
-
-  lie in the _Univisties/Instirutions_ category, while
-
-* A4 `"Laboratoire Central d'Immunologie et d'istocompatibilite, INSERM U93, Paris, France"`  (length(A4) = 83) lies in the _Laboratories_ category
-
-  and the 
-
-* A5 `"AdvanceCSG Lisbon Portugal"` (length(A5) = 26) is in the _Rest_. 
-
-  In the same way the openAIRE's organizations are grouped. 
->  **Note**:
-> - The 50% of the organizations in the openAIRE’s database lie in the category _Rest_.
-> - More than 80% of Crossref's affiliations lie in the categories _Universities/Institutes_ and _Laboratories_.  
-> - We focus on these cases and filter the openAIRE organizations to those that are __not__ under the _Rest_ label. This reduces significantly the dataset we need to search.
-
-2. In the next phase the goal is to __shorten the strings__: the average length of a string of an affiliation is ~90. 
-The task now is to __extract only the essential information__ from each affiliation string.
-For this, the algorithms first splits the string whenever a , or ; is present and applies certain ‘association rules’ to these substrings, then keeps only the substrings that contain ‘keywords’, and finally cuts even more the substrings when necessary, by keeping only the words close to certain keywords like ‘university’, ‘institute’, or 'hospital'.  
-After this procedure the average length is reduced to ~35 (for example, the affiliation A1 becomes `"research epidemiology statistics universit paris cite"` with length 53, while A2 is split to `["graduate school medicine","universit tokyo","chiba universit graduate school"` with lengths 24, 15, 31 respectively, and finally A3 becomes `"universit california`" with length 20).
-
-4. Now the algorithm __checks__ whether a substring, that has a keyword, is __contained__ to (or __contains__) a legal name/alternative name of an organization in the openAIRE database and if so, it applies __cosine similarity__ to find which is the best match. 
-After several experiments the threshold for strings containing ‘universit’ is set to 0.7 while for all others is set to 0.82.
-
-5. Final step. It is possible that several matchings are found whose similarity scores are above the thresholds. 
-In this case, another check is essential for the effectiveness of the method: the algorithm applies again cosine similarity between the organizations found in the openAIRE database on the one hand, and on the other hand the __original affiliation__ from which the substring containing the keyword was obtained. The idea behind this is that the original affiliations contain information like addresses or city names that can help decide which one from the openAIRE's organizations is the best fit. For example, `"universit california"` is matched to 40 organizations from openAIRE's database. In this second round, the original A3 string is considered, where the information `"San Diego"` helps the algorithm decide to finally match this affiliation to `"universit california san diego"`.
-
+* A3. `"Department of Biology, University of California, San Diego, La Jolla 92093-0063."`, length(A3) = 80. After the string shortening it becomes  `"universit california`" (length 20).
+Moreover, `"universit california"` is matched to 40 organizations from openAIRE's database. In this _refinement_ phase, the original A3 string is considered, where the information `"San Diego"` helps the algorithm decide to finally match this affiliation to `"universit california san diego"`.
 
 ## Contact
 
