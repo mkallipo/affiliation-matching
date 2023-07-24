@@ -13,7 +13,7 @@ sampleSize = int(sys.argv[2])
 sampleNumFromFile = int(sys.argv[3])
 outfile = sys.argv[4]
 
-count = 0
+papers = []
 
 with tarfile.open(sys.argv[1], "r:gz") as tar:
 
@@ -28,19 +28,20 @@ with tarfile.open(sys.argv[1], "r:gz") as tar:
             try:
                 file_content = json.load(current_file)
                 json_papers = file_content['items']
-                # print(json_papers)
-                # print(len(json_papers))
 
-                papers = random.sample(json_papers, sampleNumFromFile)
-                # print(papers)	
+                papers.extend(random.sample(json_papers, sampleNumFromFile))
 
-                with jsonlines.open(outfile, mode='a') as writer:
-                    writer.write_all(papers)
-
-                count += len(papers)
-                if (count >= sampleSize):
+                if (len(papers) >= sampleSize):
                     break
 
             except (ValueError, KeyError) as json_error:
                 print(f'=> Cannot parse json file: {member.name}')
-                fout_parsing_log.writerow([f'=> Cannot parse json file: {member.name}'])
+
+
+data = {}
+data["items"] = papers
+
+json_object = json.dumps(data, indent=4)
+ 
+with open(outfile, "w") as outfile:
+    outfile.write(json_object)
