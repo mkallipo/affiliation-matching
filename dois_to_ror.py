@@ -4,11 +4,8 @@
 import tarfile
 import logging
 
-
 import pandas as pd
 import sys
-
-
 
 import re
 import unicodedata
@@ -28,7 +25,7 @@ def do(name, crossref_df):
     try: 
         print("processing file:" + name)
 
-        crossref_df = pd.read_json(file, orient='records')
+        #crossref_df = pd.read_json(file, orient='records')
 
         authors = [i for i in range(len(crossref_df)) if 'author'  in crossref_df['items'][i]]
 
