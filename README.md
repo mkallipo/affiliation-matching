@@ -1,3 +1,5 @@
+ℹ️ This is still work in progress. The repository and this file will be updated every Sunday.
+
 # Matching Repository
 
 This repository contains code and data for matching DOIs of Crossref JSON files with organization IDs from the OpenAIRE database.
