@@ -5,7 +5,7 @@ import unicodedata
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from functions import *
+from helper_functions import *
 
 def best_sim_score(l1, l2, l3, l4, simU, simG):
     """
