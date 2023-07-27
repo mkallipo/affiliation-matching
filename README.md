@@ -7,7 +7,7 @@ This repository contains code and data for matching DOIs of Crossref JSON files 
 
 ## Main files
 
-- `doi_to_ror`: This is the main code for the matching process. It takes JSON files as input and returns a JSON with matchings between the DOIs of the JSONs and ROR_ids of organizations in the ROR database. The organizations include universities, institutions, hospitals, labs.
+- `dois_to_ror`: This is the main code for the matching process. It takes JSON files as input and returns a JSON with matchings between the DOIs of the JSONs and ROR_ids of organizations in the ROR database. The organizations include universities, institutions, hospitals, labs.
 
 - `main_functions.py` contains the main algorithm.
   
