@@ -2,7 +2,7 @@
 
 This repository contains code and data for matching DOIs of Crossref JSON files with organization IDs from the OpenAIRE (https://www.openaire.eu) or ROR (https://ror.org) database.
 
-🚀 This is still a work in progress, and thus the repository may not always be up-to-date. 
+🚀 It is still a work in progress, and thus the repository may not always be up-to-date. 
 However, I will incorporate improvements and bug fixes regularly. 
 
 ## Main files
