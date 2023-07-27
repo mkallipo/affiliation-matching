@@ -1,4 +1,5 @@
-🚀 This is still work in progress. The repository and this file will be updated every Sunday.
+🚀 This is still a work in progress, and thus the repository may not always be up-to-date. 
+However, I will incorporate improvements and bug fixes regularly. 
 
 # Matching Repository
 
@@ -27,11 +28,11 @@ This repository contains code and data for matching DOIs of Crossref JSON files 
 
 Make sure you have the following dependencies installed before running the code:
 
-- pandas
-- re
-- pickle
-- unicodedata
-- scikit-learn (for `CountVectorizer` and `cosine_similarity`)
+- `pandas`
+- `re`
+- `pickle`
+- `unicodedata`
+- `scikit-learn` (for `CountVectorizer` and `cosine_similarity`)
 
 ## Usage
 
