@@ -3,7 +3,7 @@ However, I will incorporate improvements and bug fixes regularly.
 
 # Matching Repository
 
-This repository contains code and data for matching DOIs of Crossref JSON files with organization IDs from the OpenAIRE database.
+This repository contains code and data for matching DOIs of Crossref JSON files with organization IDs from the OpenAIRE (https://www.openaire.eu) or ROR (https://ror.org) database.
 
 ## Main files
 
