@@ -9,7 +9,7 @@ from helper_functions import *
 
 def best_sim_score(l1, l2, l3, l4, simU, simG):
     """
-    Finds the best match between a 'key word' and several legal names from the OpenAIRE database.
+    Finds the best match between a 'key word' and several legal names from the OpenAIRE/ROR database.
     ---> corrects special cases in the main map that follows
 
     Args:
@@ -278,9 +278,9 @@ def Aff_Ids(m, DF, dix_org, simU, simG):
 ## Define the new Dataframe
     
     aff_id_df = pd.DataFrame()
-    aff_id_df['Original affiliations'] = list(DF['Original Affiliations'].iloc[list(set(deiktes))])
+    aff_id_df['Original affiliations'] = list(DF['Original affiliations'].iloc[list(set(deiktes))])
 
-    aff_id_df['Light affiliations'] = list(DF['Light Affiliations'].iloc[list(set(deiktes))])
+    aff_id_df['Light affiliations'] = list(DF['Light affiliations'].iloc[list(set(deiktes))])
 
     aff_id_df['Candidates for matching'] = list(DF['Keywords'].iloc[list(set(deiktes))])
 
