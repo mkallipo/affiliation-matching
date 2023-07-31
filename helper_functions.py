@@ -182,57 +182,33 @@ while i in range(len(categ_dicts_list)):
 stop_words = ['from', 'the', 'of', 'at', 'de','for','et','für','des', 'in','as','a','and']
 
 def create_df_algorithm(gendf):
-    gendf.loc[:,'unique_aff1'] = gendf['unique_aff'].apply(lambda x: [s.lower() for s in x])
-    gendf.loc[:,'unique_aff1'] = gendf['unique_aff'].apply(lambda x: [remove_stop_words(s) for s in x])
-    gendf.loc[:,'unique_aff1'] = gendf['unique_aff1'].apply(lambda x: [remove_parentheses(s) for s in x])
-    
-    aff_no_symbols = []
-
-    for i in range(len(list(gendf['unique_aff1']))):
-        L = list(gendf['unique_aff1'])[i]
-        for j in range(len(L)):
-            L[j] = re.sub(r'[^\w\s,Α-Ωα-ωぁ-んァ-ン一-龯，]', '', L[j])
-            L[j] = L[j].replace("  ", " ")
-            L[j] = replace_umlauts(L[j])
-        
-        aff_no_symbols.append(L)
-
-    aff_no_symbols = [[item for item in inner_list if item != "inc"] for inner_list in aff_no_symbols]
-
-    gendf['unique_aff1'] = aff_no_symbols
-
-
-    new_aff0 = []
-
-    for k in range(len(gendf)):
-        
-        L2 = []
-        for s1 in gendf['unique_aff1'].iloc[k]:
-            is_substring = False
-            for s2 in gendf['unique_aff1'].iloc[k]:
-                if s1 != s2 and s1 in s2:
-                    is_substring = True
-                    break
-            if not is_substring:
-                L2.append(s1)
-        new_aff0.append(L2)
-        
-    new_aff_list = [list(set(new_aff0[k])) for k in range(len(new_aff0))]
-    gendf['Unique affiliations'] = new_aff_list
-    
     all_affs_list = []
 
-    for doi in new_aff_list:
+    for doi in list(gendf['Unique affiliations']):
         for aff in doi:
             if aff not in all_affs_list:
                 all_affs_list.append(aff)
-                
+
+
+    gendf1 = gendf.copy()
+    
+    aff_no_symbols_d = {}
+
+    for x in list(gendf1['Unique affiliations']):
+        for y in x:
+            if y!= 'inc' and y not in list(aff_no_symbols_d.keys()):
+                aff_no_symbols_d[y] = (remove_stop_words(re.sub(r'[^\w\s,Α-Ωα-ωぁ-んァ-ン一-龯,;]', '', replace_umlauts(remove_parentheses(y)))).lower()).replace("  ", " ")
+        
+        
+    aff_df = pd.DataFrame.from_dict(aff_no_symbols_d, orient='index')
+    aff_df.reset_index(inplace = True)
+    aff_df.rename(columns = {'index':'Original affiliations', 0:'Short affiliations'}, inplace = True)
+    
     new_aff_komma = []
 
-    for aff in all_affs_list:
+    for aff in list(aff_df['Short affiliations']):
         new_aff_komma.append(substrings_dict(aff))
         
-                
         
     for dict in new_aff_komma:
     
@@ -279,9 +255,7 @@ def create_df_algorithm(gendf):
 
 
 
-    aff_df = pd.DataFrame()
-    aff_df['Original Affiliations'] = all_affs_list
-    aff_df['Light Affiliations'] = light_aff
+    aff_df['Light affiliations'] = light_aff
     aff_df['Keywords'] =  [list(d.values()) for d in new_aff_komma]
     
     affiliations_dict = {}
