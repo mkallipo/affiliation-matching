@@ -37,9 +37,9 @@ def do(name, crossref_df):
         crossref_auth.loc[:, 'DOI'] = crossref_auth['items'].apply(lambda x: x['DOI'])
         crossref_auth.loc[:,'authors'] = crossref_auth['items'].apply(lambda x: x['author'])
 
-        num_authors = [len(crossref_auth.iloc[i]['authors']) for i in range(len(crossref_auth))]
+        # num_authors = [len(crossref_auth.iloc[i]['authors']) for i in range(len(crossref_auth))]
 
-        crossref_auth.loc[:,'# authors'] = num_authors
+        # crossref_auth.loc[:,'# authors'] = num_authors
 
 
         def getAff(k):
@@ -49,12 +49,12 @@ def do(name, crossref_df):
 
         crossref_auth.loc[:,'affiliations'] = affiliations
 
-        num_affil = [len(affiliations[i]) for i in range(len(crossref_auth))]
+        # num_affil = [len(affiliations[i]) for i in range(len(crossref_auth))]
 
-        crossref_auth.loc[:,'# Affil'] = num_affil
+        # crossref_auth.loc[:,'# Affil'] = num_affil
 
 
-        # Clean 'empty' affiliations
+        ## Clean 'empty' affiliations
 
         possible_empty_aff = []
 
@@ -73,13 +73,13 @@ def do(name, crossref_df):
         final_non_empty_aff = [x for x in range(len(crossref_auth)) if x not in final_emptyy_aff]
 
 
-        # doi_df: crossref_auth subdataframe with nonpempty affiliation lists
+        ## doi_df: crossref_auth subdataframe with nonpempty affiliation lists
 
         doi_df = crossref_auth.iloc[final_non_empty_aff].copy()
         doi_df.reset_index(inplace = True)
         doi_df.drop(columns = ['index'], inplace = True)
 
-        # (still some cleaning: cases with empty brackets [{}])
+        ## (still some cleaning: cases with empty brackets [{}])
 
         empty_brackets = [k for k in range(len(doi_df)) if len(doi_df['affiliations'][k][0]) != 0 and doi_df['affiliations'][k][0][0] == {}]
         doi_df.iloc[empty_brackets]
@@ -89,7 +89,7 @@ def do(name, crossref_df):
         doi_df.drop(columns = ['index'], inplace = True)
 
 
-        # 1. "Unique" affiliations --- number of unique affiliations
+        ## 1. "Unique" affiliations 
 
         unique_aff = []
         error_indices =[] # New list to store error indices
@@ -109,14 +109,29 @@ def do(name, crossref_df):
 
         doi_df.loc[:,'unique_aff'] = unique_aff
 
-        num_unique_aff = [len(doi_df['unique_aff'].iloc[i]) for i in range(len(doi_df))]
+        # num_unique_aff = [len(doi_df['unique_aff'].iloc[i]) for i in range(len(doi_df))]
 
-        doi_df.loc[:,'# unique_aff'] = num_unique_aff
+        # doi_df.loc[:,'# unique_aff'] = num_unique_aff
 
 
-
-        doi_df.loc[:,'unique_aff1'] = doi_df['unique_aff'].apply(lambda x: [s.lower() for s in x])
-
+        
+        new_aff0 = []
+        
+        for k in range(len(doi_df)):
+            
+            L2 = []
+            for s1 in doi_df['unique_aff'].iloc[k]:
+                is_substring = False
+                for s2 in doi_df['unique_aff'].iloc[k]:
+                    if s1 != s2 and s1 in s2:
+                        is_substring = True
+                        break
+                if not is_substring:
+                    L2.append(s1)
+            new_aff0.append(L2)
+            
+        new_aff_list = [list(set(new_aff0[k])) for k in range(len(new_aff0))]
+        doi_df['Unique affiliations'] = new_aff_list
 
         academia_df = create_df_algorithm(doi_df)[1]
 
@@ -151,8 +166,8 @@ def do(name, crossref_df):
             for aff in doi_df['Unique affiliations'].iloc[i]:
                 if aff in list(dict_aff_id.keys()):
                     pidsi = pidsi + dict_aff_id[aff]
-                elif 'unmatched organization(s)' not in pidsi:
-                    pidsi = pidsi + ['unmatched organization(s)']
+              #  elif 'unmatched organization(s)' not in pidsi:
+              #      pidsi = pidsi + ['unmatched organization(s)']
             pids.append(pidsi)
                     
                     
