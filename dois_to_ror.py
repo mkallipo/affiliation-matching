@@ -210,12 +210,6 @@ def do(name, crossref_df):
 
         final_df = final_df0[['DOI',"Unique affiliations",'Matched openAIRE names','ROR', 'Scores']].copy()
 
-        def update_Z(row):
-            new_Z = []
-            for i in range(len(row['IDs'])):
-                entry = {'RORid': row['IDs'][i], 'Confidence': row['Scores'][i]}
-                new_Z.append(entry)
-            return new_Z
 
         def update_Z(row):
             if len(row['ROR']) == 0 or len(row['Scores']) == 0:
