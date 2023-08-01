@@ -242,49 +242,52 @@ def do(name, crossref_df):
         logging.exception("Error in thred code for file: " + name)
 
 
-i = 1
-data = []
-numberOfThreads = int(sys.argv[2])
-executor = ProcessPoolExecutor(max_workers=numberOfThreads)
-
-with tarfile.open(sys.argv[1], "r:gz") as tar:
-    while True:
-        member = tar.next()
-        # returns None if end of tar
-        if not member:
-            break
-        if member.isfile():
-            
-            print("reading file: " + member.name)
-
-            current_file = tar.extractfile(member)
-
-            crossref_df = pd.read_json(current_file, orient='records')
-            # print(crossref_df)
-            data.append((member.name, crossref_df))
-            i += 1
-
-            if (i > numberOfThreads):
-                print("execute batch: " + str([name for (name, d) in data]))
-                futures = [executor.submit(do, name, d) for (name, d) in data]
-                done, not_done = wait(futures)
+if __name__ == "__main__":
+    
+    
+    i = 1
+    data = []
+    numberOfThreads = int(sys.argv[2])
+    executor = ProcessPoolExecutor(max_workers=numberOfThreads)
+    
+    with tarfile.open(sys.argv[1], "r:gz") as tar:
+        while True:
+            member = tar.next()
+            # returns None if end of tar
+            if not member:
+                break
+            if member.isfile():
                 
-                # print(done)
-                print(not_done)
-
-                data = []
-                i = 0
-
-    futures = [executor.submit(do, name, d) for (name, d) in data]
-    done, not_done = wait(futures)
-    print(not_done)
-
-    print("Done")
-
-
-
-
-
-
-
-
+                print("reading file: " + member.name)
+    
+                current_file = tar.extractfile(member)
+    
+                crossref_df = pd.read_json(current_file, orient='records')
+                # print(crossref_df)
+                data.append((member.name, crossref_df))
+                i += 1
+    
+                if (i > numberOfThreads):
+                    print("execute batch: " + str([name for (name, d) in data]))
+                    futures = [executor.submit(do, name, d) for (name, d) in data]
+                    done, not_done = wait(futures)
+                    
+                    # print(done)
+                    print(not_done)
+    
+                    data = []
+                    i = 1
+    
+        futures = [executor.submit(do, name, d) for (name, d) in data]
+        done, not_done = wait(futures)
+        print(not_done)
+    
+        print("Done")
+    
+    
+    
+    
+    
+    
+    
+    
