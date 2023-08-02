@@ -355,12 +355,7 @@ def Aff_Ids(m, DF, dix_org, simU, simG):
         final_df.at[k,'# Matched orgs']=1
         final_df.at[k,'Similarity score']=(final_df['Similarity score'].iloc[k])[0]
         final_df.at[k,'ROR']=(final_df['ROR'].iloc[k])[0]
-
-    perc = 100*len(final_df)/m
-
-
-
     
     
-    return [perc,final_df]
+    return final_df
     
