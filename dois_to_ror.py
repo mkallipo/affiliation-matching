@@ -147,15 +147,15 @@ def do(name, crossref_df):
             return
         
 
-        dict_aff_open = {x: y for x, y in zip(result[1]['Original affiliations'], result[1]['Matched openAIRE names'])}
-        dict_aff_id = {x: y for x, y in zip(result[1]['Original affiliations'], result[1]['ROR'])}
+        dict_aff_open = {x: y for x, y in zip(result['Original affiliations'], result['Matched openAIRE names'])}
+        dict_aff_id = {x: y for x, y in zip(result['Original affiliations'], result['ROR'])}
 
         dict_aff_score = {}
-        for i in range(len(result[1])):
-            if type(result[1]['Similarity score'].iloc[i]) == list:
-                dict_aff_score[result[1]['Original affiliations'].iloc[i]] = result[1]['Similarity score'].iloc[i]
+        for i in range(len(result)):
+            if type(result['Similarity score'].iloc[i]) == list:
+                dict_aff_score[result['Original affiliations'].iloc[i]] = result['Similarity score'].iloc[i]
             else:
-                dict_aff_score[result[1]['Original affiliations'].iloc[i]] = [result[1]['Similarity score'].iloc[i]]
+                dict_aff_score[result['Original affiliations'].iloc[i]] = [result['Similarity score'].iloc[i]]
                 
 
         pids = []
