@@ -109,12 +109,10 @@ def do(name, crossref_df):
 
         doi_df.loc[:,'unique_aff'] = unique_aff
 
-        # num_unique_aff = [len(doi_df['unique_aff'].iloc[i]) for i in range(len(doi_df))]
-
-        # doi_df.loc[:,'# unique_aff'] = num_unique_aff
-
-
-        
+    
+        if len(doi_df) == 0:
+            return
+            
         new_aff0 = []
         
         for k in range(len(doi_df)):
@@ -133,7 +131,7 @@ def do(name, crossref_df):
         new_aff_list = [list(set(new_aff0[k])) for k in range(len(new_aff0))]
         doi_df['Unique affiliations'] = new_aff_list
 
-        academia_df = create_df_algorithm(doi_df)[1]
+        academia_df = create_df_algorithm(doi_df)
 
 
 
