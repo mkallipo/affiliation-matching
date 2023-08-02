@@ -326,7 +326,7 @@ def create_df_algorithm(gendf):
     univ_labs_df.reset_index(inplace = True)
     univ_labs_df.drop(columns = ['index'], inplace = True)
     
-    return gendf
+    return univ_labs_df
 
 
 
