@@ -3,6 +3,7 @@ import re
 import unicodedata
 
 from collections import defaultdict
+import html
 
 import pickle
 
@@ -197,7 +198,7 @@ def create_df_algorithm(gendf):
     for x in list(gendf1['Unique affiliations']):
         for y in x:
             if y!= 'inc' and y not in list(aff_no_symbols_d.keys()):
-                aff_no_symbols_d[y] = (remove_stop_words(re.sub(r'[^\w\s,Α-Ωα-ωぁ-んァ-ン一-龯,;]', '', replace_umlauts(remove_parentheses(y)))).lower()).replace("  ", " ")
+                aff_no_symbols_d[y] = (remove_stop_words(re.sub(r'[^\w\s,Α-Ωα-ωぁ-んァ-ン一-龯,;]', '', replace_umlauts(remove_parentheses(html.unescape(y))))).lower()).replace("  ", " ")
         
         
     aff_df = pd.DataFrame.from_dict(aff_no_symbols_d, orient='index')
@@ -325,7 +326,7 @@ def create_df_algorithm(gendf):
     univ_labs_df.reset_index(inplace = True)
     univ_labs_df.drop(columns = ['index'], inplace = True)
     
-    return [gendf, univ_labs_df]
+    return gendf
 
 
 
