@@ -156,7 +156,7 @@ def do(name, crossref_df):
             return
         
 
-        dict_aff_open = {x: y for x, y in zip(result['Original affiliations'], result['Matched openAIRE names'])}
+        dict_aff_open = {x: y for x, y in zip(result['Original affiliations'], result['Matched organizations'])}
         dict_aff_id = {x: y for x, y in zip(result['Original affiliations'], result['ROR'])}
 
         dict_aff_score = {}
@@ -200,14 +200,14 @@ def do(name, crossref_df):
             scores.append(scoresi)
             
             
-        doi_df['Matched openAIRE names'] = names
+        doi_df['Matched organizations'] = names
         doi_df['ROR'] = pids
         doi_df['Scores'] = scores
                 
         
        
         
-        unmatched = [i for i in range(len(doi_df)) if doi_df['Matched openAIRE names'].iloc[i] == []]
+        unmatched = [i for i in range(len(doi_df)) if doi_df['Matched organizations'].iloc[i] == []]
         
         matched = [i for i in range(len(doi_df))  if i not in unmatched]
 
@@ -215,7 +215,7 @@ def do(name, crossref_df):
         final_df0 =  doi_df.iloc[matched].copy()
         final_df0.reset_index(inplace = True)
 
-        final_df = final_df0[['DOI',"Unique affiliations",'Matched openAIRE names','ROR', 'Scores']].copy()
+        final_df = final_df0[['DOI',"Unique affiliations",'Matched organizations','ROR', 'Scores']].copy()
 
 
         def update_Z(row):
