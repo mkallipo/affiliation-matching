@@ -9,7 +9,7 @@ from helper_functions import *
 
 def best_sim_score(l1, l2, l3, l4, simU, simG):
     """
-    Finds the best match between a 'key word' and several legal names from the OpenAIRE database.
+    Finds the best match between a 'key word' and several legal names from the ROR database (https://ror.org).
     ---> corrects special cases in the main map that follows
 
     Args:
@@ -19,7 +19,7 @@ def best_sim_score(l1, l2, l3, l4, simU, simG):
         l4: mult
 
     Returns:
-        List: Resulting list containing OpenAIRE names and their similarity scores.
+        List: Resulting list containing organization names and their similarity scores.
     """
     
     vectorizer = CountVectorizer()
@@ -285,8 +285,8 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
     aff_id_df['Candidates for matching'] = list(DF['Keywords'].iloc[list(set(deiktes))])
 
 
-    aff_id_df['Matched openAIRE names'] = list(dix.values())
-    aff_id_df['# Matched orgs'] = [len(list(dix.values())[i]) for i in range(len(list(dix.values())))]
+    aff_id_df['Matched organizations'] = list(dix.values())
+    aff_id_df['# Matched organizations'] = [len(list(dix.values())[i]) for i in range(len(list(dix.values())))]
     
 
     aff_id_df['Similarity score'] = similarity_ab
@@ -321,17 +321,17 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
     
     df_final1 = (aff_id_df.iloc[need_check]).copy()
     df_final1['index'] = need_check
-    df_final1['Matched openAIRE names'] = best_o
+    df_final1['Matched organizations'] = best_o
     df_final1['Similarity score'] = best_s
-    df_final1['# Matched orgs'] = num_mathced
+    df_final1['# Matched organizations'] = num_mathced
     
     final_df =  pd.concat([df_final0, df_final1])
     final_df.set_index('index', inplace=True)
     final_df.sort_values('index', ascending=True, inplace = True)
     
-    #ids = [[dix_org[x] if dix_mult[x] == 'unique' else 'many'  for x in v ] for v in final_df['Matched openAIRE names']]
+    #ids = [[dix_org[x] if dix_mult[x] == 'unique' else 'many'  for x in v ] for v in final_df['Matched organizations']]
     ids = []
-    for i,v in enumerate(list(final_df['Matched openAIRE names'])):
+    for i,v in enumerate(list(final_df['Matched organizations'])):
         id_list = []
         for x in v:
             if dix_mult[x] == 'unique':
@@ -378,21 +378,9 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
     final_df['# unique RORs'] = numIds
     final_df['unique ROR'] = new_ror
 
-    final_df = final_df[~(final_df['# Matched orgs'] == 0)]
+    final_df = final_df[~(final_df['# Matched organizations'] == 0)]
     
     final_df = final_df.reset_index(drop=True)
     
     return final_df
-
-    diff = [i for i in range(len(final_df)) if final_df['# Matched orgs'].iloc[i]> final_df['# unique RORs'].iloc[i]]
-    
-    for k in diff:
-        final_df.at[k,'Matched openAIRE names']=(final_df['Matched openAIRE names'].iloc[k])[0]
-        final_df.at[k,'# Matched orgs']=1
-        final_df.at[k,'Similarity score']=(final_df['Similarity score'].iloc[k])[0]
-        final_df.at[k,'ROR']=(final_df['ROR'].iloc[k])[0]
-
- 
-    
-    return final_df
-    
+   
