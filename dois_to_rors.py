@@ -3,10 +3,9 @@
 """
 import tarfile
 import logging
-
+import html
 import pandas as pd
 import sys
-
 import re
 import unicodedata
 import pickle
@@ -138,9 +137,19 @@ def do(name, crossref_df):
 
         with open('dix_ror_acad.pkl', 'rb') as f:
             dix_ror_acad = pickle.load(f)
+        
+        with open('dix_mult.pkl', 'rb') as f:
+            dix_mult = pickle.load(f)
+        
+        with open('dix_city_ror.pkl', 'rb') as f:
+            dix_city_ror = pickle.load(f)
+            
+        with open('dix_country_ror.pkl', 'rb') as f:
+            dix_country_ror = pickle.load(f)
+
             
             
-        result = Aff_Ids(len(academia_df), academia_df, dix_ror_acad, 0.7,0.82)
+        result = Aff_Ids(len(academia_df), academia_df, dix_ror_acad, dix_mult, dix_city_ror, dix_country_ror, 0.7,0.82)
 
                 
         if len(result) == 0:
