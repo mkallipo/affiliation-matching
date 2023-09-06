@@ -45,7 +45,7 @@ def best_sim_score(l1, l2, l3, l4, simU, simG):
 
                 
               
-            elif l3[j][2] >=0.99 and (is_contained("univ", x.lower()) or is_contained("college", x.lower()) or  is_contained("center", x.lower()) or  is_contained("schule", x.lower())): # If the similarity score of a pair (s,x) was 1, we store it to results list
+            elif l3[j][2] >=0.99:# and (is_contained("univ", x.lower()) or is_contained("college", x.lower()) or  is_contained("center", x.lower()) or  is_contained("schule", x.lower())): # If the similarity score of a pair (s,x) was 1, we store it to results list
                 result.append([l3[j][1], 1])
                 
             else:
@@ -53,7 +53,7 @@ def best_sim_score(l1, l2, l3, l4, simU, simG):
                     if not is_contained("univ", x.lower()):
                         continue  # Skip if x does not contain "university" or "univ"
                     
-                    if (is_contained('hosp', x.lower()) and not is_contained('hosp', s)) or (not is_contained('hosp', x.lower()) and is_contained('hosp', s)):
+                    if (is_contained('hosp', x.lower()) and not is_contained('hosp', s)) or (not is_contained('hosp', x.lower()) and is_contained('hosp', s)) or (is_contained('hopital', x.lower()) and not is_contained('hopital', s)) or (not is_contained('hopital', x.lower()) and is_contained('hopital', s)):
                         continue
                     s_vector = vectorizer.fit_transform([s]).toarray() #Else we compute the similarity of s with the original affiiation name
                     x_vector = vectorizer.transform([x]).toarray()
