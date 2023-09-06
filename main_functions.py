@@ -138,7 +138,7 @@ def index_multiple_matchings(df):
 
 
 
-def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
+def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
     
     """
     Matches affiliations in DataFrame 'DF' with names from dictionary 'dix_org' and their ROR_ids based on similarity scores.
@@ -147,6 +147,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
         m (int): The number of DOIs to check.
         DF (DataFrame): The input DataFrame containing affiliation data.
         dix_org (dict): A dictionary of names of organizations and their ROR_ids.
+        dix_mult, dix_city, dix_country (dict): Dictionaries that help distinguish between different organizations that have the same name.
         simU (float): Similarity threshold for universities.
         simG (float): Similarity threshold for non-universities.
 
@@ -337,17 +338,17 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
             if dix_mult[x] == 'unique':
                 id_list.append(dix_org[x])
             else:
-                if x in list(dix_city_ror.keys()):
+                if x in list(dix_city.keys()):
                     match_found = False
 
-                    for city in dix_city_ror[x]:
+                    for city in dix_city[x]:
                         if city[0] in (final_df['Original affiliations'].iloc[i]).lower():
                             id_list.append(city[1])
                             match_found = True
                             break  
                     if not match_found:
                         match_found2 = False
-                        for country in dix_country_ror[x]:
+                        for country in dix_country[x]:
                             if country[0] in (final_df['Original affiliations'].iloc[i]).lower():
                                 id_list.append(country[1])
                                 match_found2 = True
