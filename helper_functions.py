@@ -318,7 +318,7 @@ def create_df_algorithm(gendf):
     aff_df['Keywords'] = affiliations_simple_n
     
     univ_labs = [i for i in range(len(aff_df)) if 'Laboratory' in aff_df['Category'].iloc[i] 
-            or 'Univ/Inst' in  aff_df['Category'].iloc[i]  or 'Hospital' in  aff_df['Category'].iloc[i]
+            or 'Univ/Inst' in  aff_df['Category'].iloc[i] 
             or 'Hospital' in  aff_df['Category'].iloc[i]
             or 'Foundation' in  aff_df['Category'].iloc[i]]
             
