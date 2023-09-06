@@ -25,7 +25,7 @@ def avg_string(df, col):
         avg.append(sum(len(s) for s in df[col].iloc[i])/len(df[col].iloc[i]))
     return sum(avg)/len(avg)
 
-stop_words = ['from', 'the', 'of', 'at', 'de','for','et','für','des', 'in','as','a','and']
+stop_words = ['from', 'the', 'of', 'at', 'de','for','et','für','des', 'in','as','a','and','fur']
 
 def remove_stop_words(text):
     words = text.split()
@@ -180,7 +180,7 @@ while i in range(len(categ_dicts_list)):
     
 
 
-stop_words = ['from', 'the', 'of', 'at', 'de','for','et','für','des', 'in','as','a','and',fur,'for']
+stop_words = ['from', 'the', 'of', 'at', 'de','for','et','für','des', 'in','as','a','and','fur']
 
 def create_df_algorithm(gendf):
     all_affs_list = []
