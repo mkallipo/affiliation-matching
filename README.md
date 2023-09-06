@@ -11,8 +11,6 @@ However, I will incorporate improvements and bug fixes regularly.
 
 - `main_functions.py` contains the main algorithm.
   
-- `matching.py`: Is an older version of the algorithm.
-
 - `matching.ipynb`: Is a Jupyter Notebook for testing the code. In addition to the JSON file (`output.json`) it returns two EXCEL files (`affilMatch` and `doisMatch` respectively), one with the distinct affiliations of the JSON input, the matched openAIRE organizations and the corresponding similarity scores and one with the DOIs of the JSON input and the matched openAIRE organizations and the similarity scores.
 
 - `dix_ror_acad.pkl`: This file is a pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database. The corresponding values are the ROR PIDs (Persistent Identifiers) associated with each organization.
