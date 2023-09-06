@@ -11,7 +11,7 @@ However, I will incorporate improvements and bug fixes regularly.
 
 - `main_functions.py` contains the main algorithm.
   
-- `matching.ipynb`: Is a Jupyter Notebook for testing the code. In addition to the JSON file (`output.json`) it returns two EXCEL files (`affilMatch` and `doisMatch` respectively), one with the distinct affiliations of the JSON input, the matched openAIRE organizations and the corresponding similarity scores and one with the DOIs of the JSON input and the matched openAIRE organizations and the similarity scores.
+- `matching.ipynb`: Is a Jupyter Notebook for testing the code. In addition to the JSON file (`dois_match.json`) it returns two EXCEL files (`affis_match.xlx` and `dois_match.xlx` respectively), one with the distinct affiliations of the JSON input, the matched openAIRE organizations and the corresponding similarity scores and one with the DOIs of the JSON input and the matched organizations and the similarity scores.
 
 - `dix_acad.pkl`: This file is a pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database. The corresponding values are the ROR PIDs (Persistent Identifiers) associated with each organization.
 
@@ -19,7 +19,7 @@ However, I will incorporate improvements and bug fixes regularly.
 
 - `sample.json`: Is a sample of 1000 DOIs obtained from 300 json files from the Crossref database, which can be used for testing and validation purposes.
   
-- `output.json`, `affilMatch` and `doisMatch`: The outputs for the `sample.json` file as described above.
+- `dois_match.json`, `affs_match.xlx` and `dois_match.xlx`: The outputs for the `sample.json` file as described above.
 
 - `find_year`: Is a Python script that takes a JSON file as input and generates a CSV file containing the years from the issued date field and the corresponding number of DOIs.
 
