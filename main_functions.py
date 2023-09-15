@@ -1,6 +1,8 @@
 import pandas as pd
 import re
 import unicodedata
+import Levenshtein
+
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -61,21 +63,22 @@ def best_sim_score(l1, l2, l3, l4, simU, simG):
                     # Compute similarity between the vectors
                     similarity = cosine_similarity(x_vector, s_vector)[0][0]
                     if similarity> 0.1:
+                        similarity_l = 1 - Levenshtein.distance(x, l3[j][0]) / max(len(x), len(l3[j][0]))
+                        best.append([x, similarity,similarity_l])
    
-                        best.append([x, similarity])#(similarity+similarity2)/2])
                 except:
                     KeyError
                     
         if best:
             max_numbers = defaultdict(float)
             for item in best:
-                string, number = item
-                max_numbers[string] = max(max_numbers[string], number)
+                string, number1, number2 = item  # Unpack the three elements
+                max_numbers[string] = max(max_numbers[string], number1)
 
-# Create a new list with the elements having the maximum number for each string
-            reduced_best = [[string, number] for string, number in best if number == max_numbers[string]]
+            reduced_best = [[string, number1, number2] for string, number1, number2 in best if number1 == max_numbers[string]]
 
-            reduced_best.sort(key=lambda x: x[1], reverse=True)
+# Sort by number1 decreasingly and then by number2 in descending order
+            reduced_best.sort(key=lambda x: (x[1], x[2]), reverse=True)
    
             result = result + reduced_best
                 
