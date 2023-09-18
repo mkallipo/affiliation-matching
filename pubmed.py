@@ -15,18 +15,29 @@ import xml.etree.ElementTree as ET
 import json
 import xmltodict
 
+import requests
+import gzip
+import xml.etree.ElementTree as ET
+from io import BytesIO
 
 sys.path.append('/Users/myrto/Documents/openAIRE')
 
 from helper_functions import *
 from main_functions import *
 
-
-
-
 # Load the XML file
-tree = ET.parse('pubmed23n0042.xml')
-root = tree.getroot()
+
+# Send an HTTP GET request to the webpage with the .xml.gz link
+url = 'https://ftp.ncbi.nlm.nih.gov/pubmed/baseline/pubmed23n0048.xml.gz'
+response = requests.get(url)
+
+# Create a BytesIO object from the compressed content
+compressed_content = BytesIO(response.content)
+
+# Decompress the content using gzip
+with gzip.GzipFile(fileobj=compressed_content) as decompressed_content:
+ 
+    root = ET.parse(decompressed_content).getroot()
 
 # Initialize lists to store article data
 article_list = []
