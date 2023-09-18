@@ -4,12 +4,9 @@ import re
 import unicodedata
 from collections import defaultdict
 
-import pickle
-import sys 
-
-import Levenshtein
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+import tarfile
+import logging
+import html
 
 import xml.etree.ElementTree as ET
 import json
@@ -18,6 +15,18 @@ import xmltodict
 import requests
 import gzip
 from io import BytesIO
+
+from collections import defaultdict
+from concurrent.futures import ProcessPoolExecutor,wait,ALL_COMPLETED
+
+import pickle
+import sys 
+
+import Levenshtein
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+
 
 from helper_functions import *
 from main_functions import *
