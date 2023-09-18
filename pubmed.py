@@ -17,10 +17,7 @@ import xmltodict
 
 import requests
 import gzip
-import xml.etree.ElementTree as ET
 from io import BytesIO
-
-sys.path.append('/Users/myrto/Documents/openAIRE')
 
 from helper_functions import *
 from main_functions import *
