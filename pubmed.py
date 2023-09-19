@@ -261,4 +261,4 @@ for index, json_obj in enumerate(results):
     filename = f'file{index}.json'
     
     with open(filename, 'w') as f:
-        json.dump(json_obj, f)   
+        f.write(dois_match)   
