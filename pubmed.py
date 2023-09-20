@@ -276,12 +276,16 @@ for i in range(len(url_list)):
 
             dois_match = doi_df_output.to_json(orient='records', lines=True)
     
-        results.append(dois_match)
+    results.append(dois_match)
 
           
 
-for index, json_obj in enumerate(results):
+for index, doi_df in enumerate(results):
+    doi_json = doi_df.to_json(orient='records', lines=True)
+
+    
     filename = f'file{index}.json'
     
     with open(filename, 'w') as f:
-        f.write(dois_match)   
+        f.write(doi_json) 
+        
