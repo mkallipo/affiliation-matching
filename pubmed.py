@@ -142,11 +142,9 @@ for link in links:
 url_list = [url+file for file in file_names]
 
 
-results = []
 
-
-for i in range(len(url_list)): 
-    response = requests.get(url_list[i])
+for xml in range(len(url_list)): 
+    response = requests.get(url_list[xml])
 
 # Create a BytesIO object from the compressed content
     compressed_content = BytesIO(response.content)
@@ -273,19 +271,16 @@ for i in range(len(url_list)):
 
 
             doi_df_output = final_df[['DOI','Matchings']]
+            
+            doi_json = doi_df_output.to_json(orient='records', lines=True)
+            
+            filename = f'file{xml}.json'
 
-            dois_match = doi_df_output.to_json(orient='records', lines=True)
+            with open(filename, 'w') as f:
+                f.write(doi_json)
+            
     
-    results.append(dois_match)
+    
 
           
 
-for index, doi_df in enumerate(results):
-    doi_json = doi_df.to_json(orient='records', lines=True)
-
-    
-    filename = f'file{index}.json'
-    
-    with open(filename, 'w') as f:
-        f.write(doi_json) 
-        
