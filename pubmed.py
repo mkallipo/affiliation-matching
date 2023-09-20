@@ -58,7 +58,19 @@ def create_df(articleList):
         final.append(json.loads(json.dumps(xmltodict.parse(line))))
     ids = []
     for i in range(len(df)):
-        ids.append(final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId'])
+        if type(final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId']) == list:
+            ids.append(final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId'])
+        else:
+            ids.append([final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId']])
+    dois = []
+    for i in range(len(df)):
+        doisi= []
+        for j in range(len(ids[i])):
+            if ids[i][j]['@IdType'] == 'doi':
+                doisi.append(ids[i][j]['#text'])
+    
+        dois.append(doisi)
+        
         
 
     affList = []
@@ -72,8 +84,8 @@ def create_df(articleList):
             if type(fi['AffiliationInfo']) == dict:
                 affList_i.append(fi['AffiliationInfo']['Affiliation'])
             else:
-                    for j in range(len(fi['AffiliationInfo'])):
-                        affList_i.append(fi['AffiliationInfo'][j]['Affiliation'])
+                for j in range(len(fi['AffiliationInfo'])):
+                    affList_i.append(fi['AffiliationInfo'][j]['Affiliation'])
                         
                     
                 
@@ -92,10 +104,22 @@ def create_df(articleList):
 
                             
                                     
-    df['ids'] = ids 
+    df['DOI'] = dois 
     df['Affiliations'] = affList
+
+    indices = []
     
-    return df
+    for i in range(len(df)):
+        if len(dois[i])>0:
+            indices.append(i)
+            
+            
+    df_final = (df.iloc[indices]).reset_index()
+    df_final.drop(columns = 'index', inplace = True) 
+    doi_string = [x[0] for x in list(df_final['DOI'])]
+    df_final['DOI'] = doi_string
+    
+    return df_final
 
 
 url = "https://ftp.ncbi.nlm.nih.gov/pubmed/baseline/"
@@ -159,8 +183,7 @@ for i in range(len(url_list)):
     pubmedDF['Unique affiliations'] = uniqueAff
     
     
-    generalDF = pubmedDF[['ids', 'Unique affiliations']].copy()
-    doi_df = generalDF.rename(columns = {'ids':'DOI'})
+    doi_df = pubmedDF[['DOI', 'Unique affiliations']].copy()
     academia_df = create_df_algorithm(doi_df)
 
     if len(academia_df)>0:   
