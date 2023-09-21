@@ -171,117 +171,118 @@ for xml in range(len(url_list)):
             article_list.append({'Article': article_text})
             
             
-        pubmedDF = create_df(article_list)
+    pubmedDF = create_df(article_list)
 
-        if len(pubmedDF)>0:
+    if len(pubmedDF)==0:
+        continue 
         
-            uniqueAff = []
+    uniqueAff = []
+
+    for i in range(len(pubmedDF)):
+        uniqueAff.append(list(set(x.lower() for x in pubmedDF['Affiliations'].iloc[i])))
         
-            for i in range(len(pubmedDF)):
-                uniqueAff.append(list(set(x.lower() for x in pubmedDF['Affiliations'].iloc[i])))
+    pubmedDF['Unique affiliations'] = uniqueAff
+    
+    
+    doi_df = pubmedDF[['DOI', 'Unique affiliations']].copy()
+    academia_df = create_df_algorithm(doi_df)
+
+    if len(academia_df)>0:   
+        result = Aff_Ids(len(academia_df), academia_df,dix_acad, dix_mult, dix_city, dix_country, 0.7,0.82)
+    
+        if len(result)>0:
+
+            affs_match = result[['Original affiliations','Matched organizations', 'unique ROR']]
+
+            dict_aff_open = {x: y for x, y in zip(result['Original affiliations'], result['Matched organizations'])}
+            dict_aff_id = {x: y for x, y in zip(result['Original affiliations'], result['ROR'])}
+            #dict_aff_score = {x: y for x, y in zip(result['Original affiliations'], result['Similarity score'])}
+
+            dict_aff_score = {}
+            for i in range(len(result)):
+                if type(result['Similarity score'].iloc[i]) == list:
+                    dict_aff_score[result['Original affiliations'].iloc[i]] = result['Similarity score'].iloc[i]
+                else:
+                    dict_aff_score[result['Original affiliations'].iloc[i]] = [result['Similarity score'].iloc[i]]
+                    
+
+            pids = []
+            for i in range(len(doi_df)):
+                pidsi = []
+                for aff in doi_df['Unique affiliations'].iloc[i]:
+                    if aff in list(dict_aff_id.keys()):
+                        pidsi = pidsi + dict_aff_id[aff]
+                # elif 'unmatched organization(s)' not in pidsi:
+                #     pidsi = pidsi + ['unmatched organization(s)']
+                pids.append(pidsi)
+                        
+                        
+            names = []
+            for i in range(len(doi_df)):
+                namesi = []
+                for aff in doi_df['Unique affiliations'].iloc[i]:
+                    if aff in list(dict_aff_open.keys()):
+                        try:
+                            namesi = namesi + dict_aff_open[aff]
+                        except TypeError:
+                            namesi = namesi + [dict_aff_open[aff]]
+                        
+                names.append(namesi)
                 
-            pubmedDF['Unique affiliations'] = uniqueAff
-            
-            
-            doi_df = pubmedDF[['DOI', 'Unique affiliations']].copy()
-            academia_df = create_df_algorithm(doi_df)
-        
-            if len(academia_df)>0:   
-                result = Aff_Ids(len(academia_df), academia_df,dix_acad, dix_mult, dix_city, dix_country, 0.7,0.82)
-            
-                if len(result)>0:
-        
-                    affs_match = result[['Original affiliations','Matched organizations', 'unique ROR']]
-        
-                    dict_aff_open = {x: y for x, y in zip(result['Original affiliations'], result['Matched organizations'])}
-                    dict_aff_id = {x: y for x, y in zip(result['Original affiliations'], result['ROR'])}
-                    #dict_aff_score = {x: y for x, y in zip(result['Original affiliations'], result['Similarity score'])}
-        
-                    dict_aff_score = {}
-                    for i in range(len(result)):
-                        if type(result['Similarity score'].iloc[i]) == list:
-                            dict_aff_score[result['Original affiliations'].iloc[i]] = result['Similarity score'].iloc[i]
-                        else:
-                            dict_aff_score[result['Original affiliations'].iloc[i]] = [result['Similarity score'].iloc[i]]
-                            
-        
-                    pids = []
-                    for i in range(len(doi_df)):
-                        pidsi = []
-                        for aff in doi_df['Unique affiliations'].iloc[i]:
-                            if aff in list(dict_aff_id.keys()):
-                                pidsi = pidsi + dict_aff_id[aff]
-                        # elif 'unmatched organization(s)' not in pidsi:
-                        #     pidsi = pidsi + ['unmatched organization(s)']
-                        pids.append(pidsi)
-                                
-                                
-                    names = []
-                    for i in range(len(doi_df)):
-                        namesi = []
-                        for aff in doi_df['Unique affiliations'].iloc[i]:
-                            if aff in list(dict_aff_open.keys()):
-                                try:
-                                    namesi = namesi + dict_aff_open[aff]
-                                except TypeError:
-                                    namesi = namesi + [dict_aff_open[aff]]
-                                
-                        names.append(namesi)
+            scores = []
+            for i in range(len(doi_df)):
+                scoresi = []
+                for aff in doi_df['Unique affiliations'].iloc[i]:
+                    if aff in list(dict_aff_score.keys()):
+                        scoresi = scoresi +  dict_aff_score[aff]
                         
-                    scores = []
-                    for i in range(len(doi_df)):
-                        scoresi = []
-                        for aff in doi_df['Unique affiliations'].iloc[i]:
-                            if aff in list(dict_aff_score.keys()):
-                                scoresi = scoresi +  dict_aff_score[aff]
-                                
-                        scores.append(scoresi)
-                        
-                        
-                    doi_df['Matched organizations'] = names
-                    doi_df['ROR'] = pids
-                    doi_df['Scores'] = scores
-        
-        
-                    unmatched = [i for i in range(len(doi_df)) if doi_df['Matched organizations'].iloc[i] == []]
-                            
-                    matched = [i for i in range(len(doi_df))  if i not in unmatched]
-        
-        
-                    final_df0 =  doi_df.iloc[matched].copy()
-                    final_df0.reset_index(inplace = True)
-        
-                    final_df = final_df0[['DOI',"Unique affiliations",'Matched organizations','ROR', 'Scores']].copy()
-        
-                    def update_Z(row):
-                        if len(row['ROR']) == 0 or len(row['Scores']) == 0:
-                            return []
-                        
-                        new_Z = []
-                        for ror, score in zip(row['ROR'], row['Scores']):
-                            entry = {'RORid': ror, 'Confidence': score}
-                            new_Z.append(entry)
-                        return new_Z
-        
-                    matching = final_df.apply(update_Z, axis=1)
-        
-                    final_df['Matchings'] = matching
-        
-                    final_df_short = final_df[['Unique affiliations','Matched organizations','ROR','Scores']]
-        
-                    # 3. JSON [Final output]
-        
-        
-                    doi_df_output = final_df[['DOI','Matchings']]
+                scores.append(scoresi)
+                
+                
+            doi_df['Matched organizations'] = names
+            doi_df['ROR'] = pids
+            doi_df['Scores'] = scores
+
+
+            unmatched = [i for i in range(len(doi_df)) if doi_df['Matched organizations'].iloc[i] == []]
                     
-                    doi_json = doi_df_output.to_json(orient='records', lines=True)
-                    
-                    filename = f'file{xml}.json'
-        
-                    with open(filename, 'w') as f:
-                        f.write(doi_json)
-                    
+            matched = [i for i in range(len(doi_df))  if i not in unmatched]
+
+
+            final_df0 =  doi_df.iloc[matched].copy()
+            final_df0.reset_index(inplace = True)
+
+            final_df = final_df0[['DOI',"Unique affiliations",'Matched organizations','ROR', 'Scores']].copy()
+
+            def update_Z(row):
+                if len(row['ROR']) == 0 or len(row['Scores']) == 0:
+                    return []
+                
+                new_Z = []
+                for ror, score in zip(row['ROR'], row['Scores']):
+                    entry = {'RORid': ror, 'Confidence': score}
+                    new_Z.append(entry)
+                return new_Z
+
+            matching = final_df.apply(update_Z, axis=1)
+
+            final_df['Matchings'] = matching
+
+            final_df_short = final_df[['Unique affiliations','Matched organizations','ROR','Scores']]
+
+            # 3. JSON [Final output]
+
+
+            doi_df_output = final_df[['DOI','Matchings']]
             
+            doi_json = doi_df_output.to_json(orient='records', lines=True)
+            
+            filename = f'file{xml}.json'
+
+            with open(filename, 'w') as f:
+                f.write(doi_json)
+            
+    
             
         
                   
