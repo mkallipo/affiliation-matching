@@ -76,8 +76,14 @@ def create_df(articleList):
     affList = []
 
     for i in range(len(df)):
-        affList_i = []
+    affList_i = []
+    
+    try:
         fi = final[i]['PubmedArticle']['MedlineCitation']['Article']['AuthorList']['Author']
+        # Continue processing fi here
+    except KeyError as e:
+        # Handle the KeyError exception here
+        print(f"KeyError: {e} occurred for index {i}")
 
 
         if type(fi) == dict:
