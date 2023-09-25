@@ -66,9 +66,13 @@ def create_df(articleList):
     for i in range(len(df)):
         doisi= []
         for j in range(len(ids[i])):
-            if ids[i][j]['@IdType'] == 'doi':
-                doisi.append(ids[i][j]['#text'])
-    
+            try: 
+                if ids[i][j]['@IdType'] == 'doi':
+                    doisi.append(ids[i][j]['#text'])
+            except KeyError as e:
+            # Handle the KeyError exception here
+                print(f"KeyError: {e} occurred for index {i}")
+            
         dois.append(doisi)
         
         
