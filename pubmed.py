@@ -58,10 +58,14 @@ def create_df(articleList):
         final.append(json.loads(json.dumps(xmltodict.parse(line))))
     ids = []
     for i in range(len(df)):
-        if type(final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId']) == list:
-            ids.append(final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId'])
-        else:
-            ids.append([final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId']])
+        try:
+            if type(final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId']) == list:
+                ids.append(final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId'])
+            else:
+                ids.append([final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId']])
+         except KeyError as e:
+            print(f"KeyError: {e} occurred for index {i}") 
+             
     dois = []
     for i in range(len(df)):
         doisi= []
@@ -70,7 +74,6 @@ def create_df(articleList):
                 if ids[i][j]['@IdType'] == 'doi':
                     doisi.append(ids[i][j]['#text'])
             except KeyError as e:
-            # Handle the KeyError exception here
                 print(f"KeyError: {e} occurred for index {i}")
             
         dois.append(doisi)
@@ -86,16 +89,18 @@ def create_df(articleList):
             fi = final[i]['PubmedArticle']['MedlineCitation']['Article']['AuthorList']['Author']
             # Continue processing fi here
         except KeyError as e:
-            # Handle the KeyError exception here
             print(f"KeyError: {e} occurred for index {i}")
 
 
         if type(fi) == dict:
-            if type(fi['AffiliationInfo']) == dict:
-                affList_i.append(fi['AffiliationInfo']['Affiliation'])
-            else:
-                for j in range(len(fi['AffiliationInfo'])):
-                    affList_i.append(fi['AffiliationInfo'][j]['Affiliation'])
+            try:
+                if type(fi['AffiliationInfo']) == dict:
+                    affList_i.append(fi['AffiliationInfo']['Affiliation'])
+                else:
+                    for j in range(len(fi['AffiliationInfo'])):
+                        affList_i.append(fi['AffiliationInfo'][j]['Affiliation'])
+            except KeyError as e:
+                print(f"KeyError: {e} occurred for index {i}") 
                         
                     
                 
