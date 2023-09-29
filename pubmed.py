@@ -63,9 +63,9 @@ def create_df(articleList):
                 ids.append(final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId'])
             else:
                 ids.append([final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId']])
-         except KeyError as e:
+        except KeyError as e:
             print(f"KeyError: {e} occurred for index {i}") 
-             
+            
     dois = []
     for i in range(len(df)):
         doisi= []
@@ -77,7 +77,9 @@ def create_df(articleList):
                 print(f"KeyError: {e} occurred for index {i}")
             
         dois.append(doisi)
-        
+                
+    
+    
         
 
     affList = []
@@ -87,11 +89,11 @@ def create_df(articleList):
         
         try:
             fi = final[i]['PubmedArticle']['MedlineCitation']['Article']['AuthorList']['Author']
-            # Continue processing fi here
         except KeyError as e:
             print(f"KeyError: {e} occurred for index {i}")
 
 
+        
         if type(fi) == dict:
             try:
                 if type(fi['AffiliationInfo']) == dict:
@@ -101,6 +103,7 @@ def create_df(articleList):
                         affList_i.append(fi['AffiliationInfo'][j]['Affiliation'])
             except KeyError as e:
                 print(f"KeyError: {e} occurred for index {i}") 
+
                         
                     
                 
@@ -158,7 +161,7 @@ url_list = [url+file for file in file_names]
 
 
 
-for xml in range(44, len(url_list)): 
+for xml in range(48, len(url_list)): 
     response = requests.get(url_list[xml])
 
 # Create a BytesIO object from the compressed content
