@@ -50,6 +50,8 @@ with open('dix_country.pkl', 'rb') as f:
 def create_df(articleList):
     df = pd.DataFrame(articleList)
     final = []
+    key_errors = []
+
     for i in range(len(df)):
         line = df['Article'].iloc[i]
     # Remove all occurrences of '\n'
@@ -64,7 +66,8 @@ def create_df(articleList):
             else:
                 ids.append([final[i]['PubmedArticle']['PubmedData']['ArticleIdList']['ArticleId']])
         except KeyError as e:
-            print(f"KeyError: {e} occurred for index {i}") 
+            print(f"KeyError: {e} occurred for index {i}")
+            key_errors.append(i)
             
     dois = []
     for i in range(len(df)):
@@ -75,6 +78,7 @@ def create_df(articleList):
                     doisi.append(ids[i][j]['#text'])
             except KeyError as e:
                 print(f"KeyError: {e} occurred for index {i}")
+                key_errors.append(i)
             
         dois.append(doisi)
                 
@@ -91,6 +95,7 @@ def create_df(articleList):
             fi = final[i]['PubmedArticle']['MedlineCitation']['Article']['AuthorList']['Author']
         except KeyError as e:
             print(f"KeyError: {e} occurred for index {i}")
+            key_errors.append(i)
 
 
         
@@ -102,7 +107,8 @@ def create_df(articleList):
                     for j in range(len(fi['AffiliationInfo'])):
                         affList_i.append(fi['AffiliationInfo'][j]['Affiliation'])
             except KeyError as e:
-                print(f"KeyError: {e} occurred for index {i}") 
+                print(f"KeyError: {e} occurred for index {i}")
+                key_errors.append(i)
 
                         
                     
@@ -130,9 +136,10 @@ def create_df(articleList):
     for i in range(len(df)):
         if len(dois[i])>0:
             indices.append(i)
+    indices_final = [i for i in indices if i not in key_errors]
+
             
-            
-    df_final = (df.iloc[indices]).reset_index()
+    df_final = (df.iloc[indices_final]).reset_index()
     df_final.drop(columns = 'index', inplace = True) 
     doi_string = [x[0] for x in list(df_final['DOI'])]
     df_final['DOI'] = doi_string
@@ -195,14 +202,26 @@ for xml in range(48, len(url_list)):
         continue 
         
     uniqueAff = []
+    remove_rows = []
+
 
     for i in range(len(pubmedDF)):
-        uniqueAff.append(list(set(x.lower() for x in pubmedDF['Affiliations'].iloc[i])))
+        try:
+            uniqueAff.append(list(set(x.lower() for x in pubmedDF['Affiliations'].iloc[i])))
+        except AttributeError as e:
+            print(f'AttributeError {e} at index {i}')
+            uniqueAff.append(list(set(x for x in doi_df['Affiliations'].iloc[i])))
+
+            remove_rows.append(i)
+            
         
     pubmedDF['Unique affiliations'] = uniqueAff
     
     
     doi_df = pubmedDF[['DOI', 'Unique affiliations']].copy()
+    doi_df = doi_df.drop(remove_rows)
+    doi_df.reset_index(inplace = True)
+    
     academia_df = create_df_algorithm(doi_df)
 
     if len(academia_df)>0:   
