@@ -210,7 +210,7 @@ for xml in range(368, len(url_list)):
             uniqueAff.append(list(set(x.lower() for x in pubmedDF['Affiliations'].iloc[i])))
         except AttributeError as e:
             print(f'AttributeError {e} at index {i}')
-            uniqueAff.append(list(set(x for x in doi_df['Affiliations'].iloc[i])))
+            uniqueAff.append(list(set(x for x in pubmedDF['Affiliations'].iloc[i])))
 
             remove_rows.append(i)
             
