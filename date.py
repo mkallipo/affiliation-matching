@@ -13,9 +13,14 @@ def do(name, crossref_df):
 
 
         date = [(crossref_df['items'].iloc[i]['issued']['date-parts'][0][0]) for i in range(len(crossref_df))]
+        date_dep = [(crossref_df['items'].iloc[i]['deposited']['date-parts'][0][0]) for i in range(len(crossref_df))]
+        type = [(crossref_df['items'].iloc[i]['type']) for i in range(len(crossref_df))]
+
 
 
         crossref_df['date'] = date
+        crossref_df['date_dep'] = date_dep
+        crossref_df['type'] = type
 
 
         crossref_auth = crossref_df.iloc[authors].copy()
@@ -74,7 +79,7 @@ def do(name, crossref_df):
         no_affiliations_df = crossref_df.iloc[no_affiliations]
         no_affiliations_df = no_affiliations_df.reset_index()
         no_affiliations_df['authors'] = '-'
-        no_affiliations_df['affiliations'] = 'Ν'
+        no_affiliations_df['affiliations'] = 'N'
 
         no_affiliations_df = no_affiliations_df.rename(columns = {'index':'level_0'})
 
