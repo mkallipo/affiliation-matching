@@ -229,8 +229,37 @@ def do(name, crossref_df):
             return new_Z
 
         matching = final_df.apply(update_Z, axis=1)
+        
+        unique_matching = []
+    
+        for x in matching: 
+            list_of_dicts = x
 
-        final_df['Matchings'] = matching
+
+            max_values = {}
+            result_list = []
+
+            for d in list_of_dicts:
+                value1 = d['RORid']
+                value2 = d['Confidence']
+
+                # Check if value1 is already in max_values dictionary
+                if value1 in max_values:
+                    # If value2 is greater, update max_values
+                    if value2 > max_values[value1]:
+                        max_values[value1] = value2
+                        # Replace the dictionary in the result_list with the one with higher value2
+                        result_list = [item for item in result_list if item['RORid'] != value1]
+                        result_list.append(d)
+                else:
+                    # If value1 is not in max_values, add it with its value2
+                    max_values[value1] = value2
+                    result_list.append(d)
+            unique_matching.append(result_list)
+        
+        
+        final_df['Matchings'] = unique_matching
+
 
 
       
