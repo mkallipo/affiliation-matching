@@ -1,4 +1,4 @@
-# Matching Repository
+# Affiliation-Matching Repository
 
 This repository contains code and data for matching DOIs of Crossref JSON files with organization IDs from the OpenAIRE (https://www.openaire.eu) or ROR (https://ror.org) database.
 
