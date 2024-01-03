@@ -27,8 +27,7 @@ import sys
 import Levenshtein
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
-
+from concurrent.futures import ProcessPoolExecutor,wait,ALL_COMPLETED
 
 from helper_functions import *
 from main_functions import *
@@ -342,19 +341,15 @@ def xml_to_json(xml):
                 doi_json = doi_df_output.to_json(orient='records', lines=True)
                 
             
-            return  doi_json
- 
+                filename = f'file{xml}.json'
 
-        
-for xml in range(368, len(url_list)): 
-    filename = f'file{xml}.json'
+                with open("pubmed-output/" + filename, 'w') as f:
+                    f.write(doi_json)
 
-    with open(filename, 'w') as f:
-        f.write(xml_to_json(xml))
-            
-            
-    
-            
-        
-                  
-        
+
+numberOfThreads = int(sys.argv[1])
+executor = ProcessPoolExecutor(max_workers=numberOfThreads)
+
+futures = [executor.submit(xml_to_json, xml) for xml in range(0, len(url_list))]
+done, not_done = wait(futures)
+print(not_done)
