@@ -311,7 +311,7 @@ def create_df_algorithm(gendf):
                 for x in str_radius_h(str):
                     inner.append(x)
             elif 'clinic' in str or 'klinik' in str:
-                for x in str_radius_h(str):
+                for x in str_radius_c(str):
                     inner.append(x)
                     
             else:
