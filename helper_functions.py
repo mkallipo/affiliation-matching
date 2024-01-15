@@ -140,7 +140,7 @@ gmbh_list = ['gmbh', 'company' , 'industr', 'etaireia' , 'corporation', 'inc']
 
 mus_list =  ['museum', 'library']
 
-found_list =  ['foundation' , 'association','organization' ,'society', 'group' ]
+found_list =  ['foundation' , 'association','organization' ,'society', 'group','royal' ]
 
 dept_list = ['district' , 'federation'  , 'government' , 'municipal' , 'county','council', 'agency']
 # miistry -> out
