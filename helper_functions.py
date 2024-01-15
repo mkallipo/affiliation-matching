@@ -231,9 +231,9 @@ def create_df_algorithm(gendf):
                 elif is_contained('inst',dict[i]) and (is_contained('school', dict[i+1]) or is_contained('dep', dict[i+1]) or is_contained('acad', dict[i+1]) or is_contained('hosp', dict[i+1]) or is_contained('clin', dict[i+1]) or is_contained('klin', dict[i+1])  or is_contained('fak', dict[i+1]) or is_contained('fac', dict[i+1]) or is_contained('cent', dict[i+1]) or is_contained('div', dict[i+1])):
                     if not is_contained('univ', dict[i]):
                         del dict[i]
-                elif is_contained('hosp',dict[i]) and is_contained('school', dict[i+1]):
-                    if not is_contained('univ', dict[i]):
-                        del dict[i]
+           #     elif is_contained('hosp',dict[i]) and is_contained('school', dict[i+1]):
+            #        if not is_contained('univ', dict[i]):
+             #           del dict[i]
             
     light_aff = []
     for dict in new_aff_komma:

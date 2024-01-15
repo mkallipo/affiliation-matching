@@ -351,12 +351,37 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
                             break  
                     if not match_found:
                         match_found2 = False
+                        match_found3 = False
+
                         for country in dix_country[x]:
-                            if country[0] in (final_df['Original affiliations'].iloc[i]).lower():
+                            if country[0] == 'united states' and (country[0] in (final_df['Original affiliations'].iloc[i]).lower() or 'usa'  in (final_df['Original affiliations'].iloc[i]).lower()):
                                 id_list.append(country[1])
                                 match_found2 = True
-                                break  
-                        
+                                match_found3 = True
+                                break
+                            
+                            if country[0] == 'united kingdom' and (country[0] in (final_df['Original affiliations'].iloc[i]).lower() or 'uk'  in (final_df['Original affiliations'].iloc[i]).lower()):
+                                id_list.append(country[1])
+                                match_found2 = True
+                                match_found3 = True
+                                break
+
+                            elif country[0] in (final_df['Original affiliations'].iloc[i]).lower():
+
+                                if country[0] not in x:
+                                    id_list.append(country[1])
+                                    match_found2 = True
+                                    match_found3 = True
+                                    break
+
+                        if not match_found3:
+                            for country in dix_country[x]:
+                                if country[0] in (final_df['Original affiliations'].iloc[i]).lower() and country[0] in x:
+                                    id_list.append(country[1])
+                                    match_found2 = True
+
+
+                                    break                          
                         if not match_found2:
                             id_list.append(dix_org[x])
                 else:
