@@ -130,7 +130,7 @@ def avg_string(df, col):
 
 
 uni_list = ['research', 'institu', 'istitut', 'univ', 'coll', 'center','polytechnic','politecnico','centre' , 'cnrs', 
-            'faculty','school' , 'academ' , 'akadem','école', 'hochschule' , 'ecole', 'tech', 'observ','escuela','escola', 'ku Leuven', 'ucla', 'eth zurich','athena']
+            'faculty','school' , 'academ' , 'akadem','école', 'hochschule' , 'ecole', 'tech', 'observ','escuela','escola', 'ku leuven', 'ucla', 'eth zurich','athena']
 
 lab_list = ['lab']
 
