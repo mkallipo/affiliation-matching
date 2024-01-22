@@ -341,11 +341,11 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
             if dix_mult[x] == 'unique':
                 id_list.append(dix_org[x])
             else:
-               if x in list(dix_city_ror.keys()):
+               if x in list(dix_city.keys()):
                     match_found0 = False
                     match_found = False
 
-                    for city in dix_city_ror[x]:
+                    for city in dix_city[x]:
                         if city[0] in (final_df['Original affiliations'].iloc[i]).lower():
                             if city[0] not in x: 
                                 id_list.append(city[1])
@@ -353,7 +353,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
                                 match_found = True
                                 break
                     if not match_found:
-                        for city in dix_city_ror[x]:
+                        for city in dix_city[x]:
                             if city[0] in   (final_df['Original affiliations'].iloc[i]).lower() and city[0] in x:
                                 id_list.append(city[1])
                                 match_found0 = True

@@ -149,7 +149,7 @@ def do(name, crossref_df):
 
             
             
-        result = Aff_Ids(len(academia_df), academia_df, dix_acad, dix_mult, dix_city, dix_country, 0.65,0.82)
+        result = Aff_Ids(len(academia_df), academia_df, dix_acad, dix_mult, dix_city, dix_country, 0.65,0.72)
 
                 
         if len(result) == 0:
