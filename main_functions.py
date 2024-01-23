@@ -341,7 +341,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
             if dix_mult[x] == 'unique':
                 id_list.append(dix_org[x])
             else:
-               if x in list(dix_city.keys()):
+                if x in list(dix_city.keys()):
                     match_found0 = False
                     match_found = False
 
