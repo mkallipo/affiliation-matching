@@ -157,7 +157,7 @@ def do(name, crossref_df):
         
 
         dict_aff_open = {x: y for x, y in zip(result['Original affiliations'], result['Matched organizations'])}
-        dict_aff_id = {x: y for x, y in zip(result['Original affiliations'], result['ROR'])}
+        dict_aff_id = {x: y for x, y in zip(result['Original affiliations'], result['unique ROR'])}
 
         dict_aff_score = {}
         for i in range(len(result)):
