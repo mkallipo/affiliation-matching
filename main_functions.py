@@ -406,18 +406,10 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
         v1 =list(set(v))
         new_ror.append(v1)
 
-    new_ror
     
-    #f = []
-    #for i in range(len(ids)):
-    #    fi = []
-    #    for x in ids[i]:
-    #        if x not in fi:
-    #            fi.append(x)
-    #    f.append(fi)
-        
+   
 
-    numIds = [len(x) for x in f]
+    numIds = [len(x) for x in new_ror]
 
 
     final_df['ROR'] = ids 
