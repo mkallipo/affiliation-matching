@@ -513,14 +513,6 @@ def create_df_algorithm_facts(gendf):
         
     aff_df['Keywords'] = affiliations_simple_n #affiliations_simple_n
 
-    
-    univ_labs = [i for i in range(len(aff_df)) if 'Laboratory' in aff_df['Category'].iloc[i] 
-            or 'Univ/Inst' in  aff_df['Category'].iloc[i]  
-            or 'Hospital' in  aff_df['Category'].iloc[i]
-            or 'Foundation' in  aff_df['Category'].iloc[i] or 'Museum' in  aff_df['Category'].iloc[i]]
-            
-        
-#categ_dicts_list = [uni_dict, lab_dict, hospl_dict,  mus_dict, gmbh_dict,  found_dict, dept_dict, unknown_dict]
                   
     univ_labs_df = aff_df.copy()
     univ_labs_df.drop(columns = ['Short affiliations'], inplace = True)
