@@ -41,6 +41,8 @@ with open('dix_country.pkl', 'rb') as f:
     
 def facts_ror(csv_file):
     facts_df = pd.read_csv(csv_file)
+    
+    facts_df['Unique affiliations'] = list(facts_df['institution'])
 
     for i,name in enumerate(list(facts_df['institution'])):
         if name[-2:] == ' U':
@@ -59,13 +61,13 @@ def facts_ror(csv_file):
 
     doi_df = facts_df.copy()
 
-    doi_df = doi_df.rename(columns= {'institution': 'Unique affiliations', 'doi':'DOI'}) 
+    doi_df = doi_df.rename(columns= {'doi':'DOI'}) 
 
     for i in range(len(doi_df)):
         doi_df.at[i, 'Unique affiliations']= [doi_df['Unique affiliations'].iloc[i]]
 
 
-    doi_df = doi_df[['DOI', 'Unique affiliations']]
+    doi_df = doi_df[['DOI','institution', 'Unique affiliations']]
 
     academia_df = create_df_algorithm_facts(doi_df)
 
@@ -135,7 +137,7 @@ def facts_ror(csv_file):
             final_df0 =  doi_df.iloc[matched].copy()
             final_df0.reset_index(inplace = True)
 
-            final_df = final_df0[['DOI',"Unique affiliations",'Matched organizations','ROR', 'Scores']].copy()
+            final_df = final_df0[['DOI',"institution",'Matched organizations','ROR', 'Scores']].copy()
 
             def update_Z(row):
                 if len(row['ROR']) == 0 or len(row['Scores']) == 0:

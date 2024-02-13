@@ -78,6 +78,18 @@ def clean_string(input_string):
     
     return result
 
+def clean_string_facts(input_string):
+    # Replace specified characters with space
+    input_string = remove_stop_words(replace_umlauts(unidecode(remove_parentheses(html.unescape(input_string.lower())))))
+    result = re.sub(r'[/\-,]', ' ', input_string)
+    
+    # Remove characters that are not from the Latin alphabet or numbers
+    result = re.sub(r'[^a-zA-Z0-9\s;/-]', '', result)
+    
+    # Replace consecutive whitespace with a single space
+    result = re.sub(r'\s+', ' ', result)
+    
+    return result
     
     
 def str_radius_u(string):
@@ -381,7 +393,7 @@ def create_df_algorithm_facts(gendf):
         for y in x:
             if y!= 'inc' and y not in list(aff_no_symbols_d.keys()):
                 #aff_no_symbols_d[y] = (remove_stop_words(re.sub(r'[^\w\s,Α-Ωα-ωぁ-んァ-ン一-龯,;/]', '', replace_umlauts(unidecode(remove_parentheses(html.unescape(y)))))).lower()).replace("  ", " ")
-                aff_no_symbols_d[y] = clean_string(y)
+                aff_no_symbols_d[y] = clean_string_facts(y)
         
     
         
