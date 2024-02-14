@@ -46,16 +46,16 @@ def facts_ror(csv_file):
 
     for i,name in enumerate(list(facts_df['institution'])):
         if name[-2:] == ' U':
-            facts_df.at[i,'institution'] = name + 'niversity'
+            facts_df.at[i,'Unique affiliations'] = name + 'niversity'
             
         if name[:3] == 'TU ':
-            facts_df.at[i,'institution'] = 'Technische Universitat'+ name[2:]
+            facts_df.at[i,'Unique affiliations'] = 'Technische Universitat'+ name[2:]
             
         if name[-3:] == ' FH':
-            facts_df.at[i,'institution'] = name[:-2] + 'University Applied Sciences'
+            facts_df.at[i,'Unique affiliations'] = name[:-2] + 'University Applied Sciences'
             
         if name[-3:] == ' TU':
-            facts_df.at[i,'institution'] = name[:-2] + 'Technische Universitat'
+            facts_df.at[i,'Unique affiliations'] = name[:-2] + 'Technische Universitat'
         
 
 
@@ -73,7 +73,7 @@ def facts_ror(csv_file):
 
 
     if len(academia_df)>0:   
-        result = Aff_Ids(len(academia_df), academia_df,dix_acad, dix_mult, dix_city, dix_country, 0.6,0.64)
+        result = Aff_Ids(len(academia_df), academia_df,dix_acad, dix_mult, dix_city, dix_country, 0.8,0.8)
 
         if len(result)>0:
 
