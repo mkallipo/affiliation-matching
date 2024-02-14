@@ -172,7 +172,7 @@ uni_list = ['research', 'institu', 'istitut', 'univ', 'coll', 'center','polytech
 
 lab_list = ['lab', 'science','cientific']
 
-hosp_list = ['hospital' ,'clinic', 'hopital', 'klinik','oncol','medical','health']
+hosp_list = ['hospital' ,'clinic', 'hopital', 'klinik','oncol','medical','health', 'medicin']
 
 gmbh_list = ['gmbh', 'company' , 'industr', 'etaireia' , 'corporation', 'inc']
 
