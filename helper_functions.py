@@ -51,6 +51,8 @@ def substrings_dict(string):
     for value in split_strings:
         if value:
             modified_value = re.sub(r'institu\w*', 'institu', value, flags=re.IGNORECASE)
+            dict_string[index] = modified_value.lower() 
+            index += 1
 
             if 'universitetskaya' not in value and 'universitatsklinikum' not in value and 'universitatskinderklinik' not in value and 'universitatsspital'  not in value and 'universitatskliniken' not in value:
                 modified_value = re.sub(r'universi\w*', 'universi', value, flags=re.IGNORECASE)
