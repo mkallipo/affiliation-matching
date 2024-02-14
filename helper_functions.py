@@ -50,18 +50,18 @@ def substrings_dict(string):
      
     for value in split_strings:
         if value:
-            if 'universitetskaya' not in value and 'universitatsklinikum' not in value:
+            modified_value = re.sub(r'institu\w*', 'institu', value, flags=re.IGNORECASE)
+
+            if 'universitetskaya' not in value and 'universitatsklinikum' not in value and 'universitatskinderklinik' not in value and 'universitatsspital'  not in value and 'universitatskliniken' not in value:
                 modified_value = re.sub(r'universi\w*', 'universi', value, flags=re.IGNORECASE)
+
                 dict_string[index] = modified_value.lower() 
                 index += 1
-            elif 'universitatsklinikum'  in value:
-                #modified_value = re.sub(r'universi\w*', 'universi', value, flags=re.IGNORECASE)
+            elif 'universitatsklinikum'  in value or 'universitatskinderklinik'  in value or 'universitatsspital'  in value or 'universitatskliniken' in value:  
                 dict_string[index] = value.lower() 
                 index += 1
                 
-           # else:
-            #    dict_string[index] = modified_value.lower() 
-             #   index += 1
+         
     return dict_string  
 
 
@@ -168,7 +168,7 @@ uni_list = ['research', 'institu', 'istitut', 'univ', 'coll', 'center','polytech
             'faculty','school' , 'academ' , 'akadem','école', 'hochschule' , 'ecole', 'tech', 'observ','escuela','escola', 'ku leuven', 'ucla', 'eth zurich','athena', 'openaire',
             'erasmus', 'ist austria']
 
-lab_list = ['lab', 'science']
+lab_list = ['lab', 'science','cientific']
 
 hosp_list = ['hospital' ,'clinic', 'hopital', 'klinik','oncol','medical','health']
 
