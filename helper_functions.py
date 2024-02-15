@@ -395,7 +395,7 @@ def create_df_algorithm_facts(gendf):
         for y in x:
             if y!= 'inc' and y not in list(aff_no_symbols_d.keys()):
                 #aff_no_symbols_d[y] = (remove_stop_words(re.sub(r'[^\w\s,Α-Ωα-ωぁ-んァ-ン一-龯,;/]', '', replace_umlauts(unidecode(remove_parentheses(html.unescape(y)))))).lower()).replace("  ", " ")
-                aff_no_symbols_d[y] = clean_string_facts(y)
+                aff_no_symbols_d[y] = clean_string(y)
         
     
         
