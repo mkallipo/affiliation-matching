@@ -225,7 +225,7 @@ def facts_ror(csv_file):
     nf_df_short.reset_index(inplace = True)
     new_rows = []
     add = {}
-    for i in range(len(nf_df_short)):
+    for i, country in enumerate(list(nf_df_short['country'])):
         ins = (nf_df_short['institution'].iloc[i]).lower()
         if ins in list(dix_acad_full.keys()):
             if dix_mult_full[ins] == 'unique':
@@ -233,7 +233,7 @@ def facts_ror(csv_file):
     
             else:
                 for pair in dix_country_full[ins]:
-                    if nf_df['country'].iloc[i] in pair:
+                    if  pair[0] == country:
                         add[ins]= [{'RORid':pair[1], 'Confidence':1}]
 
                     
