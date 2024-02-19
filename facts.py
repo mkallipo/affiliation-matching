@@ -250,9 +250,10 @@ def facts_ror(csv_file):
     
     return facts_json
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
 
-    csv_file = sys.argv[1]
+#    csv_file = sys.argv[1]
 
-    with open('facts.json', 'w') as f:  # specify the filename here, e.g., 'output.json'
-        f.write(facts_ror(csv_file))
+
+with open('facts.json', 'w') as f:  # specify the filename here, e.g., 'output.json'
+    f.write(facts_ror('https://olap.openapc.net/cube/transformative_agreements/facts?format=csv&header=names&cut='))
