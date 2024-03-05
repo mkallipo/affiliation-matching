@@ -17,7 +17,7 @@ import logging
 #file0 = 'sample5000.json'
 
 
-file_path = 'dois_comparisson.txt.txt'
+file_path = 'dois_comparisson.txt'
 
 with open(file_path, 'r') as file:
     common_list = [line.strip() for line in file]
