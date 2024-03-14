@@ -195,6 +195,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
                         # Compute similarity between the vectors
                         similarity = cosine_similarity(x_vector, s_vector)[0][0]
                         if similarity > min(simU, simG):
+                         
                             if (is_contained('univ', s) and is_contained('univ', x)) and similarity > simU:
                                 similar_k.append(similarity)
                                 deiktes.append(k)
@@ -215,46 +216,26 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
                                     dix[k].append(x)
                                     
                     elif is_contained(x, s):
+                        
                         if (is_contained('univ', s) and is_contained('univ', x)):
+                        
+                            s_vector = vectorizer.fit_transform([s]).toarray()
+                            x_vector = vectorizer.transform([x]).toarray()
 
-                            if ' and ' in s:
-                                list_s = s.split(' and ')
-                                
-                                if list_s:
-                                    for q in list_s:
-                                        if is_contained('univ', q):
+                            # Compute similarity between the vectors
+                            similarity = cosine_similarity(s_vector, x_vector)[0][0]
+                        
+                            if similarity > simU: #max(0.82,sim):
+                        
+                                similar_k.append(similarity)
+                                deiktes.append(k)
+                                pairs_k.append((s,x,similarity,dix_org[x]))
 
-                                            q_vector = vectorizer.fit_transform([q]).toarray()
-                                            x_vector = vectorizer.transform([x]).toarray()
-
-                                # Compute similarity between the vectors
-                                            similarity = cosine_similarity(q_vector, x_vector)[0][0]
-                                            if similarity > simU:
-                                                similar_k.append(similarity)
-                                                deiktes.append(k)
-                                                pairs_k.append((s,x,similarity,dix_org[x]))
-
-                                                if k not in dix:
-                                                    dix[k] = [x]
-                                                else:
-                                                    dix[k].append(x)
-                            
-                            else: 
-
-                                s_vector = vectorizer.fit_transform([s]).toarray()
-                                x_vector = vectorizer.transform([x]).toarray()
-
-                                # Compute similarity between the vectors
-                                similarity = cosine_similarity(s_vector, x_vector)[0][0]
-                                if similarity > simU: #max(0.82,sim):
-                                    similar_k.append(similarity)
-                                    deiktes.append(k)
-                                    pairs_k.append((s,x,similarity,dix_org[x]))
-
-                                    if k not in dix:
-                                        dix[k] = [x]
-                                    else:
-                                        dix[k].append(x)
+                                if k not in dix:
+                                    dix[k] = [x]
+                                else:
+                                    dix[k].append(x)
+                        
                         elif not is_contained('univ', s) and not is_contained('univ', x):
 
                             s_vector = vectorizer.fit_transform([s]).toarray()
@@ -262,6 +243,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
 
                             # Compute similarity between the vectors
                             similarity = cosine_similarity(s_vector, x_vector)[0][0]
+                        
                             if similarity > simG: #max(0.82,sim):
                                 similar_k.append(similarity)
                                 deiktes.append(k)
