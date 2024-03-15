@@ -1,0 +1,4 @@
+pandas
+scikit-learn
+unidecode
+python-Levenshtein

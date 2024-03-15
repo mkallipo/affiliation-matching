@@ -23,17 +23,8 @@ However, I will incorporate improvements and bug fixes regularly.
 
 - `find_year`: Is a Python script that takes a JSON file as input and generates a CSV file containing the years from the issued date field and the corresponding number of DOIs.
 
+- requirements.txt
 
-## Dependencies
-
-Make sure you have the following dependencies installed before running the code:
-
-- `pandas`
-- `re`
-- `html`
-- `pickle`
-- `unicodedata`
-- `scikit-learn` (for `CountVectorizer` and `cosine_similarity`)
 
 ## Usage
 
