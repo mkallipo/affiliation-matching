@@ -29,7 +29,9 @@ However, I will incorporate improvements and bug fixes regularly.
 ##  Testing
 
 1. In the *testing* folder, run the `matching.ipynb` notebook in a Jupyter environment and provide as input the JSON file that you want to match.
-If you want to match a single affiliation string, run  instead the `find_ror.ipyn` notebook and provide the string and two thresholds, simU (for Universities) and simG (for other institutions). Example: `find_ror('university of athens', 0.8, 0.4) = [{'ROR_ID': 'https://ror.org/04gnjpq42', 'Score': 1}]`.
+If you want to match a single affiliation string, run  instead the `find_ror.ipynb` notebook and provide the string and two thresholds, simU (for Universities) and simG (for other institutions). 
+
+Example: `find_ror('university of athens', 0.8, 0.4) = [{'ROR_ID': 'https://ror.org/04gnjpq42', 'Score': 1}]`.
 
 2. The notebook will process the input JSON file and generate a the EXCEL and JSON files with the matchings between DOIs and organization ROR_ids.
 
