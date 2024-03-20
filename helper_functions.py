@@ -10,13 +10,15 @@ import pickle
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+
+################# Helper functions #################
+
 def is_contained(s, w):
     words = s.split()  # Split the string 's' into a list of words
     for word in words:
         if word not in w:  # If a word from 's' is not found in 'w'
             return False  # Return False immediately
     return True  # If all words from 's' are found in 'w', return True
-
 
 
 def avg_string(df, col):
@@ -26,6 +28,7 @@ def avg_string(df, col):
     return sum(avg)/len(avg)
 
 stop_words = ['from', 'the', 'of', 'at', 'de','for','et','für','des', 'in','as','a','and','fur','for','und']
+
 
 def remove_stop_words(text):
     words = text.split()
@@ -44,34 +47,49 @@ def replace_umlauts(text):
 
 
 def substrings_dict(string):
-    split_strings = [re.sub(r'^[\s.]+|[\s.]+$', '', s.strip()) for s in re.split(r'[,;/]', string)]
+    # Split the input string and clean each substring
+    split_strings = [s.strip() for s in re.split(r'[,;/]', string) if s.strip()]
+
+    # Define a set of university-related terms for later use
+    university_terms = {'universitetskaya', 'universitatsklinikum', 'universitatskinderklinik',
+        'universitatsspital', 'universitatskliniken', 'universitetshospital',
+        'universitatsmedizin', 'universitatsbibliothek'
+    }
+
     dict_string = {}
     index = 0
      
     for value in split_strings:
-        if value:
+        # Check if the substring contains any university-related terms
+        if not any(term in value.lower() for term in university_terms):
+            # Apply regex substitutions for common patterns
+            modified_value = re.sub(r'universi\w*', 'universi', value, flags=re.IGNORECASE)
+            modified_value = re.sub(r'institu\w*', 'institu', modified_value, flags=re.IGNORECASE)
+            modified_value = re.sub(r'centre*', 'center', modified_value, flags=re.IGNORECASE)
+            modified_value = re.sub(r'\bsaint\b', 'st', modified_value, flags=re.IGNORECASE) 
 
-            if 'universitetskaya' not in value and 'universitatsklinikum' not in value and 'universitatskinderklinik' not in value and 'universitatsspital'  not in value and 'universitatskliniken' not in value:
-                modified_value = re.sub(r'universi\w*', 'universi', value, flags=re.IGNORECASE)
-                modified_value = re.sub(r'institu\w*', 'institu', modified_value, flags=re.IGNORECASE)
-                modified_value = re.sub(r'centre*', 'center', modified_value, flags=re.IGNORECASE)
 
-                dict_string[index] = modified_value.lower() 
-                index += 1
-            elif 'universitatsklinikum'  in value or 'universitatskinderklinik'  in value or 'universitatsspital'  in value or 'universitatskliniken' in value:  
-                dict_string[index] = value.lower() 
+            # Add the modified substring to the dictionary
+            dict_string[index] = modified_value.lower() 
+            index += 1
+        elif 'universitetskaya' in value.lower():
+            index += 1
+
                 
-                index += 1
+            # Add the original substring to the dictionary
+        else:
+            dict_string[index] = value.lower() 
+            index += 1
                 
-         
-    return dict_string  
+    return dict_string
 
 
 def clean_string(input_string):
     # Replace specified characters with space
     input_string = remove_stop_words(replace_umlauts(unidecode(remove_parentheses(html.unescape(input_string.lower())))))
     result = re.sub(r'[/\-]', ' ', input_string)
-    
+    result = re.sub(r'\bsaint\b', 'st', result) 
+
     # Remove characters that are not from the Latin alphabet or numbers
     result = re.sub(r'[^a-zA-Z0-9\s,;/-]', '', result)
     
@@ -80,11 +98,13 @@ def clean_string(input_string):
     
     return result
 
+
 def clean_string_facts(input_string):
     # Replace specified characters with space
     input_string = remove_stop_words(replace_umlauts(unidecode(remove_parentheses(html.unescape(input_string.lower())))))
     result = re.sub(r'[/\-,]', ' ', input_string)
-    
+    result = re.sub(r'\bsaint\b', 'st', result) 
+
     # Remove characters that are not from the Latin alphabet or numbers
     result = re.sub(r'[^a-zA-Z0-9\s;/-]', '', result)
     
@@ -114,6 +134,7 @@ def str_radius_u(string):
         result.append(' '.join(s))
     
     return result 
+
 
 def str_radius_h(string):
     string = string.lower()
@@ -185,7 +206,8 @@ dept_list = ['district' , 'federation'  , 'government' , 'municipal' , 'county',
 
 unknown_list = ['unknown']
 
-#######   Dictionaries ##########
+
+#################   Dictionaries #################
 
 uni_dict = {k: 'Univ/Inst' for k in uni_list}   
 
@@ -208,7 +230,8 @@ unknown_dict =  {k: 'Unknown' for k in unknown_list}
 categ_dicts_list = [uni_dict, lab_dict, hospl_dict, gmbh_dict, mus_dict,  
                   found_dict, dept_dict, unknown_dict]
 
-################# Final Dictionary #####################
+
+################# Final Dictionary #################
 
 categ_dicts = {}
 i = 0
@@ -218,6 +241,7 @@ while i in range(len(categ_dicts_list)):
     
     
 
+################# Create df for the algorithm #################
 
 
 def create_df_algorithm(gendf):
@@ -375,7 +399,7 @@ def create_df_algorithm(gendf):
 
 
 
-
+################# Create df for the algorithm [facts's data] #################
 
 
 def create_df_algorithm_facts(gendf):
