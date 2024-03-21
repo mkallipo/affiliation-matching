@@ -72,8 +72,8 @@ def substrings_dict(string):
             # Add the modified substring to the dictionary
             dict_string[index] = modified_value.lower() 
             index += 1
-        elif 'universitetskaya' in value.lower():
-            index += 1
+        #elif 'universitetskaya' in value.lower():
+        #    index += 1
 
                 
             # Add the original substring to the dictionary
@@ -266,11 +266,11 @@ def create_df_algorithm(gendf):
         
     aff_df = pd.DataFrame.from_dict(aff_no_symbols_d, orient='index')
     aff_df.reset_index(inplace = True)
-    aff_df.rename(columns = {'index':'Original affiliations', 0:'Short affiliations'}, inplace = True)
+    aff_df.rename(columns = {'index':'Original affiliations', 0:'Level1 affiliations'}, inplace = True)
     
     new_aff_komma = []
 
-    for aff in list(aff_df['Short affiliations']):
+    for aff in list(aff_df['Level1 affiliations']):
         new_aff_komma.append(substrings_dict(aff))
         
         
@@ -323,7 +323,7 @@ def create_df_algorithm(gendf):
 
 
 
-    aff_df['Light affiliations'] = light_aff
+    aff_df['Level2 affiliations'] = light_aff
     aff_df['Keywords'] =  [list(d.values()) for d in new_aff_komma]
     
     affiliations_dict = {}
@@ -425,11 +425,11 @@ def create_df_algorithm_facts(gendf):
         
     aff_df = pd.DataFrame.from_dict(aff_no_symbols_d, orient='index')
     aff_df.reset_index(inplace = True)
-    aff_df.rename(columns = {'index':'Original affiliations', 0:'Short affiliations'}, inplace = True)
+    aff_df.rename(columns = {'index':'Original affiliations', 0:'Level1 affiliations'}, inplace = True)
     
     new_aff_komma = []
 
-    for aff in list(aff_df['Short affiliations']):
+    for aff in list(aff_df['Level1 affiliations']):
         new_aff_komma.append(substrings_dict(aff))
                 
         
@@ -490,7 +490,7 @@ def create_df_algorithm_facts(gendf):
   
 
 
-    aff_df['Light affiliations'] = light_aff
+    aff_df['Level2 affiliations'] = light_aff
     aff_df['Keywords'] =  [list(d.values()) for d in new_aff_komma]
     
     affiliations_dict = {}
@@ -553,7 +553,7 @@ def create_df_algorithm_facts(gendf):
 
                   
     univ_labs_df = aff_df.copy()
-    univ_labs_df.drop(columns = ['Short affiliations'], inplace = True)
+    univ_labs_df.drop(columns = ['Level1 affiliations'], inplace = True)
     
     return univ_labs_df
     

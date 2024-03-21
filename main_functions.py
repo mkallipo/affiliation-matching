@@ -15,7 +15,7 @@ def best_sim_score(l1, l2, l3, l4, simU, simG):
     ---> corrects special cases in the main map that follows
 
     Args:
-        l1: List of light affiliations.
+        l1: List of level2 affiliations.
         l2: number of candidates.
         l3: List of pairs.
         l4: mult
@@ -265,16 +265,11 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
     
     aff_id_df = pd.DataFrame()
     aff_id_df['Original affiliations'] = list(DF['Original affiliations'].iloc[list(set(deiktes))])
-
-    aff_id_df['Light affiliations'] = list(DF['Light affiliations'].iloc[list(set(deiktes))])
-
+    aff_id_df['Level1 affiliations'] = list(DF['Level1 affiliations'].iloc[list(set(deiktes))])
+    aff_id_df['Level2 affiliations'] = list(DF['Level2 affiliations'].iloc[list(set(deiktes))])
     aff_id_df['Candidates for matching'] = list(DF['Keywords'].iloc[list(set(deiktes))])
-
-
     aff_id_df['Matched organizations'] = list(dix.values())
     aff_id_df['# Matched organizations'] = [len(list(dix.values())[i]) for i in range(len(list(dix.values())))]
-    
-
     aff_id_df['Similarity score'] = similarity_ab
 
     Pairs = [lst for lst in pairs if lst]
@@ -291,7 +286,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
     ready = [i for i in range(len(aff_id_df)) if i not in need_check]
     
    
-    best = [ best_sim_score([aff_id_df['Light affiliations'].iloc[i]], len(aff_id_df['Candidates for matching'].iloc[i]), aff_id_df['Pairs'].iloc[i],aff_id_df['mult'].iloc[i], simU, simG) for i in need_check]
+    best = [ best_sim_score([aff_id_df['Level2 affiliations'].iloc[i]], len(aff_id_df['Candidates for matching'].iloc[i]), aff_id_df['Pairs'].iloc[i],aff_id_df['mult'].iloc[i], simU, simG) for i in need_check]
     best_o = []
     best_s = []
     
@@ -328,7 +323,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
                     match_found = False
 
                     for city in dix_city[x]:
-                        if city[0] in (final_df['Original affiliations'].iloc[i]).lower():
+                        if city[0] in (final_df['Level1 affiliations'].iloc[i]).lower():
                             if city[0] not in x: 
                                 id_list.append(city[1])
                                 match_found0 = True
@@ -336,7 +331,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
                                 break
                     if not match_found:
                         for city in dix_city[x]:
-                            if city[0] in   (final_df['Original affiliations'].iloc[i]).lower() and city[0] in x:
+                            if city[0] in   (final_df['Level1 affiliations'].iloc[i]).lower() and city[0] in x:
                                 id_list.append(city[1])
                                 match_found0 = True
                                 break  
@@ -345,19 +340,19 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
                         match_found3 = False
 
                         for country in dix_country[x]:
-                            if country[0] == 'united states' and (country[0] in (final_df['Original affiliations'].iloc[i]).lower() or 'usa'  in (final_df['Original affiliations'].iloc[i]).lower()):
+                            if country[0] == 'united states' and (country[0] in (final_df['Level1 affiliations'].iloc[i]).lower() or 'usa'  in (final_df['Level1 affiliations'].iloc[i]).lower()):
                                 id_list.append(country[1])
                                 match_found2 = True
                                 match_found3 = True
                                 break
                             
-                            if country[0] == 'united kingdom' and (country[0] in (final_df['Original affiliations'].iloc[i]).lower() or 'uk'  in (final_df['Original affiliations'].iloc[i]).lower()):
+                            if country[0] == 'united kingdom' and (country[0] in (final_df['Level1 affiliations'].iloc[i]).lower() or 'uk'  in (final_df['Level1 affiliations'].iloc[i]).lower()):
                                 id_list.append(country[1])
                                 match_found2 = True
                                 match_found3 = True
                                 break
 
-                            elif country[0] in (final_df['Original affiliations'].iloc[i]).lower():
+                            elif country[0] in (final_df['Level1 affiliations'].iloc[i]).lower():
 
                                 if country[0] not in x:
                                     id_list.append(country[1])
@@ -367,7 +362,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city, dix_country, simU, simG):
 
                         if not match_found3:
                             for country in dix_country[x]:
-                                if country[0] in (final_df['Original affiliations'].iloc[i]).lower() and country[0] in x:
+                                if country[0] in (final_df['Level1 affiliations'].iloc[i]).lower() and country[0] in x:
                                     id_list.append(country[1])
                                     match_found2 = True
 
