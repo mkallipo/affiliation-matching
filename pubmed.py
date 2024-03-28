@@ -27,7 +27,6 @@ import sys
 import Levenshtein
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from concurrent.futures import ProcessPoolExecutor,wait,ALL_COMPLETED
 
 from helper_functions import *
 from main_functions import *
