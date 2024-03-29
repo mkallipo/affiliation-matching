@@ -553,7 +553,6 @@ def create_df_algorithm_facts(gendf):
 
                   
     univ_labs_df = aff_df.copy()
-    univ_labs_df.drop(columns = ['Level1 affiliations'], inplace = True)
     
     return univ_labs_df
     
