@@ -1,6 +1,6 @@
 # Affiliation-Matching Repository
 
-This repository contains code and data for matching DOIs of Crossref / Pubmed / DataCite with organization IDs from the ROR (https://ror.org) database.
+This repository contains code for matching DOIs of Crossref / Pubmed / DataCite data with organization IDs from the ROR (https://ror.org) database.
 
 🚀 As it is still a work in progress, *the repository may not always be up-to-date*. 
 However, I will incorporate improvements and bug fixes regularly. 
@@ -11,7 +11,7 @@ However, I will incorporate improvements and bug fixes regularly.
 
 - `main_functions.py` contains the main algorithm.
 
-- `dictionaries/dix_acad.pkl`: This file is a pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database. The corresponding values are the ROR PIDs (Persistent Identifiers) associated with each organization.
+- `dictionaries/dix_acad.pkl`: This file is a pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database. The corresponding values are the ROR ids associated with each organization.
 
 - `dictionaries/dix_mult`, `dictionaries/dix_city`, `dictionaries/dix_country`: three more pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database, necessary in the case where different organizations share the same name.
   
@@ -34,27 +34,7 @@ Example: `find_ror('university of athens', 0.8, 0.4) = [{'ROR_ID': 'https://ror.
 
 ## Description of the algorithm
 
-### Goal: Recognize openAIRE's organizations inside the Crossref's data and match to each DOI the corresponding ROR ids
-
-__Input__: A JSON file from Crossref's data. Here is an example of the part where the affiliations and DOI information is found. 
-> `'author': [{'given': 'Orlando',
-   'family': 'Maeso',
-   'sequence': 'first',
-   'affiliation': [{'name': 'Escuela Técnica Superior de Ingenieros Industriales, Univ. de Las Palmas de Gran Canaria, Tafira Baja, 35017-Las Palmas de Gran Canaria, Spain.'}]},
-  {'given': 'Juan J.',
-   'family': 'Aznárez',
-   'sequence': 'additional',
-   'affiliation': [{'name': 'Escuela Técnica Superior de Ingenieros Industriales, Univ. de Las Palmas de Gran Canaria, Tafira Baja, 35017-Las Palmas de Gran Canaria, Spain.'}]},
-  {'given': 'José',
-   'family': 'Domnguez',
-   'sequence': 'additional',
-   'affiliation': [{'name': 'Escuela Superior de Ingenieros, Univ. de Sevilla, Camino de los Descubrimientos s/n, 41092-Sevilla, Spain.'}]}],
- 'DOI': '10.1061/(asce)0733-9399(2002)128:7(759)`
-
-
-__Output__: A JSON file containing DOIs from Crossref's data and their matchings to ROR ids the corresponding confidence scores, for example: 
->`{"DOI":"10.1061\/(asce)0733-9399(2002)128:7(759)","Matchings":[{"RORid":["https:\/\/ror.org\/01teme464"],"Confidence":0.73},{"RORid":["https:\/\/ror.org\/03yxnpp24"],"Confidence":0.7071067812}]}`.
-
+### Goal: Identify organizations inside a raw affiliation string and match the corresponding ROR ids.
 
 ### Steps:
 
