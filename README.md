@@ -7,7 +7,7 @@ However, I will incorporate improvements and bug fixes regularly.
 
 ## Main files
 
-- `crossref.py`, 'pubmed.py', 'datacite.py' are python scripts designed to meet the unique needs of the corresponding data source.
+- `crossref.py`, `pubmed.py`, `datacite.py` are python scripts, designed to meet the unique needs of the corresponding data source.
 
 - `main_functions.py` contains the main algorithm.
 
