@@ -1,6 +1,6 @@
 # Affiliation-Matching Repository
 
-This repository contains code and data for matching DOIs of Crossref JSON files with organization IDs from the OpenAIRE (https://www.openaire.eu) or ROR (https://ror.org) database.
+This repository contains code and data for matching DOIs of Crossref / Pubmed / DataCite with organization IDs from the ROR (https://ror.org) database.
 
 🚀 As it is still a work in progress, *the repository may not always be up-to-date*. 
 However, I will incorporate improvements and bug fixes regularly. 
@@ -15,8 +15,6 @@ However, I will incorporate improvements and bug fixes regularly.
 
 - `dictionaries/dix_mult`, `dictionaries/dix_city`, `dictionaries/dix_country`: three more pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database, necessary in the case where different organizations share the same name.
   
-- `testing/matching.ipynb`: Is a Jupyter Notebook for testing the code. In addition to the JSON file (`dois_match.json`) it returns two EXCEL files (`affis_match.xlx` and `dois_match.xlx` respectively), one with the distinct affiliations of the JSON input, the matched organizations and the corresponding similarity scores and one with the DOIs of the JSON input and the matched organizations and the similarity scores.
-
 - `testing/sample.json`: Is a sample of 1000 DOIs obtained from 300 json files from the Crossref database, which can be used for testing and validation purposes.
   
 - `testing/dois_match.json`, `testing/affs_match.xlx` and `testing/dois_match.xlx`: The outputs for the `testing/sample.json` file as described above.
@@ -28,10 +26,7 @@ However, I will incorporate improvements and bug fixes regularly.
 
 ##  Testing
 
-In the *testing* folder, run the `matching.ipynb` notebook in a Jupyter environment and provide as input the JSON file that you want to match. 
-The notebook will process the input JSON file and generate a the EXCEL and JSON files with the matchings between DOIs and organization ROR_ids.
-
-If you want to match a single affiliation string, run instead the `find_ror.ipynb` notebook and provide the string and two thresholds, simU (for Universities) and simG (for other institutions). 
+If you want to match a single affiliation string, run the `find_ror.ipynb` notebook and provide the string and two thresholds, simU (for Universities) and simG (for other institutions). 
 
 Example: `find_ror('university of athens', 0.8, 0.4) = [{'ROR_ID': 'https://ror.org/04gnjpq42', 'Score': 1}]`.
 
