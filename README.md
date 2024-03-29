@@ -7,7 +7,7 @@ However, I will incorporate improvements and bug fixes regularly.
 
 ## Main files
 
-- `dois_to_rors.py`: This is the main code for the matching process. It takes JSON files in .tar.gz format as input and returns a JSON with matchings between the DOIs of the JSONs and ROR_ids of organizations in the ROR database. The organizations include universities, institutions, hospitals, labs, foundations.
+- `crossref.py`, 'pubmed.py', 'datacite.py' are python scripts designed to meet the unique needs of the corresponding data source.
 
 - `main_functions.py` contains the main algorithm.
 
