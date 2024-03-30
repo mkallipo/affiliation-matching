@@ -20,6 +20,19 @@ from helper_functions import *
 from main_functions import *
 
 
+with open('dictionaries/dix_acad.pkl', 'rb') as f:
+    dix_acad = pickle.load(f)
+
+with open('dictionaries/dix_mult.pkl', 'rb') as f:
+    dix_mult = pickle.load(f)
+
+with open('dictionaries/dix_city.pkl', 'rb') as f:
+    dix_city = pickle.load(f)
+    
+with open('dictionaries/dix_country.pkl', 'rb') as f:
+    dix_country = pickle.load(f)
+    
+
 def do(name, crossref_df):
     try: 
         print("processing file:" + name)
@@ -131,22 +144,6 @@ def do(name, crossref_df):
         doi_df['Unique affiliations'] = new_aff_list
 
         academia_df = create_df_algorithm(doi_df)
-
-
-
-
-        with open('dictionaries/dix_acad.pkl', 'rb') as f:
-            dix_acad = pickle.load(f)
-        
-        with open('dictionaries/dix_mult.pkl', 'rb') as f:
-            dix_mult = pickle.load(f)
-        
-        with open('dictionaries/dix_city.pkl', 'rb') as f:
-            dix_city = pickle.load(f)
-            
-        with open('dictionaries/dix_country.pkl', 'rb') as f:
-            dix_country = pickle.load(f)
-
             
             
         result = Aff_Ids(len(academia_df), academia_df, dix_acad, dix_mult, dix_city, dix_country, 0.65,0.87)
