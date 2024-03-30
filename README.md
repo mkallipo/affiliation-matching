@@ -15,9 +15,6 @@ However, I will incorporate improvements and bug fixes regularly.
 
 - `dictionaries/dix_mult`, `dictionaries/dix_city`, `dictionaries/dix_country`: three more pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database, necessary in the case where different organizations share the same name.
   
-- `testing/sample.json`: Is a sample of 1000 DOIs obtained from 300 json files from the Crossref database, which can be used for testing and validation purposes.
-  
-- `testing/dois_match.json`, `testing/affs_match.xlx` and `testing/dois_match.xlx`: The outputs for the `testing/sample.json` file as described above.
 
 
 
@@ -26,10 +23,11 @@ However, I will incorporate improvements and bug fixes regularly.
 
 ##  Testing
 
-If you want to match a single affiliation string, run the `find_ror.ipynb` notebook and provide the string and two thresholds, simU (for Universities) and simG (for other institutions). 
+If you want to match a single affiliation string, run the `find_ror.ipynb` notebook  of the _testing_ folder by providing the string and two thresholds, simU (for Universities) and simG (for other institutions). 
 
 Example: `find_ror('university of athens', 0.8, 0.4) = [{'ROR_ID': 'https://ror.org/04gnjpq42', 'Score': 1}]`.
 
+In the same folder you will find `testing/sample.json`, which is a sample of 1000 DOIs obtained from 300 json files from the Crossref database, that can be used for testing and validation purposes. For this, run the `testing/crossref.ipynb' notebook. It will produce the files `testing/dois_match.json`, `testing/affs_match.csv` and `testing/dois_match.csv`.
 
 
 ## Description of the algorithm
