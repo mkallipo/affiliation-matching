@@ -1,4 +1,4 @@
-# Affiliation-Matching Repository
+# Affiliation-Matching Repository \[aka AffRo\]
 
 This repository contains code for matching DOIs of Crossref / Pubmed / DataCite data with organization IDs from the ROR (https://ror.org) database.
 
