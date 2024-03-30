@@ -27,7 +27,7 @@ If you want to match a single affiliation string, run the `find_ror.ipynb` noteb
 
 Example: `find_ror('university of athens', 0.8, 0.4) = [{'ROR_ID': 'https://ror.org/04gnjpq42', 'Score': 1}]`.
 
-In the same folder you will find `testing/sample.json`, which is a sample of 1000 DOIs obtained from 300 json files from the Crossref database, that can be used for testing and validation purposes. For this, run the `testing/crossref.ipynb' notebook. It will produce the files `testing/dois_match.json`, `testing/affs_match.csv` and `testing/dois_match.csv`.
+In the same folder you will find `testing/sample.json`, which is a sample of 1000 DOIs obtained from 300 json files from the Crossref database. Run the `testing/crossref.ipynb` notebook. It will produce the files `testing/dois_match.json`, `testing/affs_match.csv` and `testing/dois_match.csv`.
 
 
 ## Description of the algorithm
