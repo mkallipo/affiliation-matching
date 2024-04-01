@@ -30,13 +30,13 @@ with open('dictionaries/dix_country.pkl', 'rb') as f:
     dix_country = pickle.load(f)
 
     
-folder_path = '/data/crossref/datacite_dump'  
+folder_path = '/data/crossref/datacite_dump'
 
-df_list = [pd.read_parquet('data/'+filename) for filename in os.listdir(folder_path)]
-
+df_list = [ folder_path + "/" + filename for filename in os.listdir(folder_path)]
 
 def parquet_to_json(p):
-    datacite = df_list[p]
+    print(p)
+    datacite = pd.read_parquet(p)
     affiliations = [json.loads(datacite['json'].iloc[i])['attributes']['creators'] for i in range(len(datacite))]
 
     affiliations1 = []
@@ -185,7 +185,7 @@ if __name__ == '__main__':
     numberOfThreads = int(sys.argv[1])
     executor = ProcessPoolExecutor(max_workers=numberOfThreads)
 
-    futures = [executor.submit(parquet_to_json, p) for p in range(0, len(df_list))]
+    futures = [executor.submit(parquet_to_json, p) for p in df_list]
     done, not_done = wait(futures)
     print(not_done)
     
