@@ -13,8 +13,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 ##import functions
 
-from helper_functions import *
-from main_functions import *
+from create_input import *
+from affro import *
 
 
 with open('dictionaries/dix_acad.pkl', 'rb') as f:

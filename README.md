@@ -9,14 +9,13 @@ However, I will incorporate improvements and bug fixes regularly.
 
 - `crossref.py`, `pubmed.py`, `datacite.py` are python scripts, designed to meet the unique needs of the corresponding data source.
 
-- `main_functions.py` contains the main algorithm.
+- `affro.py` contains the main algorithm.
 
 - `dictionaries/dix_acad.pkl`: This file is a pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database. The corresponding values are the ROR ids associated with each organization.
 
 - `dictionaries/dix_mult`, `dictionaries/dix_city`, `dictionaries/dix_country`: three more pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database, necessary in the case where different organizations share the same name.
   
-
-
+- `dictionaries/categ_dicts.pkl`: the strings to be used as keywords. They are divided in the categories "Univ/Inst", "Laboratory", "Hospital", "Company", "Museum", "Government" "Foundation", "Specific", and "Rest".
 
 - `requirements.txt`.
 
@@ -37,7 +36,7 @@ In the same folder you will find `testing/sample.json`, which is a sample of 100
 ### Steps:
 
 1. **Data Preprocessing:** The affiliations' strings are imported and undergo cleaning, tokenization, and removal of stopwords.
-2. **Categorization:** Data preprocessing has already been conducted on ROR's data, involving the analysis of word frequency ('keywords') within the legal names of ROR's organizations to define specific categories. These categories include "Univ/Inst," "Laboratory," "Hospital," "Company," "Museum," "Government," "Foundation," and "Rest". ROR's organizations have subsequently been assigned to these categories based on their legal names. The algorithm employs a similar approach to categorize affiliations into these same groups.
+2. **Categorization:** Data preprocessing has already been conducted on ROR's data, involving the analysis of word frequency ('keywords') within the legal names of ROR's organizations to define specific categories. These categories include "Univ/Inst", "Laboratory", "Hospital", "Company", "Museum", "Government", "Foundation",  "Specific", and "Rest". ROR's organizations have subsequently been assigned to these categories based on their legal names. The algorithm employs a similar approach to categorize affiliations into these same groups.
 4. **Filtering:** Almost 40\% of the organizations in the ROR’s database lie in the category "Rest". More than 80\% of Crossref's affiliations lie in the categories "Univ/Inst", "Laboratory", "Hospital", and "Foundation". At the moment the algorithm focuses on these cases and excludes the ROR's organizations labeled as "Rest". This reduces significantly the dataset we need to search.
 5. **String Shortening:** The objective is to extract pertinent details from each affiliation string. The algorithm divides the string whenever a comma (,) or semicolon (;) is detected. It then applies specific 'rules' to these segments and retains only those containing relevant keywords. Additionally, it trims down the segments by preserving words in proximity to particular keywords like "university," "institute," "laboratory," or "hospital." As a result, the average string length is reduced from 90 to 35 characters.
 6. **Matching with ROR's Database:** The algorithm checks whether a substring containing a keyword is linked to a legal name or to an alternative name in the organizations listed in the ROR's database. In order to identify the most accurate match, the algorithm employs cosine similarity. For strings containing "universi," a similarity threshold of 0.64 is employed, while for all other keywords, the threshold is set at 0.87. Although alternative methods like Levenshtein Distance or Jaro-Winkler Distance were considered for measuring string similarity, it was concluded that cosine similarity was the most appropriate choice for this specific application.

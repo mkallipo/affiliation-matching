@@ -1,4 +1,5 @@
 pandas
+pickle
 scikit-learn
 unidecode
 python-Levenshtein

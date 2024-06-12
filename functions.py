@@ -23,7 +23,7 @@ stop_words = load_txt('stop_words.txt')
 university_terms = load_txt('university_terms.txt')
 city_names = load_txt('city_names.txt')
 
-categ_dicts = load_pickled_dict('categ_dicts.pkl')
+categ_dicts = load_pickled_dict('dictionaries/categ_dicts.pkl')
 
 
 def is_contained(s, w):
