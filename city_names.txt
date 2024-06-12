@@ -1,0 +1,584 @@
+galway
+maynooth
+duluth
+port arthur
+new orleans
+paterson
+santa barbara
+thornton
+westminster
+north las vegas
+stockton
+marysville
+fitchburg
+tallinn
+fargo
+seaside
+manaus
+porto
+quebec city
+hialeah
+normal
+kansas city
+delhi
+fort worth
+palermo
+olathe
+madison
+santa maria
+youngstown
+allentown
+santa clara
+charlotte
+agra
+palmdale
+kraków
+bendigo
+high point
+washington
+dallas
+grand prairie
+plano
+leipzig
+bratislava
+seville
+puebla
+lucknow
+toowoomba
+santa rosa
+sioux falls
+flint
+kissimmee
+lacey
+brownsville
+palm springs
+tyler
+minsk
+san diego
+los angeles
+edmonton
+college station
+toulouse
+garland
+florence
+saskatoon
+albury-wodonga
+newburgh
+danbury
+deltona
+south bend
+nagpur
+pomona
+memphis
+london
+lincoln
+chandler
+adelaide
+salt lake city
+edinburgh
+suzhou
+grayslake
+new york city
+kanpur
+brussels
+okayama
+tuscaloosa
+clarksville
+jackson
+boise city
+canton
+louisville
+varanasi
+columbus
+lorain
+vadodara
+orem
+chennai
+townsville
+eindhoventoronto
+wuhan
+norman
+winter haven
+eugene
+riga
+hamamatsu
+fresno
+lake charles
+budapest
+mobile
+lowell
+vienna
+tallahassee
+nanjing
+new haven
+sacramento
+leeds
+harlingen
+springdale
+perth
+sendai
+utica
+orange
+baltimore
+rochester
+rancho cucamonga
+bellevue
+fort wayne
+modesto
+pristina
+nuremberg
+stuttgart
+indore
+murfreesboro
+nottingham
+scranton
+lancaster
+abilene
+monterey
+sioux city
+bari
+chula vista
+ahmedabad
+north port
+helsinki
+leominster
+ocala
+sarajevo
+hangzhou
+roanoke
+new york
+bethlehem
+dublin
+sunshine coast
+pune
+billings
+changchunsydney
+garden grove
+port orange
+pittsburgh
+new bedford
+hiroshima
+san francisco
+sheffield
+chongqing
+layton
+pueblo
+chengdu
+cincinnati
+erie
+lansing
+ljubljana
+st louis
+rio de janeiro
+philadelphia
+tacoma
+bel air
+chesapeake
+davenport
+las vegas
+nagasaki
+kitchener
+boulder
+roseville
+evansville
+victoria
+burbank
+sofia
+santa clarita
+san buenaventura
+savannah
+apple valley
+brighton
+coral springs
+huntsville
+fort lauderdale
+warsaw
+antioch
+medford
+visalia
+frankfurt
+joliet
+curitiba
+mcallen
+seattle
+alexandria
+bryan
+moreno valley
+berlin
+olympia
+caracas
+tianjin
+cleveland
+des moines
+prague
+fukuoka
+burlington
+bhopal
+nara
+hampton
+jefferson
+chicago
+temecula
+paris
+gilbert
+bradenton
+champaign
+munich
+amsterdam
+raleigh
+atlanta
+lakeland
+denver
+round lake beach
+richmond
+buffalo
+phoenix
+antwerp
+greenbay
+milwaukee
+south lyon
+concord
+vero beach
+newcastle
+podgorica
+monterrey
+shantou
+costa mesa
+copenhagen
+vilnius
+dalian
+bristol
+salinas
+belgrade
+waterloo
+henderson
+hayward
+hickory
+el monte
+lima
+redding
+mexico city
+cary
+kennewick
+guayaquil
+tirana
+kawasaki
+greensboro
+west covina
+amarillo
+saitama
+new london
+recife
+manchester
+rockford
+kelowna
+hagerstown
+bordeaux
+york
+kaneohe
+tucson
+gainesville
+kalamazoo
+bogotá
+reading
+virginia beach
+guadalajara
+albany
+durham
+green bay
+oceanside
+montreal
+turin
+malaga
+oshawa
+mesa
+pensacola
+boise
+bonita springs
+fort walton beach
+port saint lucie
+reykjavik
+north charleston
+newark
+reno
+knoxville
+bakersfield
+oslo
+omaha
+milan
+cambridge
+norwich
+shanghai
+naples
+victorville
+zagreb
+norwalk
+huntington beach
+clarke county
+lubbock
+yakima
+warren
+bucharest
+simi valley
+greenville
+racine
+salvador
+elk grove
+orlando
+windsor
+santa cruz
+saginaw
+ballarat
+muskegon
+shreveport
+clearwater
+merced
+boston
+basel
+elizabeth
+panama city
+okinawa
+sarasota
+zurich
+glendale
+wilmington
+pompano beach
+guangzhou
+fairfield
+hyderabad
+santiago
+nashville
+mchenry
+ann arbor
+carrollton
+hollywood
+laredo
+rome
+san bernardino
+bergen
+springfield
+winnipeg
+corona
+surat
+long beach
+nagoya
+toledo
+geelong
+kenosha
+sterling heights
+lisbon
+myrtle beach
+nashua
+riverside
+tampa
+bangalore
+richland
+rotterdam
+lyon
+scottsdale
+berkeley
+bologna
+cedar rapids
+syracuse
+tulsa
+ludhiana
+hemet
+portland
+mission viejo
+salem
+overland park
+detroit
+jinan
+osaka
+grand rapids
+jersey city
+kailua
+venice
+darwin
+miramar
+gulfport-biloxi
+huntington
+portsmouth
+worcester
+sunnyvale
+escondido
+college park
+thousand oaks
+harbin
+belfast
+yonkers
+alicante
+barnstable
+kitakyushu
+sapporo
+ogden
+aurora
+palm bay
+düsseldorf
+hobart
+irvine
+st johns
+hamburg
+provo
+melbourne
+madrid
+zhengzhou
+asheville
+patna
+inglewood
+houston
+newport news
+west valley city
+oklahoma city
+brisbane
+valencia
+pasadena
+aberdeen
+st petersburg
+lakewood
+irving
+naperville
+miami
+topeka
+downey
+genoa
+lewisville
+birmingham
+xian
+saint paul
+bremerton
+corpus christi
+daytona beach
+st paul
+oxnard
+murrieta
+lafayette
+montgomery
+baton rouge
+skopje
+cathedral city
+spartanburg
+canberra
+arvada
+hesperia
+port st lucie
+saint louis
+bridgeport
+tempe
+quito
+chattanooga
+bremen
+gold coast
+cairns
+beaumont
+elkhart
+peoria
+calgary
+honolulu
+havre de grace
+hamilton
+fullerton
+daly city
+dresden
+belem
+ottawa
+regina
+chiba
+fort collins
+indianapolis
+mumbai
+killeen
+sao paulo
+jaipur
+fremont
+zaragoza
+charleston
+waco
+kobe
+odessa
+monroe
+vallejo
+marseille
+qingdao
+frederick
+marina
+sebastian
+oakland
+pembroke pines
+san antonio
+kyoto
+colorado springs
+el paso
+shenyang
+punta gorda
+fort smith
+richmond county
+waterbury
+shenzhen
+albuquerque
+jacksonville
+minneapolis
+fortaleza
+denton
+gastonia
+fayetteville
+bloomington
+houma
+santa ana
+kolkata
+las cruces
+barcelona
+arlington
+niigata
+norfolk
+fontana
+providence
+santo domingo
+vancouver
+appleton
+san jose
+hartford
+winston
+barrie
+glasgow
+davidson county
+yokohama
+independence
+athens
+harrisburg
+macon
+torrance
+launceston
+cape coral
+austin
+little rock
+cologne
+mesquite
+catania
+stockholm
+nice
+stamford
+buenos aires
+columbia
+anchorage
+dayton
+wollongong
+halifax
+verona
+anaheim
+kiev
+augusta
+tokyo
+akron
+lexington
+wichita
+saint petersburg
+beijing
+johnson city
+spokane
+liverpool
+howell
+poughkeepsie
+ontario
+atlantic city
+trenton
