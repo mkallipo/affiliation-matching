@@ -39,6 +39,9 @@ def starts_with_any(string, prefixes):
             return [True, prefix]
     return False
 
+def remove_leading_numbers(s):
+    return re.sub(r'^\d+', '', s)
+
 def remove_outer_parentheses(string):
     """Remove outer parentheses from the string if they enclose the entire string."""
     if string.startswith('(') and string.endswith(')'):
@@ -71,10 +74,41 @@ def replace_umlauts(text):
     replaced_text = ''.join(c for c in normalized_text if not unicodedata.combining(c))
     return replaced_text
 
+def protect_phrases(input_string, phrases):
+    # Replace phrases with placeholders
+    placeholder_map = {}
+    for i, phrase in enumerate(phrases):
+        placeholder = f"__PLACEHOLDER_{i}__"
+        placeholder_map[placeholder] = phrase
+        input_string = input_string.replace(phrase, placeholder)
+    return input_string, placeholder_map
+
+def restore_phrases(split_strings, placeholder_map):
+    # Restore placeholders with original phrases
+    restored_strings = []
+    for s in split_strings:
+        for placeholder, phrase in placeholder_map.items():
+            s = s.replace(placeholder, phrase)
+        restored_strings.append(s)
+    return restored_strings
+
+def split_string_with_protection(input_string, protected_phrases):
+    # Step 1: Protect specific phrases
+    input_string, placeholder_map = protect_phrases(input_string, protected_phrases)
+    
+    # Step 2: Split the string on specified delimiters
+    split_strings = [s.strip() for s in re.split(r'[,;/]| – ', input_string) if s.strip()]
+    
+    # Step 3: Restore protected phrases
+    split_strings = restore_phrases(split_strings, placeholder_map)
+    
+    return split_strings
+
+protected_phrases1 = ["university california, "+x for x in city_names] + ['national university ireland, '+x for x in city_names] + ['university college, '+x for x in city_names]
 
 def substrings_dict(string):
     # Split the input string and clean each substring
-    split_strings = [s.strip() for s in re.split(r'[,;/]', string) if s.strip()]
+    split_strings =  split_string_with_protection(string, protected_phrases1)
 
     # Define a set of university-related terms for later use
     university_terms = {'universitetskaya', 'universitatsklinikum', 'universitatskinderklinik',
@@ -112,17 +146,33 @@ def substrings_dict(string):
 
 
 def clean_string(input_string):
-    # Replace specified characters with space
+    # Temporarily replace " - " with a unique placeholder
+    placeholder = "placeholder"
+  #  input_string = input_string.replace(" - ", placeholder)
+    input_string = input_string.replace(" – ", placeholder)
+
+    # Unescape HTML entities and convert to lowercase
     input_string = remove_stop_words(replace_umlauts(unidecode(remove_parentheses(html.unescape(input_string.lower())))))
+    
+    # Normalize unicode characters (optional, e.g., replace umlauts)
+    input_string = unidecode(input_string)
+    
+    # Replace `/` and `–` with space (do not replace hyphen `-`)
     result = re.sub(r'[/\-]', ' ', input_string)
-    result = re.sub(r'\bsaint\b', 'st', result) 
-    # Remove characters that are not from the Latin alphabet or numbers
-    result = re.sub(r'[^a-zA-Z0-9\s,;/-]', '', result)
+    
+    # Replace "saint" with "st"
+    result = re.sub(r'\bsaint\b', 'st', result)
+    
+    # Remove characters that are not from the Latin alphabet, numbers, or allowed punctuation
+    result = re.sub(r'[^a-zA-Z0-9\s,;/]', '', result)
+    
+    # Restore the " - " sequence from the placeholder
+    result = result.replace(placeholder, " – ")
     
     # Replace consecutive whitespace with a single space
     result = re.sub(r'\s+', ' ', result)
     
-    return result
+    return result.strip()  # Strip leading/trailing spaces
 
 
 def clean_string_facts(input_string):
@@ -161,6 +211,26 @@ def str_radius_u(string):
     
     return result 
 
+def str_radius_coll(string):
+    string = string.lower()
+    radius = 1
+    
+    str_list = string.split()
+    indices = []
+    result = []
+
+    for i, x in enumerate(str_list):
+        if is_contained('coll',x):
+            indices.append(i)
+  
+    for r0 in indices:
+        lmin =max(0,r0-radius)
+        lmax =min(r0+radius, len(str_list))
+        s = str_list[lmin:lmax]
+        
+        result.append(' '.join(s))
+    
+    return result 
 
 def str_radius_h(string):
     string = string.lower()
@@ -224,6 +294,8 @@ def shorten_keywords(affiliations_simple):
         for str in aff:
             if 'universi' in str:
                 inner.extend(str_radius_u(str))
+            elif 'coll' in str and 'trinity' in str:
+                inner.extend(str_radius_coll(str))
             elif 'hospital' in str or 'hopita' in str:
                 inner.extend(str_radius_h(str))
             elif 'clinic' in str or 'klinik' in str:

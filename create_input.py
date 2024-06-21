@@ -64,21 +64,21 @@ def create_df_algorithm(gendf):
                     if not is_contained('univ', dict_[i]):
                         del dict_[i]
     
-        if len(dict_) > 1:
-            dict_ = {i: list(dict_.values())[i] for i in range(len(dict_))}
-            dict_[len(dict_)+1] = '.'
+        # if len(dict_) > 1:
+        #     dict_ = {i: list(dict_.values())[i] for i in range(len(dict_))}
+        #     dict_[len(dict_)+1] = '.'
 
-            i = 0
-            while i < len(dict_) - 1:  # Ensure there's at least one element after the current one
-                try:
-                    if 'universi' in dict_[i] and starts_with_any(dict_[i + 1], ['dublin', 'cork', 'limerick', 'galway', 'waterford','maynooth'])[0] and dict_[i].split(' ')[-1] not in city_names and  starts_with_any(dict_[i + 1], ['dublin', 'cork', 'limerick', 'galway', 'waterford','maynooth'])[1] not in dict_[i]:
-                        dict_[i] = dict_[i] + ' ' + dict_[i + 1]
-                        dict_.pop(i + 1)
-                        i += 2
-                    else:
-                        i += 1
-                except:
-                    i += 1  
+        #     i = 0
+        #     while i < len(dict_) - 1:  # Ensure there's at least one element after the current one
+        #         try:
+        #             if 'universi' in dict_[i] and starts_with_any(dict_[i + 1], ['dublin', 'cork', 'limerick', 'galway', 'waterford','maynooth'])[0] and dict_[i].split(' ')[-1] not in city_names and  starts_with_any(dict_[i + 1], ['dublin', 'cork', 'limerick', 'galway', 'waterford','maynooth'])[1] not in dict_[i]:
+        #                 dict_[i] = dict_[i] + ' ' + dict_[i + 1]
+        #                 dict_.pop(i + 1)
+        #                 i += 2
+        #             else:
+        #                 i += 1
+        #         except:
+        #             i += 1  
         new_aff_komma_1.append(dict_)
 
 
