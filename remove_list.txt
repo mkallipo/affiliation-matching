@@ -23,3 +23,5 @@ universi 1
 ciudad universi
 universi campus
 universi hospitals
+college
+universi road

@@ -108,7 +108,7 @@ protected_phrases1 = ["university california, "+x for x in city_names] + ['natio
 
 def substrings_dict(string):
     # Split the input string and clean each substring
-    split_strings =  split_string_with_protection(string, protected_phrases1)
+    split_strings =  split_string_with_protection(string.replace('univ coll', 'university college'), protected_phrases1)
 
     # Define a set of university-related terms for later use
     university_terms = {'universitetskaya', 'universitatsklinikum', 'universitatskinderklinik',
@@ -128,7 +128,6 @@ def substrings_dict(string):
             modified_value = re.sub(r'institu\w*', 'institu', modified_value, flags=re.IGNORECASE)
             modified_value = re.sub(r'centre*', 'center', modified_value, flags=re.IGNORECASE)
             modified_value = re.sub(r'\bsaint\b', 'st', modified_value, flags=re.IGNORECASE) 
-            modified_value = re.sub(r'\buniv coll\b', 'universi college', modified_value, flags=re.IGNORECASE)
             modified_value = re.sub(r'\btrinity coll\b', 'trinity college', modified_value, flags=re.IGNORECASE)
 
             # Add the modified substring to the dictionary
