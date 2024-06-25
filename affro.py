@@ -373,7 +373,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
                                 break
                     if not match_found:
                         for city in dix_city_ror[x]:
-                            if city[0] in   (final_df['Level1 affiliations'].iloc[i]).lower() and city[0] in x:
+                            if city[0] in   (final_df['Level1 affiliations'].iloc[i]).lower() and city[0] not in x:
                                 id_list.append(city[1])
                                 match_found0 = True
                                 break  

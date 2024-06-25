@@ -63,6 +63,9 @@ def create_df_algorithm(gendf):
                 elif is_contained('inst',dict_[i]) and (is_contained('school', dict_[i+1]) or is_contained('dep', dict_[i+1]) or is_contained('acad', dict_[i+1]) or is_contained('hosp', dict_[i+1]) or is_contained('clin', dict_[i+1]) or is_contained('klin', dict_[i+1])  or is_contained('fak', dict_[i+1]) or is_contained('fac', dict_[i+1]) or is_contained('cent', dict_[i+1]) or is_contained('div', dict_[i+1])):
                     if not is_contained('univ', dict_[i]):
                         del dict_[i]
+                elif is_contained('school',dict_[i]) and is_contained('college', dict_[i+1]):
+                    if not is_contained('univ', dict_[i]):
+                        del dict_[i]
     
         # if len(dict_) > 1:
         #     dict_ = {i: list(dict_.values())[i] for i in range(len(dict_))}

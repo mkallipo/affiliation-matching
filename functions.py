@@ -104,12 +104,24 @@ def split_string_with_protection(input_string, protected_phrases):
     
     return split_strings
 
-protected_phrases1 = ["university california, "+x for x in city_names] + ['national university ireland, '+x for x in city_names] + ['university college, '+x for x in city_names]
+protected_phrases1 = ["university california, "+x for x in city_names] + ['national univ ireland, '+x for x in city_names]+ ['national university ireland, '+x for x in city_names] + ['university college, '+x for x in city_names]
+
+replacements = {
+    'univ coll': 'university college',
+    'belfield, dublin': 'dublin',
+    'ballsbridge, dublin': 'dublin',
+    'earlsfort Terrace, dublin': 'dublin'
+}
+
 
 def substrings_dict(string):
     # Split the input string and clean each substring
-    split_strings =  split_string_with_protection(string.replace('univ coll', 'university college'), protected_phrases1)
+   # split_strings =  split_string_with_protection(string.replace('univ coll', 'university college').replace('belfield, dublin', 'dublin').replace('ballsbridge, dublin', 'dublin').replace('earlsfort Terrace, dublin', 'dublin'), protected_phrases1)
+    
+    for old, new in replacements.items():
+        string = string.replace(old, new)
 
+    split_strings = split_string_with_protection(string, protected_phrases1)
     # Define a set of university-related terms for later use
     university_terms = {'universitetskaya', 'universitatsklinikum', 'universitatskinderklinik',
         'universitatsspital', 'universitatskliniken', 'universitetshospital',
