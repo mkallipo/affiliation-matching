@@ -104,7 +104,19 @@ def split_string_with_protection(input_string, protected_phrases):
     
     return split_strings
 
-protected_phrases1 = ["university california, "+x for x in city_names] + ['national univ ireland, '+x for x in city_names]+ ['national university ireland, '+x for x in city_names] + ['university college, '+x for x in city_names]
+protected_phrases1 = [
+    phrase.format(x=x)
+    for x in city_names
+    for phrase in [
+        'university california, {x}',
+        'university college hospital, {x}',
+        'national univ ireland, {x}',
+        'national university ireland, {x}',
+        'university college, {x}',
+        'university college , {x}',
+        'university hospital, {x}'
+    ]
+]
 
 replacements = {
     'univ coll': 'university college',
@@ -286,7 +298,18 @@ def str_radius_c(string):
     
     return result 
 
-
+def str_radius_spec(string):
+    spec = False
+    for x in string.split():
+        try:
+            if categ_dicts[x] == 'Specific':
+                spec = True
+                return x
+        except:
+            pass
+    if spec == False:
+        return string        
+        
 def avg_string(df, col):
     avg = [] 
     for i in range(len(df)):
@@ -312,7 +335,7 @@ def shorten_keywords(affiliations_simple):
             elif 'clinic' in str or 'klinik' in str:
                 inner.extend(str_radius_c(str))
             else:
-                inner.append(str)
+                inner.append(str_radius_spec(str))
 
         affiliations_simple_n.append(inner)
 

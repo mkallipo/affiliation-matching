@@ -51,7 +51,7 @@ def create_df_algorithm(gendf):
                     del dict_[i]
                 elif (is_contained('assistant', dict_[i]) or is_contained('researcher', dict_[i]) or is_contained('phd', dict_[i]) or is_contained('student', dict_[i]) or is_contained('section', dict_[i]) or is_contained('prof', dict_[i]) or is_contained('director', dict_[i])) and (not is_contained('school', dict_[i+1]) or is_contained('univ', dict_[i+1]) or is_contained('inst', dict_[i+1]) or is_contained('lab', dict_[i+1]) or is_contained('fac', dict_[i+1])):
                     del dict_[i]
-                elif (is_contained('engineer', dict_[i]) or is_contained('progr', dict_[i]) or is_contained('unit', dict_[i]) or is_contained('lab', dict_[i]) or is_contained('dep', dict_[i]) or  is_contained('school', dict_[i])  or is_contained('inst', dict_[i]) or is_contained('hosp', dict_[i]) or is_contained('fac', dict_[i])) and is_contained('univ', dict_[i+1]):
+                elif (is_contained('engineer', dict_[i]) or is_contained('progr', dict_[i]) or is_contained('unit', dict_[i]) or is_contained('lab', dict_[i]) or is_contained('dep', dict_[i]) or  is_contained('school', dict_[i])  or is_contained('inst', dict_[i]) or is_contained('fac', dict_[i])) and is_contained('univ', dict_[i+1]):
                     if not is_contained('univ', dict_[i]):
                         del dict_[i]
                 elif is_contained('lab', dict_[i]) and (is_contained('college', dict_[i+1]) or is_contained('inst', dict_[i+1]) or is_contained('dep', dict_[i+1]) or is_contained('school', dict_[i+1])):
