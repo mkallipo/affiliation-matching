@@ -16,7 +16,7 @@ def load_pickled_dict(file_path):
         pickled_dict = pickle.load(file) 
         return pickled_dict
 
-categ_string = 'Laboratory|Univ/Inst|Hospital|Foundation|Specific'
+categ_string = 'Laboratory|Univ/Inst|Hospital|Foundation|Specific|Museum'
 
 remove_list = load_txt('remove_list.txt')
 stop_words = load_txt('stop_words.txt')
@@ -109,12 +109,29 @@ protected_phrases1 = [
     for x in city_names
     for phrase in [
         'university california, {x}',
+        'university california , {x}',
+
         'university college hospital, {x}',
+        'university college hospital , {x}',
+        
         'national univ ireland, {x}',
+        'national univ ireland , {x}',
+
         'national university ireland, {x}',
+        'national university ireland , {x}',
+
         'university college, {x}',
         'university college , {x}',
-        'university hospital, {x}'
+        
+        'university hospital, {x}', 
+        'university hospital , {x}', 
+
+        'imperial college, {x}',
+        'imperial college , {x}'
+        
+        'city university, {x}', 
+        'city university , {x}'
+
     ]
 ]
 
@@ -122,7 +139,18 @@ replacements = {
     'univ coll': 'university college',
     'belfield, dublin': 'dublin',
     'ballsbridge, dublin': 'dublin',
-    'earlsfort Terrace, dublin': 'dublin'
+    'earlsfort Terrace, dublin': 'dublin',
+    'bon secours hospital, cork' : 'bon secours hospital cork',
+    'bon secours hospital, dublin' : 'bon secours hospital dublin',
+    'bon secours hospital, galway' : 'bon secours hospital galway',
+    'bon secours hospital, tralee' : 'bon secours hospital tralee',
+    'bon secours health system' : 'bon secours hospital dublin',
+    'bon secours hospital, glasnevin' : 'bon secours hospital dublin',
+    'apc microbiome ireland' : 'apc microbiome institute', 
+    'imperial college science, technology medicine' : 'imperial college science technology medicine',
+    'ucl queen square institu neurology' : 'ucl, london',
+    'ucl institute of neurology' : 'ucl, london'
+
 }
 
 
@@ -194,7 +222,8 @@ def clean_string(input_string):
     
     # Replace consecutive whitespace with a single space
     result = re.sub(r'\s+', ' ', result)
-    
+    result = result.replace('ss', 's')
+
     return result.strip()  # Strip leading/trailing spaces
 
 
@@ -298,6 +327,27 @@ def str_radius_c(string):
     
     return result 
 
+def str_radius_r(string):
+    string = string.lower()
+    radius = 2
+    
+    str_list = string.split()
+    indices = []
+    result = []
+
+    for i, x in enumerate(str_list):
+        if is_contained('research',x):
+            indices.append(i)
+            
+    for r0 in indices:
+        lmin =max(0,r0-radius-1)
+        lmax =min(r0+radius, len(str_list))
+        s = str_list[lmin:lmax]
+        
+        result.append(' '.join(s))
+    
+    return result 
+
 def str_radius_spec(string):
     spec = False
     for x in string.split():
@@ -334,6 +384,8 @@ def shorten_keywords(affiliations_simple):
                 inner.extend(str_radius_h(str))
             elif 'clinic' in str or 'klinik' in str:
                 inner.extend(str_radius_c(str))
+            elif 'research council' in str:
+                inner.extend(str_radius_r(str))
             else:
                 inner.append(str_radius_spec(str))
 
