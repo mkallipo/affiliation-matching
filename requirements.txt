@@ -3,3 +3,4 @@ pickle
 scikit-learn
 unidecode
 python-Levenshtein
+html

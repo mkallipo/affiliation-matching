@@ -1,7 +1,7 @@
 universitetskaya
 universitatsklinikum
 universitatskinderklinik
-universitatsspital
+universitatspital
 universitatskliniken
 universitetshospital
 universitatsmedizin

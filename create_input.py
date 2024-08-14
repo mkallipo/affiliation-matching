@@ -49,21 +49,21 @@ def create_df_algorithm(gendf):
             for i in range(len(dict_)-1):
                 if is_contained('progr', dict_[i]) and is_contained('dep', dict_[i+1]):
                     del dict_[i]
-                elif (is_contained('assistant', dict_[i]) or is_contained('researcher', dict_[i]) or is_contained('phd', dict_[i]) or is_contained('student', dict_[i]) or is_contained('section', dict_[i]) or is_contained('prof', dict_[i]) or is_contained('director', dict_[i])) and (not is_contained('school', dict_[i+1]) or is_contained('univ', dict_[i+1]) or is_contained('inst', dict_[i+1]) or is_contained('lab', dict_[i+1]) or is_contained('fac', dict_[i+1])):
+                elif (is_contained('asistant', dict_[i]) or is_contained('researcher', dict_[i]) or is_contained('phd', dict_[i]) or is_contained('student', dict_[i]) or is_contained('section', dict_[i]) or is_contained('prof', dict_[i]) or is_contained('director', dict_[i])) and (not is_contained('school', dict_[i+1]) or is_contained('univ', dict_[i+1]) or is_contained('inst', dict_[i+1]) or is_contained('lab', dict_[i+1]) or is_contained('fac', dict_[i+1])):
                     del dict_[i]
                 elif (is_contained('engineer', dict_[i]) or is_contained('progr', dict_[i]) or is_contained('unit', dict_[i]) or is_contained('lab', dict_[i]) or is_contained('dep', dict_[i]) or  is_contained('school', dict_[i])  or is_contained('inst', dict_[i]) or is_contained('fac', dict_[i])) and is_contained('univ', dict_[i+1]):
                     if not is_contained('univ', dict_[i]):
                         del dict_[i]
-                elif is_contained('lab', dict_[i]) and (is_contained('college', dict_[i+1]) or is_contained('inst', dict_[i+1]) or is_contained('dep', dict_[i+1]) or is_contained('school', dict_[i+1])):
+                elif is_contained('lab', dict_[i]) and (is_contained('colege', dict_[i+1]) or is_contained('inst', dict_[i+1]) or is_contained('dep', dict_[i+1]) or is_contained('school', dict_[i+1])):
                     if not is_contained('univ', dict_[i]):
                         del dict_[i]
-                elif is_contained('dep', dict_[i]) and (is_contained('tech', dict_[i+1]) or is_contained('college', dict_[i+1]) or is_contained('inst', dict_[i+1]) or  is_contained('hosp', dict_[i+1]) or  is_contained('school', dict_[i+1]) or  is_contained('fac', dict_[i+1])):
+                elif is_contained('dep', dict_[i]) and (is_contained('tech', dict_[i+1]) or is_contained('colege', dict_[i+1]) or is_contained('inst', dict_[i+1]) or  is_contained('hosp', dict_[i+1]) or  is_contained('school', dict_[i+1]) or  is_contained('fac', dict_[i+1])):
                     if not is_contained('univ', dict_[i]):
                         del dict_[i]
                 elif is_contained('inst',dict_[i]) and (is_contained('school', dict_[i+1]) or is_contained('dep', dict_[i+1]) or is_contained('acad', dict_[i+1]) or is_contained('hosp', dict_[i+1]) or is_contained('clin', dict_[i+1]) or is_contained('klin', dict_[i+1])  or is_contained('fak', dict_[i+1]) or is_contained('fac', dict_[i+1]) or is_contained('cent', dict_[i+1]) or is_contained('div', dict_[i+1])):
                     if not is_contained('univ', dict_[i]):
                         del dict_[i]
-                elif is_contained('school',dict_[i]) and is_contained('college', dict_[i+1]):
+                elif is_contained('school',dict_[i]) and is_contained('colege', dict_[i+1]):
                     if not is_contained('univ', dict_[i]):
                         del dict_[i]
     
@@ -85,6 +85,7 @@ def create_df_algorithm(gendf):
         new_aff_komma_1.append(dict_)
 
 
+    aff_df['Level2 affiliations'] = [', '.join(list(d.values())) for d in new_aff_komma_1]
 
     for dict_ in new_aff_komma_1:
         for i in list(dict_.keys()):
@@ -96,7 +97,6 @@ def create_df_algorithm(gendf):
    # for dict_ in new_aff_komma:
    #     light_aff.append(', '.join(list(dict_.values())))
         
-    aff_df['Level2 affiliations'] = [', '.join(list(d.values())) for d in new_aff_komma_1]
     
     aff_df['Keywords'] =  [list(d.values()) for d in new_aff_komma_1]
     
