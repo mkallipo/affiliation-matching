@@ -293,7 +293,7 @@ def str_radius_h(string):
     result = []
 
     for i, x in enumerate(str_list):
-        if is_contained('hospital',x):
+        if is_contained('hospital',x) or is_contained('hopita',x):
             indices.append(i)
             
     for r0 in indices:
