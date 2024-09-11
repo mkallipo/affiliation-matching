@@ -361,21 +361,23 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
                 id_list.append(dix_org[x])
             else:
                 if x in list(dix_city_ror.keys()):
-                    match_found0 = False
                     match_found = False
 
                     for city in dix_city_ror[x]:
                         if city[0] in (final_df['Level1 affiliations'].iloc[i]).lower():
                             if city[0] not in x: 
                                 id_list.append(city[1])
-                                match_found0 = True
                                 match_found = True
                                 break
+                            else:
+                                if ((final_df['Level1 affiliations'].iloc[i]).lower()).count(city[0]) >1:
+                                    id_list.append(city[1])
+                                    match_found = True
+                                    break
                     if not match_found:
                         for city in dix_city_ror[x]:
                             if city[0] in   (final_df['Level1 affiliations'].iloc[i]).lower() and city[0] not in x:
                                 id_list.append(city[1])
-                                match_found0 = True
                                 break  
                         
                     if not match_found:

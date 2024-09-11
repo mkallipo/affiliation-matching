@@ -25,6 +25,12 @@ city_names = load_txt('city_names.txt')
 
 categ_dicts = load_pickled_dict('dictionaries/categ_dicts.pkl')
 
+def replace_double_consonants(text):
+    # This regex pattern matches any double consonant
+    pattern = r'([bcdfghjklmnpqrstvwxyz])\1'
+    # The replacement is the first captured group (the single consonant)
+    result = re.sub(pattern, r'\1', text, flags=re.IGNORECASE)
+    return result
 
 def is_contained(s, w):
     words = s.split()  # Split the string 's' into a list of words
@@ -48,7 +54,19 @@ def remove_outer_parentheses(string):
         return string[1:-1].strip()
     return string
 
+def insert_space_between_lower_and_upper(s):
+    """
+    Inserts a space between a lowercase letter followed by an uppercase letter in a string.
 
+    Parameters:
+    s (str): The input string.
+
+    Returns:
+    str: The modified string with spaces inserted.
+    """
+    # Use regex to insert space between lowercase and uppercase letters
+    modified_string = re.sub(r'([a-z])([A-Z])', r'\1 \2', s)
+    return modified_string
 
 def avg_string(df, col):
     avg = [] 
@@ -104,53 +122,66 @@ def split_string_with_protection(input_string, protected_phrases):
     
     return split_strings
 
-protected_phrases1 = [
+protected_phrases1 =  [
     phrase.format(x=x)
     for x in city_names
     for phrase in [
         'university california, {x}',
-        'university california , {x}',
+    #    'university california , {x}',
 
-        'university college hospital, {x}',
-        'university college hospital , {x}',
+        'university colege hospital, {x}',
+    #    'university colege hospital , {x}',
         
         'national univ ireland, {x}',
-        'national univ ireland , {x}',
+    #    'national univ ireland , {x}',
 
         'national university ireland, {x}',
-        'national university ireland , {x}',
+    #    'national university ireland , {x}',
 
-        'university college, {x}',
-        'university college , {x}',
+        'university colege, {x}',
+    #    'university colege , {x}',
         
         'university hospital, {x}', 
-        'university hospital , {x}', 
+    #    'university hospital , {x}', 
 
-        'imperial college, {x}',
-        'imperial college , {x}'
+        'imperial colege, {x}',
+    #    'imperial colege , {x}'
         
         'city university, {x}', 
-        'city university , {x}'
+    #    'city university , {x}'
 
+        
     ]
 ]
 
-replacements = {
-    'univ coll': 'university college',
-    'belfield, dublin': 'dublin',
-    'ballsbridge, dublin': 'dublin',
-    'earlsfort Terrace, dublin': 'dublin',
-    'bon secours hospital, cork' : 'bon secours hospital cork',
-    'bon secours hospital, dublin' : 'bon secours hospital dublin',
-    'bon secours hospital, galway' : 'bon secours hospital galway',
-    'bon secours hospital, tralee' : 'bon secours hospital tralee',
-    'bon secours health system' : 'bon secours hospital dublin',
-    'bon secours hospital, glasnevin' : 'bon secours hospital dublin',
-    'apc microbiome ireland' : 'apc microbiome institute', 
-    'imperial college science, technology medicine' : 'imperial college science technology medicine',
-    'ucl queen square institu neurology' : 'ucl, london',
-    'ucl institute of neurology' : 'ucl, london'
-
+replacements = {'uni versity':'university',
+                'univ ':'university ',
+                'univercity':'university', 
+                'universtiy':'university', 
+                'univeristy':'university',
+                'universirty':'university', 
+                'universiti':'university', 
+                'universitiy':'university',
+                'universty' :'university',
+                'univ col': 'university colege',
+                'belfield, dublin': 'dublin',
+                'balsbridge, dublin': 'dublin', #ballsbridge
+                'earlsfort terrace, dublin': 'dublin',
+                'bon secours hospital, cork' : 'bon secours hospital cork',
+                'bon secours hospital, dublin' : 'bon secours hospital dublin',
+                'bon secours hospital, galway' : 'bon secours hospital galway',
+                'bon secours hospital, tralee' : 'bon secours hospital tralee',
+                'bon secours health system' : 'bon secours hospital dublin',
+                'bon secours hospital, glasnevin' : 'bon secours hospital dublin',
+                'imperial colege science, technology medicine' : 'imperial colege science technology medicine',
+                'ucl queen square institute neurology' : 'ucl, london',
+                'ucl institute neurology' : 'ucl, london',
+                'royal holoway, university london' : 'royal holoway universi london', #holloway
+                'city, university london' : 'city universi london',
+                'city university, london' : 'city universi london',
+                'aeginition':'eginition',
+                'national technical university, athens' : 'national technical university athens' 
+            # 'harvard medical school' : 'harvard univers
 }
 
 
@@ -160,18 +191,15 @@ def substrings_dict(string):
     
     for old, new in replacements.items():
         string = string.replace(old, new)
-
     split_strings = split_string_with_protection(string, protected_phrases1)
+    
     # Define a set of university-related terms for later use
-    university_terms = {'universitetskaya', 'universitatsklinikum', 'universitatskinderklinik',
-        'universitatsspital', 'universitatskliniken', 'universitetshospital',
-        'universitatsmedizin', 'universitatsbibliothek'
-    }
+
 
     dict_string = {}
-    index = 0
-     
+    index = 0    
     for value in split_strings:
+        
         # Check if the substring contains any university-related terms
         if not any(term in value.lower() for term in university_terms):
             # Apply regex substitutions for common patterns
@@ -180,19 +208,24 @@ def substrings_dict(string):
             modified_value = re.sub(r'institu\w*', 'institu', modified_value, flags=re.IGNORECASE)
             modified_value = re.sub(r'centre*', 'center', modified_value, flags=re.IGNORECASE)
             modified_value = re.sub(r'\bsaint\b', 'st', modified_value, flags=re.IGNORECASE) 
-            modified_value = re.sub(r'\btrinity coll\b', 'trinity college', modified_value, flags=re.IGNORECASE)
+            modified_value = re.sub(r'\btrinity col\b', 'trinity colege', modified_value, flags=re.IGNORECASE)
+            modified_value = re.sub(r'\btechnische\b', 'technological', modified_value, flags=re.IGNORECASE)
+
+            
 
             # Add the modified substring to the dictionary
-            dict_string[index] = modified_value.lower() 
+                     
+            dict_string[index] = modified_value.lower().strip()
             index += 1
        # elif 'universitetskaya' in value.lower():
        #     index += 1
 
-                
+
             # Add the original substring to the dictionary
         else:
-            dict_string[index] = value.lower() 
+            dict_string[index] = value.lower().strip()
             index += 1
+            
     return dict_string
 
 
@@ -203,7 +236,7 @@ def clean_string(input_string):
     input_string = input_string.replace(" – ", placeholder)
 
     # Unescape HTML entities and convert to lowercase
-    input_string = remove_stop_words(replace_umlauts(unidecode(remove_parentheses(html.unescape(input_string.lower())))))
+    input_string = replace_comma_spaces(replace_double_consonants(replace_umlauts(unidecode(remove_parentheses(html.unescape(input_string.replace("'", "")))))).strip())
     
     # Normalize unicode characters (optional, e.g., replace umlauts)
     input_string = unidecode(input_string)
@@ -212,18 +245,22 @@ def clean_string(input_string):
     result = re.sub(r'[/\-]', ' ', input_string)
     
     # Replace "saint" with "st"
-    result = re.sub(r'\bsaint\b', 'st', result)
+    result = re.sub(r'\bSaint\b', 'St', result)
+    result = re.sub(r'\bAghia\b', 'Agia', result)
+
     
-    # Remove characters that are not from the Latin alphabet, numbers, or allowed punctuation
-    result = re.sub(r'[^a-zA-Z0-9\s,;/]', '', result)
+    # Remove characters that are not from the Latin alphabet, or allowed punctuation
+    result = replace_comma_spaces(re.sub(r'[^a-zA-Z\s,;/]', '', result).strip())
     
     # Restore the " - " sequence from the placeholder
     result = result.replace(placeholder, " – ")
     
     # Replace consecutive whitespace with a single space
     result = re.sub(r'\s+', ' ', result)
-    result = result.replace('ss', 's')
-
+    #result = result.replace('ss', 's')
+    
+    result = insert_space_between_lower_and_upper(result).lower()
+    result = remove_stop_words(result)
     return result.strip()  # Strip leading/trailing spaces
 
 
@@ -272,7 +309,7 @@ def str_radius_coll(string):
     result = []
 
     for i, x in enumerate(str_list):
-        if is_contained('coll',x):
+        if is_contained('col',x):
             indices.append(i)
   
     for r0 in indices:
@@ -378,7 +415,7 @@ def shorten_keywords(affiliations_simple):
         for str in aff:
             if 'universi' in str:
                 inner.extend(str_radius_u(str))
-            elif 'coll' in str and 'trinity' in str:
+            elif 'col' in str and 'trinity' in str:
                 inner.extend(str_radius_coll(str))
             elif 'hospital' in str or 'hopita' in str:
                 inner.extend(str_radius_h(str))
