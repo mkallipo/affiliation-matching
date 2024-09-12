@@ -4,6 +4,7 @@
 import tarfile
 import logging
 import html
+import json
 import pandas as pd
 import sys
 import re
@@ -32,7 +33,9 @@ with open('dictionaries/dix_city.pkl', 'rb') as f:
 with open('dictionaries/dix_country.pkl', 'rb') as f:
     dix_country = pickle.load(f)
     
-
+with open('dictionaries/dix_status.json', 'rb') as f:
+    dix_status = json.load(f)
+    
 def do(name, crossref_df):
     try: 
         print("processing file:" + name)
@@ -254,9 +257,25 @@ def do(name, crossref_df):
                     result_list.append(d)
             unique_matching.append(result_list)
         
-        
-        final_df['Matchings'] = unique_matching
+            new_matching = []
+            for x in unique_matching:
+                new_x = []
+                for y in x:
+                    if  dix_status[y['RORid']][0] == 'active':
+                        y['Status'] = 'active'
+                        new_x.append(y)
+                else:
+                    if dix_status[y['RORid']][1] == '':
+                        y['Status'] = dix_status[y['RORid']][0]
+                        new_x.append(y)
+                    else:
+                        y['Status'] = dix_status[y['RORid']][0]
+                        new_x.append(y)
+                        new_x.append({'RORid':dix_status[y['RORid']][1], 'Confidence': y['Confidence'], 'Status':'active'})
+                new_matching.append(new_x)
+                    
 
+        final_df['Matchings'] = new_matching
 
 
       

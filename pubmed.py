@@ -4,7 +4,6 @@ import re
 import unicodedata
 from collections import defaultdict
 
-import tarfile
 import logging
 import html
 
@@ -18,7 +17,6 @@ from io import BytesIO
 from bs4 import BeautifulSoup
 import os
 
-from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor,wait,ALL_COMPLETED
 
 import pickle
@@ -44,6 +42,8 @@ with open('dictionaries/dix_city.pkl', 'rb') as f:
 with open('dictionaries/dix_country.pkl', 'rb') as f:
     dix_country = pickle.load(f)
 
+with open('dictionaries/dix_status.json', 'rb') as f:
+    dix_status = json.load(f)
 
 def create_df(articleList):
     df = pd.DataFrame(articleList)
@@ -328,9 +328,26 @@ def xml_to_json(xml):
                             max_values[value1] = value2
                             result_list.append(d)
                     unique_matching.append(result_list)
-                final_df['Matchings'] = matching
-    
-                final_df_short = final_df[['Unique affiliations','Matched organizations','ROR','Scores']]
+
+                    new_matching = []
+                    for x in unique_matching:
+                        new_x = []
+                        for y in x:
+                            if  dix_status[y['RORid']][0] == 'active':
+                                y['Status'] = 'active'
+                                new_x.append(y)
+                        else:
+                            if dix_status[y['RORid']][1] == '':
+                                y['Status'] = dix_status[y['RORid']][0]
+                                new_x.append(y)
+                            else:
+                                y['Status'] = dix_status[y['RORid']][0]
+                                new_x.append(y)
+                                new_x.append({'RORid':dix_status[y['RORid']][1], 'Confidence': y['Confidence'], 'Status':'active'})
+                        new_matching.append(new_x)
+                                
+
+                    final_df['Matchings'] = new_matching    
     
                 # 3. JSON [Final output]
     

@@ -101,6 +101,9 @@ def protect_phrases(input_string, phrases):
         input_string = input_string.replace(phrase, placeholder)
     return input_string, placeholder_map
 
+def replace_comma_spaces(text):
+    return text.replace('  ', ' ').replace(' , ', ', ')
+
 def restore_phrases(split_strings, placeholder_map):
     # Restore placeholders with original phrases
     restored_strings = []

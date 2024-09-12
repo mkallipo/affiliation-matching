@@ -29,6 +29,8 @@ with open('dictionaries/dix_city.pkl', 'rb') as f:
 with open('dictionaries/dix_country.pkl', 'rb') as f:
     dix_country = pickle.load(f)
 
+with open('dictionaries/dix_status.json', 'rb') as f:
+    dix_status = json.load(f)
     
 folder_path = '/data/crossref/datacite_dump'
 
@@ -165,8 +167,26 @@ def parquet_to_json(p):
                     max_values[value1] = value2
                     result_list.append(d)
             unique_matching.append(result_list)
-        final_df['Matchings'] = matching
 
+            new_matching = []
+            for x in unique_matching:
+                new_x = []
+                for y in x:
+                    if  dix_status[y['RORid']][0] == 'active':
+                        y['Status'] = 'active'
+                        new_x.append(y)
+                else:
+                    if dix_status[y['RORid']][1] == '':
+                        y['Status'] = dix_status[y['RORid']][0]
+                        new_x.append(y)
+                    else:
+                        y['Status'] = dix_status[y['RORid']][0]
+                        new_x.append(y)
+                        new_x.append({'RORid':dix_status[y['RORid']][1], 'Confidence': y['Confidence'], 'Status':'active'})
+                new_matching.append(new_x)
+                    
+
+        final_df['Matchings'] = new_matching
         # 3. JSON [Final output]
 
         doi_df_output = final_df[['DOI','Matchings']]
