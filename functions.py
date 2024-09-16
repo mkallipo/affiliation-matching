@@ -157,9 +157,20 @@ protected_phrases1 =  [
     ]
 ]
 
-replacements = {'uni versity':'university',
+replacements = {'nat.':'national',
+                'uni versity':'university',
+                'inst ':'institute ',
+                'adv ':'advanced ',
                 'univ ':'university ',
-                'univercity':'university', 
+                'stud ': 'studies ',
+                'inst.':'institute',
+                'adv.':'advanced',
+                'univ.':'university',
+                'stud.': 'studies',
+                'uni versity':'university',
+                'univ ':'university ',
+                'univercity':'university',
+                'univerisity':'university', 
                 'universtiy':'university', 
                 'univeristy':'university',
                 'universirty':'university', 
@@ -253,7 +264,7 @@ def clean_string(input_string):
 
     
     # Remove characters that are not from the Latin alphabet, or allowed punctuation
-    result = replace_comma_spaces(re.sub(r'[^a-zA-Z\s,;/]', '', result).strip())
+    result = replace_comma_spaces(re.sub(r'[^a-zA-Z\s,;/.]', '', result).strip())
     
     # Restore the " - " sequence from the placeholder
     result = result.replace(placeholder, " – ")
@@ -274,7 +285,7 @@ def clean_string_facts(input_string):
     result = re.sub(r'\bsaint\b', 'st', result) 
 
     # Remove characters that are not from the Latin alphabet or numbers
-    result = re.sub(r'[^a-zA-Z0-9\s;/-]', '', result)
+    result = re.sub(r'[^a-zA-Z0-9\s;/-.]', '', result)
     
     # Replace consecutive whitespace with a single space
     result = re.sub(r'\s+', ' ', result)
