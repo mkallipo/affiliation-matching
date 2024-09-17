@@ -1,8 +1,8 @@
 import re
 import unicodedata
 import html
+import json
 from unidecode import unidecode
-import pickle   
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -11,10 +11,10 @@ def load_txt(file_path):
         list_ = [line.strip() for line in file]
         return list_
     
-def load_pickled_dict(file_path): 
-    with open(file_path, 'rb') as file: 
-        pickled_dict = pickle.load(file) 
-        return pickled_dict
+def load_json(file_path): 
+    with open(file_path, 'r') as json_file:
+        json_dict = json.load(json_file)
+        return json_dict
 
 categ_string = 'Laboratory|Univ/Inst|Hospital|Foundation|Specific|Museum'
 
@@ -23,7 +23,7 @@ stop_words = load_txt('stop_words.txt')
 university_terms = load_txt('university_terms.txt')
 city_names = load_txt('city_names.txt')
 
-categ_dicts = load_pickled_dict('dictionaries/categ_dicts.pkl')
+categ_dicts = load_json('dictionaries/dix_categ.json')
 
 def replace_double_consonants(text):
     # This regex pattern matches any double consonant
@@ -157,7 +157,14 @@ protected_phrases1 =  [
     ]
 ]
 
-replacements = {'nat.':'national',
+replacements =  {'universitatsklinikum' : 'universi hospital',
+                'universitetshospital' : 'universi hospital',
+                'universitatskinderklinik' : 'universi childrens hospital',
+                'universitatskliniken': 'universi hospital',
+                'Universitätsklinik': 'universi hospital',
+                'universitatsmedizin': 'universi medicine',
+                'universitatsbibliothek' : 'universi library',
+                'nat.':'national',
                 'uni versity':'university',
                 'inst ':'institute ',
                 'adv ':'advanced ',
@@ -167,9 +174,7 @@ replacements = {'nat.':'national',
                 'adv.':'advanced',
                 'univ.':'university',
                 'stud.': 'studies',
-                'uni versity':'university',
-                'univ ':'university ',
-                'univercity':'university',
+                'univercity':'university', 
                 'univerisity':'university', 
                 'universtiy':'university', 
                 'univeristy':'university',
@@ -178,6 +183,9 @@ replacements = {'nat.':'national',
                 'universitiy':'university',
                 'universty' :'university',
                 'univ col': 'university colege',
+                'univ. col.': 'university colege',
+                'univ. coll.': 'university colege',
+                'col.':'colege',
                 'belfield, dublin': 'dublin',
                 'balsbridge, dublin': 'dublin', #ballsbridge
                 'earlsfort terrace, dublin': 'dublin',
@@ -205,6 +213,7 @@ def substrings_dict(string):
     
     for old, new in replacements.items():
         string = string.replace(old, new)
+        string = string.replace('hospitalum','hospital').replace('hospitalen','hospital')
     split_strings = split_string_with_protection(string, protected_phrases1)
     
     # Define a set of university-related terms for later use
@@ -213,7 +222,8 @@ def substrings_dict(string):
     dict_string = {}
     index = 0    
     for value in split_strings:
-        
+        value = value.replace('.', ' ')
+
         # Check if the substring contains any university-related terms
         if not any(term in value.lower() for term in university_terms):
             # Apply regex substitutions for common patterns
@@ -255,8 +265,8 @@ def clean_string(input_string):
     # Normalize unicode characters (optional, e.g., replace umlauts)
     input_string = unidecode(input_string)
     
-    # Replace `/` and `–` with space (do not replace hyphen `-`)
-    result = re.sub(r'[/\-]', ' ', input_string)
+    # Replace `–` with space (do not replace hyphen `-`)
+    result = re.sub(r'[\-]', ' ', input_string)
     
     # Replace "saint" with "st"
     result = re.sub(r'\bSaint\b', 'St', result)

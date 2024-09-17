@@ -11,11 +11,13 @@ However, I will incorporate improvements and bug fixes regularly.
 
 - `affro.py` contains the main algorithm.
 
-- `dictionaries/dix_acad.pkl`: This file is a pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database. The corresponding values are the ROR ids associated with each organization.
+- `dictionaries/dix_acad.json`: This a dictionary with keys legalnames and alternativenames of organizations in the ROR database. The corresponding values are the ROR ids associated with each organization.
 
-- `dictionaries/dix_mult`, `dictionaries/dix_city`, `dictionaries/dix_country`: three more pickled dictionary with keys legalnames and alternativenames of organizations in the ROR database, necessary in the case where different organizations share the same name.
+- `dictionaries/dix_mult.json`, `dictionaries/dix_city.json`, `dictionaries/dix_country.json`: three more dictionaries with keys legalnames and alternativenames of organizations in the ROR database, necessary in the case where different organizations share the same name.
   
-- `dictionaries/categ_dicts.pkl`: the strings to be used as keywords. They are divided in the categories "Univ/Inst", "Laboratory", "Hospital", "Company", "Museum", "Government" "Foundation", "Specific", and "Rest".
+- `dictionaries/dix_categ.json`: the strings to be used as keywords. They are divided in the categories "Univ/Inst", "Laboratory", "Hospital", "Company", "Museum", "Government" "Foundation", "Specific", and "Rest".
+
+-  `dictionaries/dix_status.json`: a dictionary with keys the ROR IDs and values the status of the corresponding ID (active, inactive or withdrawn). In case the status in not active, then a new ROR ID, it existent, is provided. 
 
 - `requirements.txt`.
 

@@ -21,17 +21,17 @@ from create_input import *
 from affro import *
 
 
-with open('dictionaries/dix_acad.pkl', 'rb') as f:
-    dix_acad = pickle.load(f)
+with open('dictionaries/dix_acad.json', 'rb') as f:
+    dix_acad = json.load(f)
 
-with open('dictionaries/dix_mult.pkl', 'rb') as f:
-    dix_mult = pickle.load(f)
+with open('dictionaries/dix_mult.json', 'rb') as f:
+    dix_mult = json.load(f)
 
-with open('dictionaries/dix_city.pkl', 'rb') as f:
-    dix_city = pickle.load(f)
+with open('dictionaries/dix_city.json', 'rb') as f:
+    dix_city = json.load(f)
     
-with open('dictionaries/dix_country.pkl', 'rb') as f:
-    dix_country = pickle.load(f)
+with open('dictionaries/dix_country.json', 'rb') as f:
+    dix_country = json.load(f)
     
 with open('dictionaries/dix_status.json', 'rb') as f:
     dix_status = json.load(f)
