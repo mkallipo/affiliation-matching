@@ -87,10 +87,10 @@ def remove_parentheses(text):
    return re.sub(r'\([^()]*\)', '', text)
 
 
-def replace_umlauts(text):
-    normalized_text = unicodedata.normalize('NFKD', text)
-    replaced_text = ''.join(c for c in normalized_text if not unicodedata.combining(c))
-    return replaced_text
+# def replace_umlauts(text):
+#     normalized_text = unicodedata.normalize('NFKD', text)
+#     replaced_text = ''.join(c for c in normalized_text if not unicodedata.combining(c))
+#     return replaced_text
 
 def protect_phrases(input_string, phrases):
     # Replace phrases with placeholders
@@ -260,10 +260,7 @@ def clean_string(input_string):
     input_string = input_string.replace(" – ", placeholder)
 
     # Unescape HTML entities and convert to lowercase
-    input_string = replace_comma_spaces(replace_double_consonants(replace_umlauts(unidecode(remove_parentheses(html.unescape(input_string.replace("'", "")))))).strip())
-    
-    # Normalize unicode characters (optional, e.g., replace umlauts)
-    input_string = unidecode(input_string)
+    input_string = replace_comma_spaces(replace_double_consonants(unidecode(remove_parentheses(html.unescape(input_string.replace("'", ""))))).strip())
     
     # Replace `–` with space (do not replace hyphen `-`)
     result = re.sub(r'[\-]', ' ', input_string)
@@ -290,7 +287,7 @@ def clean_string(input_string):
 
 def clean_string_facts(input_string):
     # Replace specified characters with space
-    input_string = remove_stop_words(replace_umlauts(unidecode(remove_parentheses(html.unescape(input_string.lower())))))
+    input_string = remove_stop_words(unidecode(remove_parentheses(html.unescape(input_string.lower()))))
     result = re.sub(r'[/\-,]', ' ', input_string)
     result = re.sub(r'\bsaint\b', 'st', result) 
 

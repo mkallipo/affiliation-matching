@@ -30,7 +30,7 @@ def create_df_algorithm(gendf):
     aff_no_symbols_d = {}
     for x in list(gendf1['Unique affiliations']):
         for y in x:
-            if y!= 'inc' and y not in list(aff_no_symbols_d.keys()):
+            if y!= 'inc' and y not in aff_no_symbols_d:
                 aff_no_symbols_d[y] = clean_string(remove_outer_parentheses(y))
 
         

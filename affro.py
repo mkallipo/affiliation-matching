@@ -165,7 +165,6 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
     """
     vectorizer = CountVectorizer()
 
-    lnamelist = list(dix_org.keys())
     dix = {}    # will store indeces and legalnames of organizations of the DOI { i : [legalname1, legalname2,...]}
     deiktes = []  # stores indeces where a match is found
     similarity_ab = [] # stores lists of similarity scores of the mathces 
@@ -178,7 +177,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
 
         for s in DF['Keywords'].iloc[k]:
 
-            if s in lnamelist:
+            if s in dix_org:
                 deiktes.append(k)
                 similarity = 1
                 similar_k.append(similarity)
@@ -191,7 +190,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
                     dix[k].append(s)
             else:
 
-                for x in lnamelist:
+                for x in dix_org:
                     
                     if  is_contained(s, x):
 
@@ -360,7 +359,7 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
             if dix_mult[x] == 'unique':
                 id_list.append(dix_org[x])
             else:
-                if x in list(dix_city_ror.keys()):
+                if x in dix_city_ror:
                     match_found = False
 
                     for city in dix_city_ror[x]:
