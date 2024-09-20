@@ -171,7 +171,7 @@ def do(name, crossref_df):
         for i in range(len(doi_df)):
             pidsi = []
             for aff in doi_df['Unique affiliations'].iloc[i]:
-                if aff in list(dict_aff_id.keys()):
+                if aff in dict_aff_id:
                     pidsi = pidsi + dict_aff_id[aff]
               #  elif 'unmatched organization(s)' not in pidsi:
               #      pidsi = pidsi + ['unmatched organization(s)']
@@ -182,7 +182,7 @@ def do(name, crossref_df):
         for i in range(len(doi_df)):
             namesi = []
             for aff in doi_df['Unique affiliations'].iloc[i]:
-                if aff in list(dict_aff_open.keys()):
+                if aff in dict_aff_open:
                     try:
                         namesi = namesi + dict_aff_open[aff]
                     except TypeError:
@@ -194,7 +194,7 @@ def do(name, crossref_df):
         for i in range(len(doi_df)):
             scoresi = []
             for aff in doi_df['Unique affiliations'].iloc[i]:
-                if aff in list(dict_aff_score.keys()):
+                if aff in dict_aff_score:
                     scoresi = scoresi +  dict_aff_score[aff]
                     
             scores.append(scoresi)
