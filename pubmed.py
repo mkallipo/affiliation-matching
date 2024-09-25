@@ -330,16 +330,13 @@ def xml_to_json(xml):
                         new_x = []
                         for y in x:
                             if  dix_status[y['RORid']][0] == 'active':
-                                y['Status'] = 'active'
-                                new_x.append(y)
+                                new_x.append({'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':'active'})
                         else:
                             if dix_status[y['RORid']][1] == '':
-                                y['Status'] = dix_status[y['RORid']][0]
-                                new_x.append(y)
+                                new_x.append({'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
                             else:
-                                y['Status'] = dix_status[y['RORid']][0]
-                                new_x.append(y)
-                                new_x.append({'RORid':dix_status[y['RORid']][1], 'Confidence': y['Confidence'], 'Status':'active'})
+                                new_x.append({'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
+                                new_x.append({'PID':'ROR','Value':dix_status[y['RORid']][1], 'Confidence': y['Confidence'], 'Status':'active'})
                         new_matching.append(new_x)
                                 
 
