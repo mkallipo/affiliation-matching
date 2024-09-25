@@ -16,12 +16,8 @@ import gzip
 from io import BytesIO
 from bs4 import BeautifulSoup
 import os
-
 from concurrent.futures import ProcessPoolExecutor,wait,ALL_COMPLETED
-
-import pickle
 import sys 
-
 import Levenshtein
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -31,16 +27,16 @@ from affro import *
 
 
 with open('dictionaries/dix_acad.json', 'rb') as f:
-    dix_acad = pickle.load(f)
+    dix_acad = json.load(f)
 
 with open('dictionaries/dix_mult.json', 'rb') as f:
-    dix_mult = pickle.load(f)
+    dix_mult = json.load(f)
 
 with open('dictionaries/dix_city.json', 'rb') as f:
-    dix_city = pickle.load(f)
+    dix_city = json.load(f)
     
 with open('dictionaries/dix_country.json', 'rb') as f:
-    dix_country = pickle.load(f)
+    dix_country = json.load(f)
 
 with open('dictionaries/dix_status.json', 'rb') as f:
     dix_status = json.load(f)
