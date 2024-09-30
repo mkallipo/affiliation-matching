@@ -330,16 +330,15 @@ def xml_to_json(xml):
                         new_x = []
                         for y in x:
                             if  dix_status[y['RORid']][0] == 'active':
-                                new_x.append({'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':'active'})
-                        else:
-                            if dix_status[y['RORid']][1] == '':
-                                new_x.append({'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
+                                new_x.append({'Provenance':'AffRo', 'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':'active'})
                             else:
-                                new_x.append({'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
-                                new_x.append({'PID':'ROR','Value':dix_status[y['RORid']][1], 'Confidence': y['Confidence'], 'Status':'active'})
-                        new_matching.append(new_x)
-                                
-
+                                if dix_status[y['RORid']][1] == '':
+                                    new_x.append({'Provenance':'AffRo', 'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
+                                else:
+                                    new_x.append({'Provenance':'AffRo', 'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
+                                    new_x.append({'Provenance':'AffRo', 'PID':'ROR','Value':dix_status[y['RORid']][1], 'Confidence': y['Confidence'], 'Status':'active'})
+                            new_matching.append(new_x)
+                                    
                     final_df['Matchings'] = new_matching    
     
                 # 3. JSON [Final output]
@@ -351,8 +350,8 @@ def xml_to_json(xml):
                 
             
                 filename = f'file{xml}.json'
-
                 with open("pubmed-output/" + filename, 'w') as f:
+
                     f.write(doi_json)
 
 
