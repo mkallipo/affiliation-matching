@@ -157,7 +157,9 @@ protected_phrases1 =  [
     ]
 ]
 
-replacements =  {'universitatsklinikum' : 'universi hospital',
+replacements =  {'saint' : 'st',
+                'aghia' : 'agia', 
+                'universitatsklinikum' : 'universi hospital',
                 'universitetshospital' : 'universi hospital',
                 'universitatskinderklinik' : 'universi childrens hospital',
                 'universitatskliniken': 'universi hospital',
@@ -175,7 +177,7 @@ replacements =  {'universitatsklinikum' : 'universi hospital',
                 'inst.':'institute',
                 'adv.':'advanced',
                 'univ.':'university',
-                'stud.': 'studies',
+                'stud.': 'studies',                 
                 'univercity':'university', 
                 'univerisity':'university', 
                 'universtiy':'university', 
@@ -188,6 +190,8 @@ replacements =  {'universitatsklinikum' : 'universi hospital',
                 'univ. col.': 'university colege',
                 'univ. coll.': 'university colege',
                 'col.':'colege',
+                'army' : 'military',
+                'hipokration' : 'hipocration',
                 'belfield, dublin': 'dublin',
                 'balsbridge, dublin': 'dublin', #ballsbridge
                 'earlsfort terrace, dublin': 'dublin',
@@ -270,6 +274,7 @@ def clean_string(input_string):
     # Replace "saint" with "st"
     result = re.sub(r'\bSaint\b', 'St', result)
     result = re.sub(r'\bAghia\b', 'Agia', result)
+    result = re.sub(r'\bAghios\b', 'Agios', result)
 
     
     # Remove characters that are not from the Latin alphabet, or allowed punctuation

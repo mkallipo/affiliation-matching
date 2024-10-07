@@ -11,6 +11,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from create_input import *
 
+specific = [k for k in categ_dicts if categ_dicts[k] == 'Specific']
+
+
 def best_sim_score(l1, l2, l3, l4, simU, simG):
     """
     Finds the best match between a 'key word' and several legal names from the OpenAIRE database.
@@ -356,8 +359,13 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
         
         id_list = []
         for x in v:
-            if dix_mult[x] == 'unique':
-                id_list.append(dix_org[x])
+            if dix_mult[x] == 'unique': 
+                if 'institu' in x and 'univ' in x:
+                    if dix_city_ror[x][0] not in (final_df['Level1 affiliations'].iloc[i]).lower() and dix_country_ror[x][0] not in (final_df['Level1 affiliations'].iloc[i]).lower():
+                        pass
+                
+                else:
+                    id_list.append(dix_org[x])
             else:
                 if x in dix_city_ror:
                     match_found = False
@@ -414,7 +422,13 @@ def Aff_Ids(m, DF, dix_org, dix_mult, dix_city_ror,dix_country_ror,simU, simG):
                     
                         
                         if not match_found2:
-                            id_list.append(dix_org[x])
+                            if 'univ' in x:
+                                id_list.append(dix_org[x])
+
+                            else:
+                                for sp in specific:
+                                    if sp in x:
+                                        id_list.append(dix_org[x])
                 else:
                     id_list.append(dix_org[x])
                     
