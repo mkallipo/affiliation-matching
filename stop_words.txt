@@ -12,4 +12,6 @@ and
 fur
 for
 und
+general
+afiliated
 zu
