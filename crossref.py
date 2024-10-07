@@ -268,7 +268,7 @@ def do(name, crossref_df):
                         else:
                             new_x.append({'Provenance':'AffRo','PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
                             new_x.append({'Provenance':'AffRo','PID':'ROR','Value':dix_status[y['RORid']][1], 'Confidence': y['Confidence'], 'Status':'active'})
-                    new_matching.append(new_x)
+                new_matching.append(new_x)
                     
 
         final_df['Matchings'] = new_matching
