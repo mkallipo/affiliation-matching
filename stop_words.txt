@@ -12,3 +12,4 @@ and
 fur
 for
 und
+zu
