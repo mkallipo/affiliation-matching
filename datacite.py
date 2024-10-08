@@ -34,9 +34,9 @@ folder_path = '/data/crossref/datacite_dump'
 
 df_list = [ folder_path + "/" + filename for filename in os.listdir(folder_path)]
 
+
 def parquet_to_json(p):
-    print(p)
-    datacite = pd.read_parquet(p)
+    datacite = df_list[p]
     affiliations = [json.loads(datacite['json'].iloc[i])['attributes']['creators'] for i in range(len(datacite))]
 
     affiliations1 = []
@@ -65,8 +65,6 @@ def parquet_to_json(p):
     
     if len(result)>0:
     
-        affs_match = result[['Original affiliations','Matched organizations', 'unique ROR']]
-
         dict_aff_open = {x: y for x, y in zip(result['Original affiliations'], result['Matched organizations'])}
         dict_aff_id = {x: y for x, y in zip(result['Original affiliations'], result['ROR'])}
         #dict_aff_score = {x: y for x, y in zip(result['Original affiliations'], result['Similarity score'])}
@@ -203,7 +201,7 @@ if __name__ == '__main__':
     numberOfThreads = int(sys.argv[1])
     executor = ProcessPoolExecutor(max_workers=numberOfThreads)
 
-    futures = [executor.submit(parquet_to_json, p) for p in df_list]
+    futures = [executor.submit(parquet_to_json, p) for p in range(0, len(df_list))]
     done, not_done = wait(futures)
     print(not_done)
     
