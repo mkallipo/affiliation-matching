@@ -31,7 +31,7 @@ with open('dictionaries/dix_status.json', 'rb') as f:
     dix_status = json.load(f)
     
 folder_path = '/data/crossref/datacite_dump'
-folder_path = '/Users/myrto/Documents/openAIRE/7. matching/datacite/data'  # Current directory
+#folder_path = '/Users/myrto/Documents/openAIRE/7. matching/datacite/data'  # Current directory
 
 df_list = [ folder_path + "/" + filename for filename in os.listdir(folder_path)]
 
