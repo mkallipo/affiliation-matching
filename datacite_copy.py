@@ -30,9 +30,12 @@ with open('dictionaries/dix_country.json', 'rb') as f:
 with open('dictionaries/dix_status.json', 'rb') as f:
     dix_status = json.load(f)
     
-folder_path = '/data/crossref/datacite_dump'
+#folder_path = '/data/crossref/datacite_dump'
 
-df_list = [ folder_path + "/" + filename for filename in os.listdir(folder_path)]
+folder_path = '/Users/myrto/Documents/openAIRE/7. matching/datacite/data'  # Current directory
+df_list = [folder_path + "/" + filename for filename in os.listdir(folder_path) if filename.endswith('.parquet')]
+print(df_list)
+#df_list = [pd.read_parquet(folder_path+'/'+filename) for filename in os.listdir(folder_path)]
 
 def parquet_to_json(p, m):
     datacite = pd.read_parquet(p)
@@ -183,15 +186,15 @@ def parquet_to_json(p, m):
 
         final_df['Matchings'] = new_matching
         # 3. JSON [Final output]
-
         doi_df_output = final_df[['DOI','Matchings']]
         
         doi_json = doi_df_output.to_json(orient='records', lines=True)
         
-    
+        print(doi_json)
+
         output = str(m)+'.json'
 
-        with open("datacite-output/" + output, 'w') as f:
+        with open('output/'+output, 'w') as f:
             f.write(doi_json)
     
     
