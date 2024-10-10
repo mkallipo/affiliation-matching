@@ -164,6 +164,7 @@ url_list = [url+file for file in file_names]
 
 
 def xml_to_json(xml):
+    
     try:
     
         response = requests.get(url_list[xml])
@@ -225,13 +226,10 @@ def xml_to_json(xml):
                 result = Aff_Ids(len(academia_df), academia_df,dix_acad, dix_mult, dix_city, dix_country, 0.7,0.82)
             
                 if len(result)>0:
-        
-                    affs_match = result[['Original affiliations','Matched organizations', 'unique ROR']]
-        
+                
                     dict_aff_open = {x: y for x, y in zip(result['Original affiliations'], result['Matched organizations'])}
-                    dict_aff_id = {x: y for x, y in zip(result['Original affiliations'], result['ROR'])}
-                    #dict_aff_score = {x: y for x, y in zip(result['Original affiliations'], result['Similarity score'])}
-        
+                    dict_aff_id = {x: y for x, y in zip(result['Original affiliations'], result['unique ROR'])}
+
                     dict_aff_score = {}
                     for i in range(len(result)):
                         if type(result['Similarity score'].iloc[i]) == list:
@@ -244,54 +242,57 @@ def xml_to_json(xml):
                     for i in range(len(doi_df)):
                         pidsi = []
                         for aff in doi_df['Unique affiliations'].iloc[i]:
-                            if aff in list(dict_aff_id.keys()):
+                            if aff in dict_aff_id:
                                 pidsi = pidsi + dict_aff_id[aff]
-                        # elif 'unmatched organization(s)' not in pidsi:
-                        #     pidsi = pidsi + ['unmatched organization(s)']
+                        #  elif 'unmatched organization(s)' not in pidsi:
+                        #      pidsi = pidsi + ['unmatched organization(s)']
                         pids.append(pidsi)
                                 
-                            
+                                
                     names = []
                     for i in range(len(doi_df)):
                         namesi = []
                         for aff in doi_df['Unique affiliations'].iloc[i]:
-                            if aff in list(dict_aff_open.keys()):
+                            if aff in dict_aff_open:
                                 try:
                                     namesi = namesi + dict_aff_open[aff]
                                 except TypeError:
                                     namesi = namesi + [dict_aff_open[aff]]
                                 
                         names.append(namesi)
-                    
+                        
                     scores = []
                     for i in range(len(doi_df)):
                         scoresi = []
                         for aff in doi_df['Unique affiliations'].iloc[i]:
-                            if aff in list(dict_aff_score.keys()):
+                            if aff in dict_aff_score:
                                 scoresi = scoresi +  dict_aff_score[aff]
                                 
                         scores.append(scoresi)
-                    
-                    
+                        
+                        
                     doi_df['Matched organizations'] = names
                     doi_df['ROR'] = pids
                     doi_df['Scores'] = scores
-
-
-                    unmatched = [i for i in range(len(doi_df)) if doi_df['Matched organizations'].iloc[i] == []]
                             
+                    
+                
+                    
+                    unmatched = [i for i in range(len(doi_df)) if doi_df['Matched organizations'].iloc[i] == []]
+                    
                     matched = [i for i in range(len(doi_df))  if i not in unmatched]
 
 
                     final_df0 =  doi_df.iloc[matched].copy()
                     final_df0.reset_index(inplace = True)
-        
+
                     final_df = final_df0[['DOI',"Unique affiliations",'Matched organizations','ROR', 'Scores']].copy()
+
 
                     def update_Z(row):
                         if len(row['ROR']) == 0 or len(row['Scores']) == 0:
                             return []
-                        
+                
                         new_Z = []
                         for ror, score in zip(row['ROR'], row['Scores']):
                             entry = {'RORid': ror, 'Confidence': score}
@@ -299,7 +300,7 @@ def xml_to_json(xml):
                         return new_Z
 
                     matching = final_df.apply(update_Z, axis=1)
-        
+                    
                     unique_matching = []
                 
                     for x in matching: 
@@ -326,7 +327,7 @@ def xml_to_json(xml):
                                 max_values[value1] = value2
                                 result_list.append(d)
                         unique_matching.append(result_list)
-
+                    
                         new_matching = []
                         for x in unique_matching:
                             new_x = []
@@ -335,18 +336,24 @@ def xml_to_json(xml):
                                     new_x.append({'Provenance':'AffRo', 'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':'active'})
                                 else:
                                     if dix_status[y['RORid']][1] == '':
-                                        new_x.append({'Provenance':'AffRo', 'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
+                                        new_x.append({'Provenance':'AffRo','PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
                                     else:
-                                        new_x.append({'Provenance':'AffRo', 'PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
-                                        new_x.append({'Provenance':'AffRo', 'PID':'ROR','Value':dix_status[y['RORid']][1], 'Confidence': y['Confidence'], 'Status':'active'})
+                                        new_x.append({'Provenance':'AffRo','PID':'ROR','Value':y['RORid'], 'Confidence': y['Confidence'], 'Status':dix_status[y['RORid']][0]})
+                                        new_x.append({'Provenance':'AffRo','PID':'ROR','Value':dix_status[y['RORid']][1], 'Confidence': y['Confidence'], 'Status':'active'})
                             new_matching.append(new_x)
-                                        
-                        final_df['Matchings'] = new_matching    
-        
-                    # 3. JSON [Final output]
-        
-        
+                                
+
+                    final_df['Matchings'] = new_matching
+
+
+                
+                    
+                    # Output
+                    
                     doi_df_output = final_df[['DOI','Matchings']]
+
+
+
                     
                     doi_json = doi_df_output.to_json(orient='records', lines=True)
                     
@@ -359,10 +366,12 @@ def xml_to_json(xml):
     except Exception as e:
         print(e)
 
+if __name__ == '__main__':
 
-numberOfThreads = int(sys.argv[1])
-executor = ProcessPoolExecutor(max_workers=numberOfThreads)
 
-futures = [executor.submit(xml_to_json, xml) for xml in range(0, len(url_list))]
-done, not_done = wait(futures)
-print(not_done)
+    numberOfThreads = int(sys.argv[1])
+    executor = ProcessPoolExecutor(max_workers=numberOfThreads)
+
+    futures = [executor.submit(xml_to_json, xml) for xml in range(0, len(url_list))]
+    done, not_done = wait(futures)
+    print(not_done)
