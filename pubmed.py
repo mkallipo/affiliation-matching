@@ -141,8 +141,8 @@ def create_df(articleList):
     return df_final
 
 
-# url = "https://ftp.ncbi.nlm.nih.gov/pubmed/baseline/" #annualy 
-url = "https://ftp.ncbi.nlm.nih.gov/pubmed/updatefiles/" #dealy
+url = "https://ftp.ncbi.nlm.nih.gov/pubmed/baseline/" #annualy 
+# url = "https://ftp.ncbi.nlm.nih.gov/pubmed/updatefiles/" #daily
 response = requests.get(url)
 
 soup = BeautifulSoup(response.text, "html.parser")
@@ -224,7 +224,7 @@ def xml_to_json(xml):
             academia_df = create_df_algorithm(doi_df)
 
             if len(academia_df)>0:   
-                result = Aff_Ids(len(academia_df), academia_df,dix_acad, dix_mult, dix_city, dix_country, 0.7,0.82)
+                result = Aff_Ids(len(academia_df), academia_df,dix_acad, dix_mult, dix_city, dix_country, 0.65,0.867)
             
                 if len(result)>0:
                 
