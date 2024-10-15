@@ -141,7 +141,8 @@ def create_df(articleList):
     return df_final
 
 
-url = "https://ftp.ncbi.nlm.nih.gov/pubmed/baseline/"
+# url = "https://ftp.ncbi.nlm.nih.gov/pubmed/baseline/" #annualy 
+url = "https://ftp.ncbi.nlm.nih.gov/pubmed/updatefiles/" #dealy
 response = requests.get(url)
 
 soup = BeautifulSoup(response.text, "html.parser")
