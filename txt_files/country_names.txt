@@ -1,0 +1,229 @@
+usa
+uk
+denmark
+hong kong
+cameroon
+iceland
+kazakhstan
+azerbaijan
+new caledonia
+tunisia
+south korea
+korea
+mayote
+isle man
+el salvador
+greece
+slovakia
+somalia
+macao
+vatican city
+thailand
+tajikistan
+angola
+nepal
+united kingdom
+portugal
+ghana
+moldova
+chile
+chad
+fiji
+australia
+israel
+romania
+cambodia
+japan
+belarus
+french polynesia
+honduras
+bosnia herzegovina
+bangladesh
+luxembourg
+guyana
+niger
+american samoa
+venezuela
+france
+qatar
+bolivia
+belize
+cabo verde
+north macedonia
+libya
+cayman islands
+kenya
+barbados
+uganda
+dominica
+zambia
+poland
+palestine
+cyprus
+switzerland
+argentina
+montenegro
+gambia
+rusia
+sint maarten
+congo republic
+solomon islands
+new zealand
+mali
+costa rica
+antigua barbuda
+hungary
+martinique
+ivory coast
+kyrgyzstan
+norway
+dr congo
+tonga
+armenia
+trinidad tobago
+laos
+uruguay
+myanmar
+lesotho
+equatorial guinea
+western sahara
+papua new guinea
+siera leone
+ethiopia
+mexico
+united states
+kiribati
+rwanda
+st lucia
+finland
+philipines
+iran
+greenland
+turkmenistan
+south sudan
+cuba
+spain
+namibia
+jersey
+kuwait
+malta
+mongolia
+micronesia
+vanuatu
+germany
+sri lanka
+gabon
+brazil
+guinea bisau
+guatemala
+eswatini
+iraq
+puerto rico
+nicaragua
+senegal
+brunei
+samoa
+estonia
+peru
+turkiye
+burkina faso
+oman
+italy
+liechtenstein
+eritrea
+togo
+bahrain
+san marino
+falkland islands
+lebanon
+yemen
+tuvalu
+faroe islands
+svalbard jan mayen
+guadeloupe
+mozambique
+malawi
+mauritania
+egypt
+niue
+canada
+curacao
+north korea
+gibraltar
+south africa
+guam
+slovenia
+nigeria
+grenada
+ecuador
+guinea
+netherlands
+uzbekistan
+suriname
+aland
+india
+french guiana
+madagascar
+indonesia
+croatia
+palau
+latvia
+tanzania
+bhutan
+northern mariana islands
+syria
+albania
+moroco
+benin
+reunion
+malaysia
+st kits nevis
+aruba
+china
+jordan
+vietnam
+lithuania
+ireland
+bermuda
+taiwan
+afghanistan
+liberia
+djibouti
+czechia
+austria
+sudan
+saudi arabia
+andora
+bonaire, sint eustatius, saba
+paraguay
+ukraine
+haiti
+georgia
+montserat
+dominican republic
+belgium
+singapore
+maldives
+serbia
+monaco
+kosovo
+colombia
+st vincent grenadines
+sweden
+seycheles
+central african republic
+timor leste
+mauritius
+algeria
+turks caicos islands
+bahamas
+botswana
+antarctica
+us virgin islands
+jamaica
+pakistan
+united arab emirates
+zimbabwe
+panama
+bulgaria
+burundi

@@ -7,7 +7,6 @@ However, I will incorporate improvements and bug fixes regularly.
 
 ## Main files
 
-- `crossref.py`, `pubmed.py`, `datacite.py` are python scripts, designed to meet the unique needs of the corresponding data source.
 
 - `affro.py` contains the main algorithm.
 
