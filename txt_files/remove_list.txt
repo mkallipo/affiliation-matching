@@ -1,7 +1,7 @@
 colege street
-universi
+univer
 research institu
-laboratory
+labora
 gmbh
 inc
 ltd
@@ -10,23 +10,23 @@ foundation
 faculty
 national institu
 school medicine
-universi school
+univer school
 graduate school
 graduate school engineering
 institu tropical medicine
 institu virology
 faculty medicine
 laboratory
-universi park
+univer park
 institu science
-polytechnic universi
-universi 1
-ciudad universi
-universi campus
-universi hospitals
+polytechnic univer
+univer 1
+ciudad univer
+univer campus
+univer hospitals
 colege
-universi road
-universi str
+univer road
+univer str
 clinic
 technology
 univ

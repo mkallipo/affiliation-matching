@@ -8,14 +8,14 @@ import json
 path_dict = "dictionaries/"
 #path_dict = ""
 
-dix_org = load_json(path_dict + 'dix_acad_new.json')
-dix_mult = load_json(path_dict + 'dix_mult_new.json')
-dix_city = load_json(path_dict + 'dix_city_new.json')
-dix_country = load_json(path_dict + 'dix_country_new.json')
-dix_org_oaire = load_json(path_dict + 'dix_acad_oaire.json')
-dix_mult_oaire = load_json(path_dict + 'dix_mult_oaire.json')
-dix_country_oaire = load_json(path_dict + 'dix_country_oaire.json')
-dix_status = load_json(path_dict + 'dix_status_new.json')
+dix_org = load_json(path_dict + 'dix_acad.json')
+dix_mult = load_json(path_dict + 'dix_mult.json')
+dix_city = load_json(path_dict + 'dix_city.json')
+dix_country = load_json(path_dict + 'dix_country.json')
+# dix_org_oaire = load_json(path_dict + 'dix_acad_oaire.json')
+# dix_mult_oaire = load_json(path_dict + 'dix_mult_oaire.json')
+# dix_country_oaire = load_json(path_dict + 'dix_country_oaire.json')
+dix_status = load_json(path_dict + 'dix_status.json')
 #dix_grids = load_json('dictionaries/dix_grids_rors.json')
 dix_id_country = load_json(path_dict + 'dix_id_country.json')
 #dix_org1 = {x.replace('clinique', 'center').replace('centers', 'center') : dix_org[x] for x in dix_org}
@@ -25,36 +25,7 @@ dix_id_country = load_json(path_dict + 'dix_id_country.json')
 # dix_country1 = {x.replace('clinique', 'center').replace('centers', 'center') : dix_country[x] for x in dix_country}
 
 dix_status_new = {k :[dix_status[k][0], dix_status[k][1].split(', ')] for k in dix_status}
-def find_ror_oaire(input, simU, simG):
-    result = Aff_Ids(input, dix_org, dix_mult, dix_city, dix_country, simU, simG)
-    result_oaire = Aff_Ids(input, dix_org_oaire, dix_mult_oaire, dix_country_oaire, dix_country_oaire, simU, simG)
-    
-    results_upd = []
 
-    for r in result:
-       
-        if  dix_status[r[2]][0] == 'active':
-            results_upd.append([r[1], 'ROR', r[2], 'active'])
-        else:
-            if dix_status[r[2]][1] == '':
-                results_upd.append([r[1], 'ROR', r[2], dix_status[r[2]][0]])
-            else:
-
-                results_upd.append([r[1], 'ROR', r[2], dix_status[r[2]][0]])
-
-                results_upd.append([r[1], 'ROR', dix_status[r[2]][1], 'active'])
-    
-    for r in result_oaire:
-        results_upd.append([r[1],'OpenOrgs', r[2], 'active'])
-        
-    if len(results_upd)>0:
-        result_dict =  [{'Provenance': 'AffRo', 'PID':'ROR', 'Value':x[2], 'Confidence':x[0], 'Status':x[3]} if x[1] == 'ROR' else {'Provenance': 'AffRo', 'PID':'OpenOrgs', 'Value':x[2], 'Confidence':x[0], 'Status': 'active'} for x in results_upd]
-
-    else:
-        result_dict =  []
-
-        
-    return result_dict
 
 def find_ror(input, simU, simG):
     result = Aff_Ids(input, dix_org, dix_mult, dix_city, dix_country, simU, simG)    
@@ -85,6 +56,7 @@ def find_ror(input, simU, simG):
 def find_ror_new(input, simU, simG, limit):
     light_aff = input[0]
     result = Aff_Ids(input, dix_org, dix_mult, dix_city, dix_country, simU, simG, limit)    
+    #print('RES', result)
     results_upd = []
     for r in result:
         if  dix_status_new[r[2]][0] == 'active':
@@ -105,8 +77,6 @@ def find_ror_new(input, simU, simG, limit):
                     results_upd.append([r[1], 'ROR', link, 'active'])
 
     if  len(results_upd) > len(set(description(light_aff)[1])):
-   # if len(results_upd)>0 and  len(set(description(light_aff)[1]))>0 :
-
         final_matching = []
         for id_ in results_upd:
             if dix_id_country[id_[2]] == 'united states':
@@ -115,9 +85,6 @@ def find_ror_new(input, simU, simG, limit):
             elif dix_id_country[id_[2]] == 'united kingdom':
                 if dix_id_country[id_[2]] in light_aff or 'uk' in light_aff:
                     final_matching.append(id_)
-            elif dix_id_country[id_[2]] == 'united arab emirates':
-                if dix_id_country[id_[2]] in light_aff or 'uae' in light_aff:
-                    final_matching.append(id_)     
             elif  dix_id_country[id_[2]] in light_aff:
                     final_matching.append(id_)
     
@@ -126,7 +93,6 @@ def find_ror_new(input, simU, simG, limit):
             result_dict =  [{'Provenance': 'AffRo', 'PID':'ROR', 'Value':x[2], 'Confidence':x[0], 'Status':x[3]} for x in final_matching]
             return result_dict
         else:
-
 
             return  [{'Provenance': 'AffRo', 'PID':'ROR', 'Value':x[2], 'Confidence':x[0], 'Status':x[3]} for x in results_upd]
         

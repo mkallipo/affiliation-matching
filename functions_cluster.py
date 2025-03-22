@@ -24,8 +24,8 @@ def load_json(file_path):
         return json_dict
         
 #categ_string = 'Laboratory|Univ/Inst|Hospital|Foundation|Museum|Government|Company'
-categ_string = 'Laboratory|Univ/Inst|Hospital|Foundation|Specific|Museum|Government|Company'
-dix_org = load_json(path_dict + 'dix_acad_new.json')
+categ_string = 'Academia|Hospitals|Foundations|Specific|Government|Company|Acronyms'
+dix_org = load_json(path_dict + 'dix_acad.json')
 
 
 def replace_double_consonants(text):
@@ -38,8 +38,8 @@ def replace_double_consonants(text):
 
     
 dix_id_country = load_json(path_dict + 'dix_id_country.json')
-categ_dicts = load_json(path_dict + 'dix_categ_new.json')
-key_words = list(categ_dicts.keys()) + ['universi']
+categ_dicts = load_json(path_dict + 'dix_categ.json')
+key_words = list(categ_dicts.keys()) + ['univer']
 countries =  load_txt(path_txt + 'country_names.txt')
 remove_list = [replace_double_consonants(x) for x in load_txt(path_txt + 'remove_list.txt')]
 stop_words = load_txt(path_txt + 'stop_words.txt')
@@ -172,7 +172,7 @@ def process_parentheses(text):
 
 
 
-def protect_phrases(input_string, phrases):
+def protect_phrases1(input_string, phrases):
     # Replace phrases with placeholders
     placeholder_map = {}
     for i, phrase in enumerate(phrases):
@@ -181,7 +181,7 @@ def protect_phrases(input_string, phrases):
         input_string = input_string.replace(phrase, placeholder)
     return input_string, placeholder_map
 
-def restore_phrases(split_strings, placeholder_map):
+def restore_phrases1(split_strings, placeholder_map):
     # Restore placeholders with original phrases
     restored_strings = []
     for s in split_strings:
@@ -199,64 +199,69 @@ def replace_underscore(text):
     else:
         return text
 
-def split_string_with_protection(input_string, protected_phrases):
+def split_string_with_protection(input_string):#, protected_phrases):
     # Step 1: Protect specific phrases
-    input_string, placeholder_map = protect_phrases(input_string, protected_phrases)
+   # input_string, placeholder_map = protect_phrases(input_string, protected_phrases)
     
     # Step 2: Split the string on specified delimiters
     split_strings = [s.strip() for s in re.split(r'[,;/]| – ', input_string) if s.strip()]
     
     # Step 3: Restore protected phrases
-    split_strings = restore_phrases(split_strings, placeholder_map)
+    #split_strings = restore_phrases(split_strings, placeholder_map)
     
     return split_strings
 
 
 
-protected_phrases1 =  [
-    phrase.format(x=x)
-    for x in city_names
-    for phrase in [
-        'university, {x}',
+
+# protected_phrases1 =  [
+#     phrase.format(x=x)
+#     for x in city_names
+#     for phrase in [
+        # 'univer, {x}',
+       
+        # 'univer of, {x}',
+
+        # 'univ, {x}',
         
-        'univ, {x}',
+#        'university california, {x}',
+
+#         'univer colege hospital, {x}',
         
-        'university california, {x}',
+#         'national univ ireland, {x}',
 
-        'university colege hospital, {x}',
+#         'national univer ireland, {x}',
+
+#         'univer colege, {x}',
         
-        'national univ ireland, {x}',
+#         'univer hospital, {x}', 
 
-        'national university ireland, {x}',
-
-        'university colege, {x}',
+#         'imperial colege, {x}',
         
-        'university hospital, {x}', 
+#         'city univer, {x}', 
 
-        'imperial colege, {x}',
-        
-        'city university, {x}', 
+#         'univer medical school, {x}'
 
-        'university medical school, {x}'
-
-    ]
-]
+#     ]
+# ]
 
 
 
 replacements = {#'cliniques':'center',
                 # 'clinique':'center',
                 # 'centres':'center',
+                'hopital': 'hospital',
+                'hosp.':'hospital',
                 'czechoslovak':'czech',
                 'saint' : 'st',
                 'aghia' : 'agia', 
-                'universitatsklinikum' : 'universi hospital',
-                'universitetshospital' : 'universi hospital',
-                'universitatskinderklinik' : 'universi childrens hospital',
-                'universitatskliniken' : 'universi hospital',
-                'Universitätsklinik' : 'universi hospital',
-                'universitatsmedizin' : 'universi medicine',
-                'universitatsbibliothek' : 'universi library',
+                'universitatsklinikum' : 'univer hospital',
+                'universitetshospital' : 'univer hospital',
+                'universitatskinderklinik' : 'univer childrens hospital',
+                'universitatskliniken' : 'univer hospital',
+                'Universitätsklinik' : 'univer hospital',
+                'universitatsmedizin' : 'univer medicine',
+                'universitatsbibliothek' : 'univer library',
                 'nat.' : 'national',
                 'hosp.':'hospital',
                 'uni versity' : 'university',
@@ -281,26 +286,25 @@ replacements = {#'cliniques':'center',
                 'techniche' : 'technological',
                 'univ col' : 'university colege',
                 'univ. col.' : 'university colege',
-                'univ. coll.' : 'university colege',
                 'col.' : 'colege',
-                'hipokration' : 'hipocration', #sp
-                'belfield, dublin' : 'dublin', #sp
-                'balsbridge, dublin' : 'dublin', #sp #ballsbridge
-                'earlsfort terace, dublin' : 'dublin', #sp #terrace
-                'bon secours hospital, cork' : 'bon secours hospital cork', #sp
-                'bon secours hospital, dublin' : 'bon secours hospital dublin', #sp
-                'bon secours hospital, galway' : 'bon secours hospital galway', #sp
-                'bon secours hospital, tralee' : 'bon secours hospital tralee', #sp
-                'bon secours health system' : 'bon secours hospital dublin', #sp
-                'bon secours hospital, glasnevin' : 'bon secours hospital dublin', #sp
-                'imperial colege science, technology medicine' : 'imperial colege science technology medicine', #sp
-                'ucl queen square institute neurology' : 'ucl, london', #sp
-                'ucl institute neurology' : 'ucl, london', #sp
-                'royal holoway, university london' : 'royal holoway universi london', #holloway #sp
-                'city, university london' : 'city universi london', #sp
-                'city university, london' : 'city universi london', #sp
-                'aeginition' : 'eginition', #sp
-                'national technical university, athens' : 'national technical university athens' #sp
+                'hipokration' : 'hipocration',
+                'belfield, dublin' : 'dublin',
+                'balsbridge, dublin' : 'dublin', #ballsbridge
+                'earlsfort terace, dublin' : 'dublin', #terrace
+                'bon secours hospital, cork' : 'bon secours hospital cork',
+                'bon secours hospital, dublin' : 'bon secours hospital dublin',
+                'bon secours hospital, galway' : 'bon secours hospital galway',
+                'bon secours hospital, tralee' : 'bon secours hospital tralee',
+                'bon secours health system' : 'bon secours hospital dublin',
+                'bon secours hospital, glasnevin' : 'bon secours hospital dublin',
+                'imperial colege science, technology medicine' : 'imperial colege science technology medicine',
+                'ucl queen square institute neurology' : 'ucl, london',
+                'ucl institute neurology' : 'ucl, london',
+                'royal holoway, university london' : 'royal holoway univer london', #holloway
+                'city, university london' : 'city univer london',
+                'city university, london' : 'city univer london',
+                'aeginition' : 'eginition',
+                'national technical university, athens' : 'national technical university athens' 
             # 'harvard medical school' : 'harvard university'
 
 
@@ -332,13 +336,16 @@ def substrings_dict(string):
     Returns:
         dict: A dictionary where each key is an index, and the value is a processed substring.
     """
-    
+  #  print(0, string)
     for old, new in replacements.items():
         string = string.replace(old, new)
-        string = string.replace('hospitalum','hospital').replace('hospitalen','hospital')
-    split_strings0 = split_string_with_protection(string, protected_phrases1)
-    split_strings = [x.replace(',',' ') if x.split(',')[0] == 'university' or  x.split(',')[0] == 'univ' else x for  x in split_strings0]
-    
+  #      string = string.replace('hospitalum','hospital').replace('hospitalen','hospital')
+   # split_strings = split_string_with_protection(string)#, protected_phrases1)
+        split_strings = [s.strip() for s in re.split(r'[,;/]| – ', string) if s.strip()]
+  #  print(1, split_strings0)
+    #split_strings = [x.replace(',',' ') if x.split(',')[0] == 'univer' or  x.split(',')[0] == 'univ' or x.split(',')[0] == 'univer of'  else x for  x in split_strings0]
+  #  print(2, split_strings)
+
     # Define a set of university-related terms for later use
 
 
@@ -357,8 +364,10 @@ def substrings_dict(string):
         if not any(term in value.lower() for term in university_terms):
             # Apply regex substitutions for common patterns
    
-            modified_value = re.sub(r'universi\w*', 'universi', value, flags=re.IGNORECASE)
+            modified_value = re.sub(r'universi\w*', 'univer', value, flags=re.IGNORECASE)
             modified_value = re.sub(r'institu\w*', 'institu', modified_value, flags=re.IGNORECASE)
+            modified_value = re.sub(r'hospital(?!s)\w*', 'hospital', modified_value, flags=re.IGNORECASE)
+            modified_value = re.sub(r'labora\w*', 'labora', modified_value, flags=re.IGNORECASE)
             modified_value = re.sub(r'centre\b', 'center', modified_value, flags=re.IGNORECASE)
             modified_value = re.sub(r'\bsaint\b', 'st', modified_value, flags=re.IGNORECASE) 
             modified_value = re.sub(r'\btrinity col\b', 'trinity colege', modified_value, flags=re.IGNORECASE)
@@ -397,10 +406,6 @@ def clean_string(input_string):
     # Replace `–` with space (do not replace hyphen `-`)
     result = re.sub(r'[\-]', ' ', input_string)
     
-    # Replace "saint" with "st"
-    result = re.sub(r'\bSaint\b', 'St', result)
-    result = re.sub(r'\bAghia\b', 'Agia', result)
-    result = re.sub(r'\bAghios\b', 'Agios', result)
 
     
     # Remove characters that are not from the Latin alphabet, or allowed punctuation
@@ -429,7 +434,9 @@ def description(aff_string):
         if w in countries:
             descr.append('country')
             countries_.append(w)
-        elif w in ['universi', 'institu', 'hospital' ,'hopital']:
+        
+        elif w in ['univer', 'institu', 'hospital', 'labora']:
+            
             descr.append('basic_key')
         elif w == 'and':
             descr.append('and')
@@ -492,17 +499,17 @@ def reduce(aff_string):
     light_aff_final = split_and(', '.join((substring_list)))
     
     
-    desc = description(light_aff_final)[0]
-    if (
-    ('universi' in desc and 'country' in desc and desc.index('universi') < desc.index('country')) or
-   # ('hospital' in desc and 'country' in desc and desc.index('hospital') < desc.index('country')) or
-    ('specific' in desc and 'country' in desc and desc.index('specific') < desc.index('country'))
-    ):
+#     desc = description(light_aff_final)[0]
+#     if (
+#     ('univer' in desc and 'country' in desc and desc.index('univer') < desc.index('country')) or
+#    # ('hospital' in desc and 'country' in desc and desc.index('hospital') < desc.index('country')) or
+#     ('specific' in desc and 'country' in desc and desc.index('specific') < desc.index('country'))
+#     ):
 
-        result_affil = ' '.join(light_aff_final.split()[:description(light_aff_final)[0].index('country')+1])+ ', '+' '.join(light_aff_final.split()[description(light_aff_final)[0].index('country')+1:])
-    else:
-        result_affil = light_aff_final
-    return result_affil
+#         result_affil = ' '.join(light_aff_final.split()[:description(light_aff_final)[0].index('country')+1])+ ', '+' '.join(light_aff_final.split()[description(light_aff_final)[0].index('country')+1:])
+#     else:
+#         result_affil = light_aff_final
+    return light_aff_final
     
         
 def unique_subset(L, D):
@@ -524,7 +531,7 @@ def str_radius_u(string, radius_u):
     result = []
 
     for i, x in enumerate(str_list):
-        if 'univers' in x:
+        if 'univer' in x:
             indices.append(i)
             
     for r0 in indices:
@@ -537,85 +544,6 @@ def str_radius_u(string, radius_u):
     return result 
 
 
-def str_radius_coll(string):
-    radius = 1
-    
-    str_list = string.split()
-    indices = []
-    result = []
-
-    for i, x in enumerate(str_list):
-        if 'col' in x:
-            indices.append(i)
-  
-    for r0 in indices:
-        lmin =max(0,r0-radius)
-        lmax =min(r0+radius, len(str_list))
-        s = str_list[lmin:lmax]
-        
-        result.append(' '.join(s))
-    
-    return result 
-
-
-def str_radius_h(string, radius_h):
-    str_list = string.split()
-    indices = []
-    result = []
-
-    for i, x in enumerate(str_list):
-        if 'hospital' in x or 'hopita' in x:
-            indices.append(i)
-            
-    for r0 in indices:
-        lmin =max(0,r0-radius_h-1)
-        lmax =min(r0+radius_h, len(str_list))
-        s = str_list[lmin:lmax]
-        
-        result.append(' '.join(s))
-    
-    return result 
-
-
-def str_radius_c(string):
-    radius = 2
-    
-    str_list = string.split()
-    indices = []
-    result = []
-
-    for i, x in enumerate(str_list):
-        if 'clinic' in x or 'klinik' in x:
-            indices.append(i)
-            
-    for r0 in indices:
-        lmin =max(0,r0-radius-1)
-        lmax =min(r0+radius, len(str_list))
-        s = str_list[lmin:lmax]
-        
-        result.append(' '.join(s))
-    
-    return result 
-
-def str_radius_r(string):
-    radius = 2
-    
-    str_list = string.split()
-    indices = []
-    result = []
-
-    for i, x in enumerate(str_list):
-        if 'research' in x:
-            indices.append(i)
-            
-    for r0 in indices:
-        lmin =max(0,r0-radius-1)
-        lmax =min(r0+radius, len(str_list))
-        s = str_list[lmin:lmax]
-        
-        result.append(' '.join(s))
-    
-    return result 
 
 def str_radius_spec(string):
     spec = False
@@ -640,22 +568,12 @@ def shorten_keywords(affiliations_simple, radius_u):
         if aff in dix_org:
             affiliations_simple_n.append(aff)
 
-        elif 'universi' in aff:
+        elif 'univer' in aff:
             affiliations_simple_n.extend(str_radius_u(aff, radius_u))
         
-        # # elif 'col' in aff and 'trinity' in aff:
-        # #     affiliations_simple_n.extend(str_radius_coll(aff))
-        
-        # elif 'hospital' in aff or 'hopita' in aff:
-        #    affiliations_simple_n.extend(str_radius_h(aff, radius_h))
-        # elif 'clinic' in aff or 'klinik' in aff:
-        #     affiliations_simple_n.extend(str_radius_c(aff))
-        # if 'research council' in aff:
-        #     affiliations_simple_n.extend(str_radius_r(aff))
+
         else:
             affiliations_simple_n.append(str_radius_spec(aff))
-        # else:
-        #     affiliations_simple_n.append(aff)       
 
 
     return affiliations_simple_n

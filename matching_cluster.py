@@ -185,10 +185,10 @@ def best_sim_score(clean_aff, light_raw, candidate_num, pairs_list, multi, simU,
 
         # Sort by similarity score (descending) and then lexicographically
         reduced_best.sort(key=lambda x: (x[1], x[2]), reverse=True)
-#        print('REDUCED BEST: ', reduced_best)
+    #    print('REDUCED BEST: ', reduced_best)
 
         result.extend(reduced_best)
-#        print('RESULT EXT: ', result)
+    #    print('RESULT EXT: ', result)
 
         # Step 3: Limit university-related matches
         univ_list = [r for r in result if 'univ' in r[0]]
@@ -273,9 +273,9 @@ def Aff_Ids(input, dix_org, dix_mult, dix_city_ror, dix_country_ror, simU, simG,
         if len(pairs_k)>0:
             pairs.append(pairs_k)
             
-#    print('PAIRS: ', pairs)  
+   # print('PAIRS: ', pairs)  
     multi = index_multiple_matchings(pairs)
-#    print('MULTIL ',multi)
+   # print('MULTIL ',multi)
 
     need_check_keys = []
     ready_keys = []
@@ -299,12 +299,12 @@ def Aff_Ids(input, dix_org, dix_mult, dix_city_ror, dix_country_ror, simU, simG,
 #    print('NEED CHECK KEYWORD: ', need_check_keys)
 
     pairs_check = [ pair for pair in pairs if pair[0][0] in need_check_keys ]
-#    print('NEED CHECK PAIRS: ', pairs_check)
+   # print('NEED CHECK PAIRS: ', pairs_check)
     
     
     if len(need_check_keys)>0:
         best0 =  best_sim_score(clean_aff, light_aff, len(keywords), pairs_check, multi, simU, simG)
-#        print('OUTPUT BEST: ', best0)
+    #    print('OUTPUT BEST: ', best0)
         best1 = {x[0]:dix_org[x[0]] for x in best0 }
         best01 = unique_subset(best0, best1)
         matched_org = list(set([x[0] for x in best01])) +  ready_keys
@@ -312,13 +312,13 @@ def Aff_Ids(input, dix_org, dix_mult, dix_city_ror, dix_country_ror, simU, simG,
 
             
     
-#        print('NEW BEST',best01)
+    #    print('NEW BEST',best01)
     else:
         best = ready_best
         matched_org = ready_keys
         
 
-#    print('FINAL BEST: ', best)
+  #  print('FINAL BEST: ', best)
 #    print('MATCHED: ', matched_org)
 
     id_list = []

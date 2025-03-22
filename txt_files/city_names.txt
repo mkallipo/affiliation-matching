@@ -507,6 +507,7 @@ spartanburg
 spokane
 springdale
 springfield
+st andrews
 st johns
 st louis
 st louis
@@ -550,6 +551,7 @@ tulsa
 turin
 tuscaloosa
 tyler
+ulm
 utica
 utrecht
 vadodara
