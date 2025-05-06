@@ -1,3 +1,6 @@
+princeton
+munchen 
+abadan
 aberdeen
 abilene
 adelaide
@@ -21,6 +24,7 @@ apleton
 arlington
 arvada
 ashevile
+ashkezar
 athens
 atlanta
 atlantic city
@@ -28,9 +32,11 @@ augsburg
 augusta
 aurora
 austin
+babol
 bakersfield
 balarat
 baltimore
+baltimore county
 bangaluru
 barcelona
 bari
@@ -107,6 +113,7 @@ chengdu
 chesapeake
 chiba
 chicago
+chico
 chongqing
 chula vista
 cincinati
@@ -183,6 +190,7 @@ garden grove
 garland
 gastonia
 geelong
+gent
 genoa
 gilbert
 glasgow
@@ -235,6 +243,7 @@ independence
 indianapolis
 indore
 inglewood
+isfahan
 ioanina
 irvine
 irving
@@ -279,6 +288,7 @@ las vegas
 launceston
 layton
 leeds
+leiden
 leipzig
 leominster
 lewiston
@@ -303,6 +313,7 @@ lucknow
 ludhiana
 luxembourg
 lyon
+maastricht
 macon
 madison
 madrid
@@ -313,6 +324,7 @@ manheim
 marina
 marseile
 marysvile
+mashad
 maynooth
 mcalen
 mchenry
@@ -490,6 +502,7 @@ seaside
 seatle
 sendai
 sevile
+shahrood
 shanghai
 shantou
 shefield
@@ -529,6 +542,7 @@ tacoma
 talahasee
 talin
 tampa
+tehran
 temecula
 tempe
 thornton

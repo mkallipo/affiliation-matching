@@ -6,3 +6,4 @@ universitetshospital
 universitatsmedizin
 universitatsbibliothek
 universitatspital
+universitetsjukhuset

@@ -8,24 +8,11 @@ However, I will incorporate improvements and bug fixes regularly.
 ## Main files
 
 
--  `create_input_cluster.py`, `matching_cluster.py`, contain the main algorithm (preprocessing and matching phase, respectively).
+-  `create_input.py`, `matching.py`, contain the main algorithm (preprocessing and matching phase, respectively).
 
-- `dictionaries/dix_acad.json`: This a dictionary with keys legalnames and alternativenames of organizations in the ROR database. The corresponding values are the ROR ids associated with each organization.
-
-- `dictionaries/dix_mult.json`, `dictionaries/dix_city.json`, `dictionaries/dix_country.json`: three more dictionaries with keys legalnames and alternativenames of organizations in the ROR database, necessary in the case where different organizations share the same name.
-  
-- `dictionaries/dix_categ.json`: the strings to be used as keywords. They are divided in the categories "Univ/Inst", "Laboratory", "Hospital", "Company", "Museum", "Government" "Foundation", "Specific", and "Rest".
-
-- `dictionaries/dix_status.json`: a dictionary with keys the ROR IDs and values the status of the corresponding ID (active, inactive or withdrawn). In case the status in not active, then a new ROR ID, it existent, is provided. 
-
--  `txt_files`: _
-
-- `requirements.txt`.
 
 
 ##  Testing
-
-To be added
 
 
 ## Description of the algorithm

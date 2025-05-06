@@ -1,5 +1,4 @@
 colege street
-univer
 research institu
 labora
 gmbh
@@ -16,7 +15,7 @@ graduate school engineering
 institu tropical medicine
 institu virology
 faculty medicine
-laboratory
+labora
 univer park
 institu science
 polytechnic univer
@@ -28,6 +27,9 @@ colege
 univer road
 univer str
 clinic
-technology
-univ
+techn
+institu
+univer
 institu st
+po box 
+rijksuniver
