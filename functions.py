@@ -62,7 +62,7 @@ categ_dicts = load_json(path_dict + 'dict_categ_pub.json')
 replacements = load_json(path_dict + 'replacements.json')
 key_words = list(categ_dicts.keys()) + ['univer', 'labora']
 countries =  load_txt(path_txt + 'country_names.txt')
-remove_list = [replace_double_consonants(x) for x in load_txt(path_txt + 'remove_list.txt')]
+remove_list = [replace_double_consonants(x) for x in load_txt(path_txt + 'banned.txt')]
 stop_words.remove('and')
 stop_words.remove('at')
 university_terms = [replace_double_consonants(x) for x in load_txt(path_txt + 'university_terms.txt')]
