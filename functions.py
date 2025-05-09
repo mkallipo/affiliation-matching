@@ -28,9 +28,9 @@ def load_json(file_path):
 # #categ_string = 'Academia|Hospitals|Foundations|Government|Company'
 #categ_string = 'Academia|Hospitals|Foundations|Specific|Government|Company|Acronyms'
 dict_org_ror = load_json(path_dict + 'dict_acad'+version+'.json')
-dict_org_oaire = load_json(path_dict + 'dict_acad_oaire.json')
+#dict_org_oaire = load_json(path_dict + 'dict_acad_oaire.json')
 dict_org = dict(dict_org_ror)  
-dict_org.update(dict_org_oaire)
+#dict_org.update(dict_org_oaire)
 dict_country_legalnames = load_json(path_dict + 'dict_country_legalnames'+version+'.json')
 
 def replace_double_consonants(text):
@@ -52,9 +52,9 @@ def remove_stop_words(text):
 stop_words = load_txt(path_txt + 'stop_words.txt')
   
 dict_id_country_ror = load_json(path_dict + 'dict_id_country.json')
-dict_id_country_oaire = load_json(path_dict + 'dict_id_country_oaire.json')
+#dict_id_country_oaire = load_json(path_dict + 'dict_id_country_oaire.json')
 dict_id_country_nc = dict(dict_id_country_ror)  
-dict_id_country_nc.update(dict_id_country_oaire)
+#dict_id_country_nc.update(dict_id_country_oaire)
 
 dict_id_country = {x:remove_stop_words(replace_double_consonants(dict_id_country_nc[x])) for x in list(dict_id_country_nc.keys())}
 

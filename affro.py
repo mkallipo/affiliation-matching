@@ -14,32 +14,32 @@ dict_org_ror = load_json(path_dict + 'dict_acad'+version+'.json')
 dict_mult_ror = load_json(path_dict + 'dict_mult'+version+'.json')
 dict_city_ror = load_json(path_dict + 'dict_city'+version+'.json')
 dict_country_ror = load_json(path_dict + 'dict_country'+version+'.json')
-dict_org_oaire = load_json(path_dict + 'dict_acad_oaire.json')
-dict_mult_oaire = load_json(path_dict + 'dict_mult_oaire.json')
-dict_city_oaire = load_json(path_dict + 'dict_city_oaire.json')
-dict_country_oaire = load_json(path_dict + 'dict_country_oaire.json')
+# dict_org_oaire = load_json(path_dict + 'dict_acad_oaire.json')
+# dict_mult_oaire = load_json(path_dict + 'dict_mult_oaire.json')
+# dict_city_oaire = load_json(path_dict + 'dict_city_oaire.json')
+# dict_country_oaire = load_json(path_dict + 'dict_country_oaire.json')
 dict_status = load_json(path_dict + 'dict_status'+version+'.json')
 #dict_grids = load_json('dictionaries/dict_grids_rors.json')
 dict_id_country_ror = load_json(path_dict + 'dict_id_country.json')
-dict_id_country_oaire = load_json(path_dict + 'dict_id_country_oaire.json')
+#dict_id_country_oaire = load_json(path_dict + 'dict_id_country_oaire.json')
 
 dict_country_legalnames = load_json(path_dict + 'dict_country_legalnames'+version+'.json')
 dict_org = dict(dict_org_ror)  
-dict_org.update(dict_org_oaire)
+#dict_org.update(dict_org_oaire)
 
 dict_mult = dict(dict_mult_ror)  
-dict_mult.update(dict_mult_oaire)
+#dict_mult.update(dict_mult_oaire)
 
 dict_city = dict(dict_city_ror)  
-dict_city.update(dict_city_oaire)
+#dict_city.update(dict_city_oaire)
 
 dict_country = dict(dict_country_ror)  
-dict_country.update(dict_country_oaire)
+#dict_country.update(dict_country_oaire)
 
 
 
 dict_id_country_nc = dict(dict_id_country_ror)  
-dict_id_country_nc.update(dict_id_country_oaire)
+#dict_id_country_nc.update(dict_id_country_oaire)
 
 # dict_mult = dict_mult_ror | dict_mult_oaire
 # dict_country = dict_country_ror | dict_country_oaire
