@@ -38,6 +38,8 @@ However, I will incorporate improvements and bug fixes regularly.
 2. Threshold for other organizations (default 0.82).
 3. Context window for trimming text around the term "university" (default 3)
 
+## Versions
+The TPDL version of the algorithm can be found here: [GitHub Tags](https://github.com/mkallipo/affiliation-matching/tags)
 
 ## Contact
 
