@@ -1,9 +1,14 @@
-oldenburg
-neuherberg
-martinsried
-clausthal
-donauworth
-munchen
+turkiye
+trinidad
+united
+hong
+niederland
+holand
+deutschland
+usa
+uk
+korea
+africa
 6th october city
 aabenraa
 aachen
@@ -184,6 +189,7 @@ al fulah
 al ghaydah
 al hamdaniya district
 al hudaydah
+al jabiriyah
 al jahra
 al jubayhah
 al kharj
@@ -293,6 +299,7 @@ almelo
 almere stad
 almeria
 almhult
+almodovar
 almora
 alnwick
 aloa
@@ -423,10 +430,11 @@ angamali
 angarsk
 angeles city
 angers
+anglet
 angleton
 angola
 angouleme
-angra do heroismo
+angra heroismo
 angwin
 anieres
 anif
@@ -491,7 +499,7 @@ aracatuba
 arad
 araguaina
 arah
-araial do cabo
+araial cabo
 araijan
 araiolos
 arak
@@ -528,6 +536,7 @@ arendal
 arequipa
 arezo
 arganda
+arganil
 argelato
 argenteuil
 argostoli
@@ -550,6 +559,7 @@ armenia
 armidale
 armila
 armonk
+armori
 armunia
 arnbruck
 arnesano
@@ -723,6 +733,7 @@ bad arolsen
 bad bergzaben
 bad berka
 bad bevensen
+bad bruckenau
 bad elster
 bad ems
 bad frankenhausen
@@ -746,6 +757,7 @@ bad neustadt an saale
 bad oeynhausen
 bad ragaz
 bad reichenhal
+bad rothenfelde
 bad saarow
 bad sackingen
 bad salzuflen
@@ -911,6 +923,7 @@ baranovichi
 baranquila
 baranzate
 barasat
+baraut
 barbacena
 barberino val d elsa
 barberton
@@ -1031,6 +1044,7 @@ beaconsfield
 beatrice
 beauchamp
 beaucouze
+beaudesert
 beaufort
 beaulieu sur dordogne
 beaumont
@@ -1106,10 +1120,12 @@ belper
 beltangadi
 belton
 beltsvile
+belval
 belvaux
 belvedere tiburon
 belvidere
 bemidji
+ben aknoun
 ben arous
 ben lomond
 benavente
@@ -1409,7 +1425,6 @@ bolu
 bolulos la mitacion
 bolzano
 boma
-bomdila
 bomet
 bomet county
 bon
@@ -1582,6 +1597,7 @@ brigham city
 brighton
 brighton east
 brighton le sands
+brikama
 brimfield
 brimley
 brindisi
@@ -1654,6 +1670,7 @@ bryn athyn
 bryn mawr
 bryne
 bu zahra
+buarcos
 bubendorf
 bubwith
 bucaramanga
@@ -1664,7 +1681,6 @@ bucharest
 buchenbeuren
 bucheon si
 buchs
-bucino
 buckfastleigh
 buckhanon
 buckhurst hil
@@ -1706,6 +1722,7 @@ bukitingi
 bulandshahr
 bulawayo
 bule
+bulhead city
 buloba
 bunawan
 bunbury
@@ -1988,11 +2005,13 @@ casopolis
 casper
 castanet tolosan
 castel gandolfo
+castel san giovani
 castelana grote
 castelanza
 castelfranco soto
 castelfranco veneto
 castelo branco
+castelo viegas
 castelon
 castine
 castlebar
@@ -2027,7 +2046,7 @@ cavailon
 cavan
 cavite
 cawood
-caxias do sul
+caxias sul
 caxito
 cayene
 cayey
@@ -2049,7 +2068,7 @@ celaya
 cele
 celebration
 celje
-centenario do sul
+centenario sul
 centenial
 center city
 centereach
@@ -2112,6 +2131,7 @@ chandler
 chandpur
 changanasery
 changchun
+changchun shi
 changde
 change
 changhua
@@ -2307,6 +2327,7 @@ chokwe
 chon buri
 chongqing
 chorges
+chorilos
 chorley
 chornobyl
 chorzow
@@ -2634,6 +2655,7 @@ creson
 crest hil
 crested bute
 creston
+crestview
 crestview hils
 crestwood
 crete
@@ -2667,6 +2689,7 @@ crump
 crumpsal
 cruz alta
 cruz das almas
+cruz quebrada
 crystal lake
 crystal river
 csongrad
@@ -2950,6 +2973,7 @@ dindigul
 dingxi
 dinslaken
 diourbel
+dirang
 dire dawa
 dispur
 ditzingen
@@ -3294,6 +3318,7 @@ elsah
 elstree
 elsworth
 eluru
+elvas
 elverum
 ely
 elyria
@@ -3385,7 +3410,7 @@ esmeraldas
 espanola
 espinal
 espinho
-espirito santo do pinhal
+espirito santo pinhal
 esplugues lobregat
 espoo
 esporles
@@ -3574,9 +3599,11 @@ florisant
 florsheim
 flourtown
 flower mound
+flowood
 flushing
 fogia
 foix
+foley
 foligno
 folkestone
 folsom
@@ -3659,7 +3686,7 @@ fountain valey
 four oaks
 fowey
 foxrock
-foz do iguacu
+foz iguacu
 framingham
 franca
 francavila fontana
@@ -3837,6 +3864,7 @@ garetsvile
 garfield heights
 gargrave
 garies
+garki
 garland
 garmisch partenkirchen
 garmsar
@@ -3900,7 +3928,6 @@ george town
 georgetown
 georgiana
 gera
-geraardsbergen
 gerards cros
 gering
 gerlingen
@@ -3989,7 +4016,7 @@ glenwood
 glenwood springs
 gliwice
 glogow
-gloria do goita
+gloria goita
 glosop
 glostrup municipality
 glotertal
@@ -4007,6 +4034,7 @@ godalming
 godard
 godfrey
 godmanchester
+godmersham
 godolo
 goes
 goiania
@@ -4073,6 +4101,7 @@ gothenburg municipality
 gotingen
 gouda
 goulburn
+governador mangabeira
 governador valadares
 gowa regency
 goyang si
@@ -4089,6 +4118,7 @@ grahamstown
 grambling
 granada
 granadila abona
+granbury
 grand blanc
 grand forks
 grand haven
@@ -4240,6 +4270,7 @@ guliston
 gulpen
 gulu
 gulzow
+gumel
 gumersbach
 gumi
 gumushane
@@ -5072,6 +5103,7 @@ itaugua
 itauna
 ithaca
 itoman
+itori
 itu
 itupeva
 itzehoe
@@ -5142,9 +5174,10 @@ janali
 janesvile
 jangheung
 januaria
+janzur
 japaratinga
 jarabacoa
-jaragua do sul
+jaragua sul
 jaromer
 jaroslaw
 jarow
@@ -5281,13 +5314,14 @@ joplin
 jordbro
 jorethang
 jorhat
+jork
 jos
 jose mariano jimenez
 joshua tree
 joso
 jouy en josas
 jozefow
-juazeiro do norte
+juazeiro norte
 juba
 jubail
 juiz fora
@@ -5312,6 +5346,7 @@ kaarst
 kabacan
 kabale
 kabanjahe
+kabankalan
 kabelvag
 kabul
 kabupaten karawang
@@ -5372,6 +5407,7 @@ kalibo town
 kaliningrad
 kalispel
 kalisz
+kaliwadas
 kalkaji
 kalkara
 kalmar
@@ -5534,6 +5570,7 @@ kaysvile
 kayu agung
 kazan
 kazanlak
+kazaure
 kazerun
 kazo
 kealakekua
@@ -5609,6 +5646,7 @@ kew east
 key biscayne
 key largo
 key west
+key west fl
 keyport
 keyser
 keystone
@@ -5777,6 +5815,7 @@ klofta
 klosterneuburg
 kloten
 knin
+knox
 knoxvile
 knutsford
 kobe
@@ -6008,12 +6047,12 @@ kyrenia
 kysucke nove mesto
 kyzyl
 kyzylorda
-la canada flintridge
 la chaux fonds
 la ciotat
 la convencion province
 la crescenta montrose
 la crose
+la cruz
 la garde
 la grande
 la grange
@@ -6033,6 +6072,7 @@ la orotava
 la palma
 la paz
 la plata
+la porte
 la punta district
 la rioja
 la roche guyon
@@ -6055,6 +6095,7 @@ laarne
 laatzen
 labe
 labege
+labruyere
 labu
 lac du flambeau
 lac la biche
@@ -6069,6 +6110,7 @@ lady grey
 lae
 lafayete
 lafia
+lafolete
 lages
 laghouat
 lagoa
@@ -6079,6 +6121,7 @@ laguna hils
 laguna woods
 lahaina
 lahijan
+lahnau
 laholm
 lahore
 lahti
@@ -6117,6 +6160,7 @@ lamar
 lambarene
 lambayeque
 lame deer
+lamego
 lamezia terme
 lamia
 lamongan
@@ -6244,6 +6288,7 @@ leatherhead
 leavenworth
 leawood
 lebanon
+leca bailio
 lece
 leco
 ledbury
@@ -6339,7 +6384,6 @@ leyland
 leyte
 lhasa
 lhokseumawe
-liancourt
 lianyun
 lianyungang
 liaocheng
@@ -6682,6 +6726,7 @@ madera
 madhepura
 madhyamgram
 madhyapur thimi
+madil
 madinat sadat
 madison
 madisonvile
@@ -6815,6 +6860,7 @@ manhatan beach
 manheim
 manhuacu
 manikganj
+manikpara
 manila
 manilva
 maningrida
@@ -6841,6 +6887,7 @@ manvile
 manzanilo
 manzini
 maoming
+maospati
 maple grove
 maple ridge
 maple valey
@@ -6920,6 +6967,7 @@ marsh harbour
 marshal
 marshaltown
 marshfield
+martapura
 marthandam
 martigny combe
 martilac
@@ -6937,7 +6985,6 @@ maryland heights
 maryport
 marysvile
 maryvile
-masa
 masagno
 masaka
 masalaves
@@ -6967,7 +7014,7 @@ mateur
 mathura
 mati
 matlock
-mato groso do sul
+mato groso sul
 matoon
 matosinhos
 matosinhos municipality
@@ -6987,6 +7034,7 @@ mauston
 mawlamyine
 maxixe
 mayaguez
+maych ew
 mayen
 mayfield
 mayfield heights
@@ -7021,6 +7069,7 @@ mclean
 mcminvile
 mcmurdo dry valeys
 mcpherson
+meadowbrook
 meadvile
 mebane
 mechanicsburg
@@ -7105,6 +7154,7 @@ merignac
 merilvile
 merimack
 merit island
+merowe
 merseburg
 mersin
 merthyr tydfil
@@ -7233,7 +7283,7 @@ minya
 mioveni
 miramar
 miramichi
-miranda do corvo
+miranda corvo
 mirandela
 mirano
 mirfield
@@ -7307,6 +7357,7 @@ mohrendorf
 moines
 moinhos vento baixo
 moira
+moita
 mojave
 mojokerto
 moka
@@ -7319,6 +7370,7 @@ mold
 molde
 molesey
 molet del vales
+molete
 molina segura
 moline
 molndal
@@ -7430,6 +7482,7 @@ morgantown
 morges
 moriguchi
 morilton
+morinsvile
 morioka
 moris
 moris plains
@@ -7672,6 +7725,7 @@ nakusp
 nakwero
 nal chik
 nalgonda
+nalut
 nam dinh
 nam gu
 namakal
@@ -7753,6 +7807,7 @@ nasipit
 nasiriyah
 nasushiobara
 natal
+natchez
 natchitoches
 natick
 national city
@@ -7767,6 +7822,7 @@ navasota
 navi mumbai
 navoiy
 navojoa
+navotas
 navrongo
 nawabshah
 nay pyi taw
@@ -7905,6 +7961,7 @@ newport beach
 newport east
 newport news
 newport pagnel
+newport tn
 newquay
 newry
 newstead
@@ -8130,6 +8187,7 @@ nuremberg
 nurtingen
 nusbaum
 nuuk
+nuvem
 nwaniba
 nyack
 nyahururu
@@ -8142,6 +8200,7 @@ nykobing falster
 nyon
 nyons
 nysa
+o grove
 oak blufs
 oak brook
 oak creek
@@ -8188,6 +8247,7 @@ oconomowoc
 ocosingo
 ocotlan
 ocoyoacac
+ocumare
 oda shi
 odanah
 odate
@@ -8258,8 +8318,8 @@ olecko
 olhao
 olinda
 oliveira azemeis
-oliveira do hospital
 oliveira frades
+oliveira hospital
 oliver
 olivet
 olivete
@@ -8427,6 +8487,7 @@ ourense
 ouro preto
 ovar
 overath
+overijse
 overland
 overland park
 overpelt
@@ -8784,6 +8845,7 @@ pinheiro
 pinjara
 pino torinese
 pinsk
+pionki
 pipa pases
 piqua
 piracicaba
@@ -9176,7 +9238,7 @@ quierschied
 quilpue
 quimper
 quincy
-quinta do anjo
+quinta anjo
 quinte west
 quitman
 quito
@@ -9277,6 +9339,7 @@ ratchathewi
 rathenow
 rathgar
 ratingen
+ratmalana
 ratnapura
 raubling
 raufos
@@ -9411,7 +9474,6 @@ rio branco
 rio bueno
 rio cuarto
 rio das ostras
-rio do sul
 rio galegos
 rio grande
 rio janeiro
@@ -9419,6 +9481,7 @@ rio maior
 rio mouro
 rio rancho
 rio rico
+rio sul
 rio tinto
 rio verde
 riobamba
@@ -9652,6 +9715,7 @@ saguenay
 sagunto
 saharanpur
 sahiwal
+sahuarita
 sai kung
 sai mai
 saida
@@ -9849,17 +9913,18 @@ santa ana
 santa barbara
 santa clara
 santa clarita
+santa comba dao
 santa cristina d aro
 santa cruz
 santa cruz barahona
-santa cruz do sul
 santa cruz juventino rosas
 santa cruz la palma
 santa cruz lanera
+santa cruz sul
 santa fe
 santa fe antioquia
-santa fe do sul
 santa fe springs
+santa fe sul
 santa gertrudes
 santa maria
 santa maria da feira municipality
@@ -9869,7 +9934,7 @@ santa marta
 santa monica
 santa oliva
 santa paula
-santa rita do sapucai
+santa rita sapucai
 santa rosa
 santa rosa cabal
 santa rosa osos
@@ -9879,11 +9944,11 @@ santander
 santarem
 santee
 santiago
+santiago cacem
 santiago cali
 santiago compostela
 santiago cuba
 santiago del estero
-santiago do cacem
 santiago papasquiaro
 santiago surco
 santiago tianguistenco galeana
@@ -9891,25 +9956,28 @@ santiago tilapa
 santiniketan
 santo andre
 santo andre vagos
-santo antao do tojal
+santo antao tojal
 santo antonio pose
 santo domingo
 santo domingo los tsachilas
+santo tirso
 santo tirso municipality
 santos
 sanya
-sao bernardo do campo
-sao caetano do sul
+sao bernardo campo
+sao bras alportel
+sao caetano sul
 sao carlos
 sao domingos rana
 sao goncalo
 sao joao da boa vista
 sao joao da madeira
+sao joao da pesqueira
 sao joao del rei
 sao joaquim da bara
 sao jose
-sao jose do rio preto
 sao jose dos campos
+sao jose rio preto
 sao leopoldo
 sao luis
 sao mamede infesta
@@ -10140,6 +10208,7 @@ serpukhov
 sersheim
 serta
 sertaozinho
+sesimbra
 sesto fiorentino
 sesto san giovani
 setat
@@ -10152,7 +10221,7 @@ setubal
 sevastopol
 seven hils
 sevenoaks
-sever do vouga
+sever vouga
 seversk
 seveso
 sevetin
@@ -10434,6 +10503,7 @@ smoldzino
 smolensk
 smorumnedre
 smyrna
+sneek
 snelvile
 snezhinsk
 snina
@@ -11119,11 +11189,13 @@ tecate
 tedington
 tefe
 tegal
+tegalkalapa
 tegerfelden
 tegucigalpa
 tehran
 tehuacan
 teignmouth
+tejupilco hidalgo
 tekirdag
 tel afar district
 tel aviv
@@ -11372,6 +11444,7 @@ topolovgrad
 topsfield
 topsham
 torance
+torao
 torbat e heydariyeh
 toreboda
 torejon ardoz
@@ -11437,6 +11510,7 @@ trebon
 trelew
 tremont
 trencin
+trengalek
 trento
 trenton
 tres cantos
@@ -11742,6 +11816,7 @@ valhala
 valjevo
 valmiera
 valmontone
+valongo
 valparaiso
 vals
 vals platz
@@ -11830,7 +11905,7 @@ vestec
 vestmanaeyjar
 veszprem
 vevey
-viana do castelo
+viana castelo
 vianen
 viaregio
 viborg
@@ -11866,7 +11941,7 @@ vigolzone
 vihti
 vijayawada
 vikyrovice
-vila do conde
+vila conde
 vila franca xira
 vila guardia
 vila maria
@@ -12125,6 +12200,7 @@ weinstadt endersbach
 weirton
 weisandt golzau
 weisenfels
+weisenthurm
 weiz
 wejherowo
 weland
@@ -12444,9 +12520,9 @@ wythevile
 xai xai
 xalapa
 xativa
-xi an
 xiamen
 xiamen shi
+xian
 xiangcheng
 xiangfan
 xiangtan
@@ -12511,6 +12587,7 @@ yangling
 yangon
 yangp yong
 yangpu
+yangquan
 yangsan
 yangzhong
 yangzhou
@@ -12614,6 +12691,7 @@ yunfu
 yunyan
 yurihonjo
 yuseong gu
+yutz
 yuxi
 yuyao
 yuzawa
@@ -12723,6 +12801,7 @@ zionsvile
 ziqangweni
 zitacuaro
 zitau
+ziway
 zlin
 zliten
 znojmo

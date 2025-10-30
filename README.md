@@ -13,7 +13,6 @@ However, I will incorporate improvements and bug fixes regularly.
 
 
 ## Testing / Usage
-- **Interactive testing:** open `test.ipynb`
 - **Command-line usage:**  
   ```bash
   python core.py "your affiliation here"

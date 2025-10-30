@@ -489,7 +489,7 @@ def description(aff_string):
             descr.append('country')
             countries_.append('usa')   
         
-        elif w in ['univer', 'institu', 'hospital', 'labora']:
+        elif w in ['univer', 'institu', 'hospital', 'labora', 'colege']:
             
             descr.append('basic_key')
         elif w == 'and':
@@ -640,8 +640,9 @@ def shorten_keywords(affiliations_simple, radius_u):
     affiliations_simple_n = []
 
     for aff in affiliations_simple:
-    #    print('check aff', aff)
+        # print('check aff', aff)
         if aff in dix_name:
+            # print('in dix')
             affiliations_simple_n.append(aff)
 
         elif 'univer' in aff:

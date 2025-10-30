@@ -9,3 +9,4 @@ universitatspital
 universitetsjukhuset
 universitatsaugenklinik
 univesitatsfrauenklinik
+universitetscentralsjukhus

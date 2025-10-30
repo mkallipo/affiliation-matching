@@ -1,9 +1,12 @@
 ##import functions
 import sys
 from helpers.functions import *
-from helpers.matching import *
 from helpers.create_input import *
+from helpers.matching import *
+from helpers.find_name import *
+from helpers.find_id import *
 from helpers.disambiguation import *
+
 
 
 dix_id = load_json('jsons/dix_id.json')
@@ -47,9 +50,10 @@ def run_affro(raw_aff_string):
                     for key in [x['id'] for x in  dix_name[lucky_guess]]
                     if ("ror" in key and dix_id[key]['status'][0] == "active") or ("openorgs" in key)
                 ]
-
+                # print('cand_ids',cand_ids)
                 if len(cand_ids) == 1:# or num_countries == 1:
-                    id_ = dix_name[lucky_guess][0]['id']
+                    id_ = cand_ids[0]
+                    # print('id',id_)
                     name_ =  dix_id[id_]['name']
                     country_ =  dix_id[id_]['country']
                     status_ = dix_id[id_]['status']
@@ -57,9 +61,23 @@ def run_affro(raw_aff_string):
                         return [{'provenance': 'affro', 'version' : VERSION, 'pid': 'openorgs', 'value': id_, 'name': name_, 'confidence': 1, 'status': 'active', 'country': country_}]
                     else:
                         return [{'provenance': 'affro', 'version' : VERSION, 'pid': 'ror', 'value': id_, 'name': name_, 'confidence': 1, 'status': 'active', 'country':country_}]
-                    
-                else:
-                    return []
+                
+                else: 
+                    found = False
+                    for triplet in dix_name[lucky_guess]:
+                        if triplet['is_first'] == 'y':
+                            found = True
+                            id_ = triplet['id']
+                            name_ =  dix_id[id_]['name']
+                            country_ =  dix_id[id_]['country']
+                            status_ = dix_id[id_]['status']
+                            if 'openorgs' in id_:
+                                return [{'provenance': 'affro', 'version' : VERSION, 'pid': 'openorgs', 'value': id_, 'name': name_, 'confidence': 1, 'status': 'active', 'country': country_}]
+                            else:
+                                return [{'provenance': 'affro', 'version' : VERSION, 'pid': 'ror', 'value': id_, 'name': name_, 'confidence': 1, 'status': 'active', 'country':country_}]
+                        
+                    if found == False:
+                        return []
         else:
             result = produce_result(create_df_algorithm(raw_aff_string, 3), 0.42, 0.82, 500)
 

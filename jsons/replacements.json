@@ -76,5 +76,12 @@
   "medisch": "medical",
   "hahn-meitner-institut berlin" : "helmholtz-zentrum berlin",
   "fachhochschule gelsenkirchen" : "westfalische hochschule",
-  "turkiye" : "turkey"
+  "turkiye" : "turkey",
+  "trinity colege university" : "trinity colege",
+  "tyndal institute" : "tyndal national institute",
+  "st patricks colege, drumcondra" : "dublin city university",
+  "ucd dublin" : "univer college dublin",
+  "department university" : "department, university",
+  "uniklinik" : "universitatsklinikum",
+  "xi an" : "xian"
 }

@@ -17,7 +17,7 @@ def find_candidate(keyword, k, dix, simU, simG, candidates_, limit):
     total_pairs = 0
 
     for x in candidates_:
-        if  is_contained(keyword, x):
+        if  is_contained(keyword, x):# and ('univ' in x or 'inst' in x or len(get_candidates([])) < len(dix_name)):
             x_vector = vectorizer.fit_transform([x]).toarray()
             keyword_vector = vectorizer.transform([keyword]).toarray()
 
@@ -67,7 +67,6 @@ def find_candidate(keyword, k, dix, simU, simG, candidates_, limit):
                 
                     
             elif not 'univ' in keyword and not 'univ' in x:
-
                 keyword_vector = vectorizer.fit_transform([keyword]).toarray()
                 x_vector = vectorizer.transform([x]).toarray()
 
@@ -75,6 +74,7 @@ def find_candidate(keyword, k, dix, simU, simG, candidates_, limit):
                 similarity = cosine_similarity(keyword_vector, x_vector)[0][0]
 
                 if similarity > simG: #max(0.82,sim):
+                    
                     similar_k.append(similarity)
                     pairs_k.append((keyword,x,similarity))
                     total_pairs += 1  # Track total number of pairs
@@ -83,8 +83,10 @@ def find_candidate(keyword, k, dix, simU, simG, candidates_, limit):
                         dix[k] = [x]
                     else:
                         dix[k].append(x)  
+            
         if total_pairs >= limit:  # Stop if we reach 
             return [] 
+    # print('end find_candidate', pairs_k)   
     return  pairs_k
 
 
@@ -178,78 +180,3 @@ def best_sim_score(clean_aff, light_raw, candidate_num, pairs_list, multi, simU,
 
 
 
-def find_name(input, dix_name, simU, simG, limit):
- #   print('start find_name')
-    """
-    Matches affiliations in DataFrame 'DF' with names from dictionary 'dix_org' and their ROR_ids based on similarity scores.
-
-    Args:
-        m (int): The number of DOIs to check.
-        DF (DataFrame): The input DataFrame containing affiliation data.
-        dix_org (dict): A dictionary of names of organizations and their ROR_ids.
-        simU (float): Similarity threshold for universities.
-        simG (float): Similarity threshold for non-universities.
-
-    Returns:
-        DataFrame: The final DataFrame with matched affiliations and their corresponding similarity scores.
-    """
-    clean_aff = input[0]
-    light_aff = input[1].replace(' gmbh', ' ').strip()
-    df_list = input[2]
-    
-    countries_list = input[3]
-  
-    dix = {}    # will store indeces and legalnames of organizations of the DOI { i : [legalname1, legalname2,...]}
-    result = {}
-    pairs = []
- 
-    keywords =  [entry["keywords"].replace(' gmbh', ' ').strip() for entry in df_list] 
-
-    candidates = get_candidates(countries_list)
-    if len(keywords) > 1 or len(keywords) == 1 and len(keywords[0])>1:
-        for k,s in enumerate(keywords):
-            pairs_k = []
-            try:
-                pairs_k.append((s,s,1, dix_name[s][0]['id'],dix_name[s][0]['country']))
-
-                if k not in dix:
-                    dix[k] = [s]
-                else:
-                    dix[k].append(s)
-                    
-            except Exception as e:
-                pairs_k = find_candidate(s, k , dix,  simU, simG, candidates, limit)
-        
-            result[k] = pairs_k
-            if len(pairs_k)>0:
-
-                pairs.append(pairs_k)
-    multi = index_multiple_matchings(pairs)
-    need_check_keys = []
-    ready_keys = []
-    ready_best = []
-    for keyword in multi:
-        try: 
-            if  multi[keyword]>1:
-                need_check_keys.append(keyword)
-            else:
-                for p in pairs:
-                    if keyword in p[0]:
-                        if p[0][1] not in ready_keys:
-                            ready_keys.append(p[0][1])
-
-                            ready_best.append([p[0][1], p[0][2]])
-        except:
-            pass
- 
-    pairs_check = [ pair for pair in pairs if pair[0][0] in need_check_keys ]
-    
-    if len(need_check_keys)>0:
-        best0 =  best_sim_score(clean_aff, light_aff, len(keywords), pairs_check, multi, simU, simG)
-        best1 = {x[0]:dix_name[x[0]][0]['id'] for x in best0 }
-        best01 = unique_subset(best0, best1)
-        best = best01 + ready_best
-    else:
-        best = ready_best
- #   print('end find_name', best) 
-    return best
