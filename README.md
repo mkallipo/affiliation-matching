@@ -7,8 +7,13 @@ However, I will incorporate improvements and bug fixes regularly.
 
 ## Main files
 
+The algorithm consists of the following scripts:
 
--  `helpers/create_input.py`, `helpers/matching.py`,  `helpers/disambiguation.py` contain the main algorithm.
+- `helpers/create_input.py`,
+- `helpers/matching.py`,
+- `helpers/find_name`,
+- `helpers/find_id`,
+- `helpers/disambiguation.py` 
 
 
 
