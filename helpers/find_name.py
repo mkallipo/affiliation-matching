@@ -1,4 +1,3 @@
-import Levenshtein
 from .functions import *
 from .create_input import * 
 from .matching import * 
@@ -25,6 +24,7 @@ def find_name(input, dix_name, simU, simG, limit):
     df_list = input[2]
     
     countries_list = input[3]
+    keys_list = input[4]
   
     dix = {}    # will store indeces and legalnames of organizations of the DOI { i : [legalname1, legalname2,...]}
     result = {}
@@ -32,40 +32,36 @@ def find_name(input, dix_name, simU, simG, limit):
  
     keywords =  [entry["keywords"].replace(' gmbh', ' ').strip() for entry in df_list] 
 
-    candidates = get_candidates(countries_list)
+    candidates = get_candidates(countries_list, keys_list)
+    # print('candidates found for keywords:', len(candidates))
     if len(keywords) > 1 or len(keywords) == 1 and len(keywords[0])>1:
         for k,s in enumerate(keywords):
-            pairs_k = []
-            
-            # if s in dix_name:
-                # print('lucky')
-                # for id_ in dix_name[s]:
-                #     if id_['city'] in clean_aff or id_['country'] in clean_aff:
-                #         pairs_k.append((s,s,1, id_['id'],id_['country']))
-                #         if k not in dix:
-                #             dix[k] = [s]
-                #         else:
-                #             dix[k].append(s)
-                #             break
-            try:
-                pairs_k.append((s,s,1, dix_name[s][0]['id'],dix_name[s][0]['country']))
-                # print('lucky')
-        
-                if k not in dix:
-                    dix[k] = [s]
+            if len(s) >1 and s not in countries:
+                pairs_k = []
+                # print(s)          
+        #--end september 2025
+                if s in candidates:
+                    # print('lucky', s)
+                    pairs_k.append((s,s,1, dix_name[s][0]['id'],dix_name[s][0]['country']))
+                    if k not in dix:
+                        dix[k] = [s]
+                    else:
+                        dix[k].append(s)
+                        
                 else:
-                    dix[k].append(s)
+            # else: 
+                    # print('not lucky')  
                     
-            except Exception as e:
-            # else:
-                pairs_k = find_candidate(s, k , dix,  simU, simG, candidates, limit)
-                
-        
-            result[k] = pairs_k
-            if len(pairs_k)>0:
-
-                pairs.append(pairs_k)
+                    try:         
+                        pairs_k = find_candidate(s, k , dix,  simU, simG, candidates, limit)
+                    except:
+                        pairs_k = []
+                result[k] = pairs_k
+                if len(pairs_k)>0:
+                    pairs.append(pairs_k)
+    # print('pairs', pairs)
     multi = index_multiple_matchings(pairs)
+    # print('multi', multi)
     need_check_keys = []
     ready_keys = []
     ready_best = []
@@ -80,14 +76,19 @@ def find_name(input, dix_name, simU, simG, limit):
                             ready_keys.append(p[0][1])
 
                             ready_best.append([p[0][1], p[0][2]])
-        except:
+        except Exception as e:
+            print('ERROR, find_name', e)
             pass
  
     pairs_check = [ pair for pair in pairs if pair[0][0] in need_check_keys ]
-    
+    # print('pairs_check',pairs_check)
     if len(need_check_keys)>0:
+        # print(' len(need_check_keys)', len(need_check_keys))
         best0 =  best_sim_score(clean_aff, light_aff, len(keywords), pairs_check, multi, simU, simG)
+        # print('best0', best0)
         best1 = {x[0]:dix_name[x[0]][0]['id'] for x in best0 }
+        # print('best1', best1)
+
         best01 = unique_subset(best0, best1)
         best = best01 + ready_best
     else:

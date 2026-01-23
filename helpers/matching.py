@@ -10,19 +10,23 @@ def index_multiple_matchings(pairs):
     return d
 
 def find_candidate(keyword, k, dix, simU, simG, candidates_, limit): 
-    vectorizer = CountVectorizer()
     
+    vectorizer = CountVectorizer()
     similar_k = []
     pairs_k = []
     total_pairs = 0
-
+    # print('keyword',keyword)
+    # print('candisates', len(candidates_))
     for x in candidates_:
+        
         if  is_contained(keyword, x):# and ('univ' in x or 'inst' in x or len(get_candidates([])) < len(dix_name)):
+            # print('keyword contained')
             x_vector = vectorizer.fit_transform([x]).toarray()
             keyword_vector = vectorizer.transform([keyword]).toarray()
 
             # Compute similarity between the vectors
             similarity = cosine_similarity(x_vector, keyword_vector)[0][0]
+            # print('similarity', similarity)
             if similarity > min(simU, simG):
                 if ('univ' in keyword and 'univ' in x) and similarity > simU:
                     similar_k.append(similarity)
@@ -47,6 +51,7 @@ def find_candidate(keyword, k, dix, simU, simG, candidates_, limit):
                         dix[k].append(x)
                         
         elif is_contained(x, keyword):
+            # print('keyword contains')
             if ('univ'in keyword and 'univ' in x):
 
                 keyword_vector = vectorizer.fit_transform([keyword]).toarray()
@@ -67,12 +72,13 @@ def find_candidate(keyword, k, dix, simU, simG, candidates_, limit):
                 
                     
             elif not 'univ' in keyword and not 'univ' in x:
+                # print('not uni', keyword, x)
                 keyword_vector = vectorizer.fit_transform([keyword]).toarray()
                 x_vector = vectorizer.transform([x]).toarray()
 
                 # Compute similarity between the vectors
                 similarity = cosine_similarity(keyword_vector, x_vector)[0][0]
-
+                # print('similarity',similarity)
                 if similarity > simG: #max(0.82,sim):
                     
                     similar_k.append(similarity)
@@ -99,7 +105,7 @@ def best_sim_score(clean_aff, light_raw, candidate_num, pairs_list, multi, simU,
     vectorizer = CountVectorizer()
     result = []
     best = []
-
+    # print('start best_sim',pairs_list )
     for pair_group in pairs_list:
         
         best_j = []
@@ -175,7 +181,7 @@ def best_sim_score(clean_aff, light_raw, candidate_num, pairs_list, multi, simU,
 
     # Convert to list format
     final_result = [[key, value[0]] for key, value in sorted(result_dict.items(), key=lambda x: x[1][1], reverse=True)]
-
+    # print('best_sim_score', final_result)
     return final_result
 
 

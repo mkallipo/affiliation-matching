@@ -6,6 +6,7 @@ from collections import defaultdict
 import json   
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import gzip
 
 
 def load_txt(file_path):
@@ -14,10 +15,10 @@ def load_txt(file_path):
         return list_
     
 
-def load_json(file_path): 
-    with open(file_path, 'r') as json_file:
-        json_dict = json.load(json_file)
-        return json_dict
+
+def load_json(file_path):
+    with gzip.open(file_path, "rt", encoding="utf-8") as f:
+        return json.load(f)
         
 categ_string = 'Academia|Hospitals|Foundations|Specific|Government|Company|Acronyms'
 
@@ -34,9 +35,10 @@ us_states = [
     "virginia", "washington", "west virginia", "wisconsin", "wyoming"
 ]
 
-dix_name = load_json('./jsons/dix_name.json')
+dix_name = load_json('./jsons/dix_name.json.gz')
 
-dix_country_legalnames = load_json('./jsons/dix_country_legalnames.json')
+dix_country_legalnames = load_json('./jsons/dix_country_legalnames.json.gz')
+dix_key_legalnames = load_json('./jsons/dix_keys_names.json.gz')
 
 def replace_double_consonants(text):
     # This regex pattern matches any double consonant
@@ -71,10 +73,10 @@ def remove_stop_words(text):
 
 stop_words = load_txt('txts/stop_words.txt')
   
-dix_id = load_json('jsons/dix_id.json')
+dix_id = load_json('jsons/dix_id.json.gz')
 
-categ_dicts = load_json('jsons/dix_categ.json')
-replacements = load_json('jsons/replacements.json')
+categ_dicts = load_json('jsons/dix_categ.json.gz')
+replacements = load_json('jsons/replacements.json.gz')
 key_words = list(categ_dicts.keys()) + ['univer', 'labora']
 countries =  load_txt('txts/country_names.txt')
 remove_list = [replace_double_consonants(x) for x in load_txt('txts/remove_list.txt')]
@@ -83,14 +85,63 @@ stop_words.remove('at')
 university_terms = [replace_double_consonants(x) for x in load_txt('txts/university_terms.txt')]
 city_names = [replace_double_consonants(x) for x in load_txt('txts/city_names.txt')]
 
+def is_first(id, name):
+    for quadruple in dix_name[name]:
+        if quadruple['id'] == id:
+            return quadruple['first']
 
 
-def get_candidates(country_list):
-    if len(country_list) >0:
-        cand =  [dix_country_legalnames[country] for country in country_list if country in dix_country_legalnames]
-        return list(set([item for sublist in cand for item in sublist]))
+# def get_candidates(country_list, key_list):
+#     # print('get_candidates called with country_list:', country_list, 'and key_list:', key_list)
+#     cand_names = [
+#         name
+#         for key in key_list
+#         if key in dix_key_legalnames
+#         for name in dix_key_legalnames[key]
+#     ]
+#     cand_names = set(cand_names)
+
+#     if country_list != [''] and len(country_list) > 0:
+#         cand = [
+#             name
+#             for country in country_list
+#             if country in dix_country_legalnames
+#             for name in dix_country_legalnames[country]
+#             if name in cand_names
+#         ]
+#         return set(cand)
+#     else:
+#         return cand_names
+
+def get_candidates(country_list, key_list):
+    cand_names = {
+        name
+        for key in key_list
+        if key in dix_key_legalnames
+        for name in dix_key_legalnames[key]
+    }
+
+    # remove empty / falsy country entries
+    country_list = [c for c in country_list if c]
+
+    if country_list:
+        country_names = {
+            name
+            for country in country_list
+            if country in dix_country_legalnames
+            for name in dix_country_legalnames[country]
+        }
+        return cand_names & country_names
     else:
-        return list(dix_name.keys())
+        return cand_names
+
+
+# def get_candidates(country_list):
+#     if len(country_list) >0:
+#         cand =  [dix_country_legalnames[country] for country in country_list if country in dix_country_legalnames]
+#         return list(set([item for sublist in cand for item in sublist]))
+#     else:
+#         return list(dix_name.keys())
 
 
 def is_contained(s, w):
@@ -112,7 +163,7 @@ def is_contained(s, w):
 
 def split_sub(s: str) -> str:
     # Add comma after certain word pairs
-    pattern = r'\b((?:univer))\s+(department|faculty|institu)\b'
+    pattern = r'\b((?:univer))\s+(department|faculty|instit)\b'
     return re.sub(pattern, r'\1, \2', s, flags=re.IGNORECASE)
 
 
@@ -167,7 +218,7 @@ def insert_space_between_lower_and_upper(s):
     Insert a space between a lowercase letter and a following uppercase letter,
     while protecting listed substrings (case-sensitive) and restoring them in lowercase.
     """
-    protected = [
+    protected = ['DePaul',
         'AstraZeneca',
         'BioNTech',
         'GlaxoSmithKline',
@@ -175,7 +226,8 @@ def insert_space_between_lower_and_upper(s):
         'SoBigData',
         'GmbH',
         'gGmbH',
-        'gmbH'
+        'gmbH',
+        'OpenAIRE'
     ]
 
     # Replace protected words with placeholders mapping to their lowercase versions
@@ -220,7 +272,7 @@ def replace_abbr_univ(token):
         elif token == "u " + city:
             return "univer " + city
         elif token == "tu " + city:
-            return "technical univer " + city
+            return "techn univer " + city
     else:
         return token
             
@@ -228,7 +280,8 @@ def replace_abbr_univ(token):
 def remove_parentheses(text):
    return re.sub(r'\([^()]*\)', '', text)
 
-L = ['univ', 'hospital', 'clinic', 'klinik', 'Univ', 'Hospital', 'Clinic', 'Klinik']
+L = ['univ', 'hospital', 'clinic', 'klinik', 'Univ', 'Hospital', 'Clinic', 'Klinik'] + [s.title() for s in countries] + countries
+
 word_pattern = "|".join(map(re.escape, L))
 
 def process_parentheses(text):
@@ -243,14 +296,15 @@ def process_parentheses(text):
     Returns:
         str: The modified string after processing parentheses.
     """
-
-    text = re.sub(r'\((?![^)]*(' + word_pattern + r'))[^)]*\)', '', text)
+    text_lower = text.lower()
+    text_lower = re.sub(r'\((?![^)]*(' + word_pattern + r'))[^)]*\)', '', text_lower)
 
     # Replace `(` with `,` and `)` with `,` if a word from L is inside
-    text = re.sub(r'\(([^)]*(' + word_pattern + r')[^)]*)\)', r', \1,', text)
+    text_lower = re.sub(r'\(([^)]*(' + word_pattern + r')[^)]*)\)', r', \1,', text_lower)
 
-    return text
-  
+    return text_lower
+
+
 
 def replace_comma_spaces(text):
     return text.replace('  ', ' ').replace(' , ', ', ')
@@ -315,7 +369,48 @@ def replace_newlines_with_space(text: str, repl: str = " ") -> str:
 
     return cleaned
 
+def normalize_organization_names(value, university_terms):
+    """
+    Normalize organization names by applying a series of regex substitutions
+    and standardizations.
+    
+    Args:
+        split_strings (list of str): List of organization name substrings.
+        university_terms (list of str): List of terms indicating a university.
+        
+    Returns:
+        list of str: List of normalized organization names.
+    """
+    
+    # Replace dots with spaces and collapse multiple spaces
+    modified_value = value.replace('.', ' ')
+    modified_value = re.sub(r'\s+', ' ', modified_value).strip()
+    
+    # Apply university-specific substitutions if no university term is present
+    if not any(term.lower() in modified_value.lower() for term in university_terms):
+        modified_value = re.sub(r'univer\w*', 'univer', modified_value, flags=re.IGNORECASE)
+    
+    # General substitutions
+    modified_value = re.sub(r'instit\w*', 'instit', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'hopital\b', 'hospital', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'hospital(?!s)\w*', 'hospital', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'labora\w*', 'labora', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'centre\b', 'center', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'centrum\b', 'center', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'\bsaint\b', 'st', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'\btrinity col\b', 'trinity colege', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'\btechnische\b', 'technological', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'\bteknologi\b', 'technology', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'\bpolite\w*', 'polytechnic', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'\bpolyte\w*', 'polytechnic', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'panepist\w*', 'univer', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'\btechn\w*', 'techn', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'scien\w*', 'scien', modified_value, flags=re.IGNORECASE)
+    modified_value = re.sub(r'czechoslovak\b', 'czech', modified_value, flags=re.IGNORECASE)
 
+    
+    return modified_value
+    
 def substrings_dict(string):  
     """
     Processes a given string by performing the following transformations:
@@ -336,7 +431,7 @@ def substrings_dict(string):
     for old, new in replacements.items():
         string = string.replace(old, new)
   #      split_strings = [s.strip() for s in re.split(r'[,;/]| – ', string) if s.strip()]
-        split_strings = [replace_acronyms(s).strip() for s in re.split(r' - | – |[,;/:]', string) if s.strip()]
+        split_strings = [replace_acronyms(s).strip() for s in re.split(r' - | – |[,;/:|]', string) if s.strip()]
 
     # Define a set of university-related terms for later use
 
@@ -347,30 +442,7 @@ def substrings_dict(string):
   #  print('split_strings',split_strings)
    
     for value in split_strings:
-        modified_value = value.replace('.', ' ')
-        modified_value = re.sub(r'\s+', ' ', modified_value)
-
-        # Check if the substring contains any university-related terms
-        if not any(term in modified_value.lower() for term in university_terms):
-            # Apply regex substitutions for common patterns
-   
-            modified_value = re.sub(r'univer\w*', 'univer', modified_value, flags=re.IGNORECASE)
-        modified_value = re.sub(r'institu\w*', 'institu', modified_value, flags=re.IGNORECASE)
-        modified_value = re.sub(r'hospital(?!s)\w*', 'hospital', modified_value, flags=re.IGNORECASE)
-        modified_value = re.sub(r'labora\w*', 'labora', modified_value, flags=re.IGNORECASE)
-        modified_value = re.sub(r'centre\b', 'center', modified_value, flags=re.IGNORECASE)
-        modified_value = re.sub(r'centrum\b', 'center', modified_value, flags=re.IGNORECASE)        
-        modified_value = re.sub(r'\bsaint\b', 'st', modified_value, flags=re.IGNORECASE) 
-        modified_value = re.sub(r'\btrinity col\b', 'trinity colege', modified_value, flags=re.IGNORECASE)
-        modified_value = re.sub(r'\btechnische\b', 'technological', modified_value, flags=re.IGNORECASE)
-        modified_value = re.sub(r'\bteknologi\b', 'technology', modified_value, flags=re.IGNORECASE)
-        modified_value = re.sub(r'\bpolitehnica\b', 'polytechnic', modified_value, flags=re.IGNORECASE)
-
-        modified_value = re.sub(r'\btechn\w*', 'techn', modified_value, flags=re.IGNORECASE)
-        #modified_value = re.sub(r'techno\w*', 'techno', modified_value, flags=re.IGNORECASE)
-        modified_value = re.sub(r'scien\w*', 'scien', modified_value, flags=re.IGNORECASE)
-
-            
+        modified_value = normalize_organization_names(value, university_terms)
 
             # Add the modified substring to the dictionary
                      
@@ -390,9 +462,11 @@ def split_country(text):
     except:
         return text
     
-def clean_string_ror(input_string):
 
-    input_string = replace_underscore(replace_comma_spaces(replace_double_consonants(unidecode(process_parentheses(fully_unescape(input_string.replace("’","'").replace(" ́e","e").replace("'s", "s").replace("'", " "))))))).strip()
+
+def clean_string_lucky(input_string):
+
+    input_string = replace_underscore(replace_comma_spaces(replace_double_consonants(unidecode(process_parentheses(fully_unescape(input_string.replace("’","'").replace(" ́e","e").replace("'s", "s").replace("'", ""))))))).strip()
     
     result = remove_stop_words(replace_roman_numerals(input_string.lower()))
     result = result.replace(' and ',' ')
@@ -406,51 +480,43 @@ def clean_string_ror(input_string):
     result = result.replace(':',' ').replace(';',' ').replace('-',' ').replace('—',' ').replace(',',' ')
     # Replace consecutive whitespace with a single space
     
-    
+    result = replace_acronyms(result).replace('.', ' ')
+    result = normalize_organization_names(result, university_terms)
 
-    university_terms = {'universitatsklinikum', 'universitatskinderklinik',
-        'universitatspital', 'universitatskliniken', 'universitetshospital',
-        'universitatsmedizin', 'universitatsbibliothek','universitatszahnklinik'
-    }
+    return result.strip()
+
+    
+def clean_string_ror(input_string):
+
+    input_string = replace_underscore(replace_comma_spaces(replace_double_consonants(unidecode(remove_parentheses(fully_unescape(input_string.replace("’","'").replace(" ́e","e").replace("'s", "s").replace("'", ""))))))).strip()
+    
+    result = remove_stop_words(replace_roman_numerals(input_string.lower()))
+    result = result.replace(' and ',' ')
+
+
+    # Remove characters that are not from the Latin alphabet, or allowed punctuation
+    result = remove_multi_digit_numbers(replace_comma_spaces(re.sub(r'[^a-zA-Z0-9\s,;/:.\-\—]', '', result).strip()))
+    
+    # Restore the " - " sequence from the placeholder
+    #result = result.replace(placeholder, " – ")
+    result = result.replace(':',' ').replace(';',' ').replace('-',' ').replace('—',' ').replace(',',' ')
+    # Replace consecutive whitespace with a single space
+
     
     result = replace_acronyms(result).replace('.', ' ')
-    result = re.sub(r'\s+', ' ', result)
+    result = normalize_organization_names(result, university_terms)
 
-    # Replace consecutive whitespace with a single space
-    if not any(term in result.lower() for term in university_terms):
-
-        result = re.sub(r'universi\w*', 'univer', result, flags=re.IGNORECASE)
-    result = re.sub(r'\bsaint\b', 'st', result,flags=re.IGNORECASE)
-    result = re.sub(r'institu\w*', 'institu', result, flags=re.IGNORECASE)
-    result = re.sub(r'labora\w*', 'labora', result, flags=re.IGNORECASE)
-    result = re.sub(r'centre\b', 'center', result, flags=re.IGNORECASE)
-    result = re.sub(r'centrum\b', 'center', result, flags=re.IGNORECASE)        
-    
-    result = re.sub(r'hopital\b', 'hospital', result, flags=re.IGNORECASE)
-    result = re.sub(r'hospital(?!s)\w*', 'hospital', result, flags=re.IGNORECASE)
-
-    #result = re.sub(r'centro\b', 'center', result, flags=re.IGNORECASE)
-
-    result = re.sub(r'\btechnische\b', 'technological', result, flags=re.IGNORECASE)
-    result = re.sub(r'\bteknologi\b', 'technological', result, flags=re.IGNORECASE)
-    result = re.sub(r'\bpolitehnica\b', 'polytechnic', result, flags=re.IGNORECASE)
-    result = re.sub(r'czechoslovak\b', 'czech', result, flags=re.IGNORECASE)
-
-    result = re.sub(r'\btechn\w*', 'techn', result, flags=re.IGNORECASE)
-    # result = re.sub(r'techno\w*', 'techno', result, flags=re.IGNORECASE)
-    result = re.sub(r'scien\w*', 'scien', result, flags=re.IGNORECASE)
-   # result = re.sub(r'\bsaint\b', 'st', result, flags=re.IGNORECASE)
 
     return result.strip()
 
 def clean_string(input_string):
-    input_string = replace_underscore(replace_comma_spaces(unidecode(process_parentheses(fully_unescape(replace_newlines_with_space(input_string).replace("P.O. Box","").replace("’","'").replace(" ́e","e").replace("'s", "s").replace("'", " ")))))).strip()
+    input_string = replace_underscore(replace_comma_spaces(unidecode(process_parentheses(insert_space_between_lower_and_upper(fully_unescape(replace_newlines_with_space(input_string).replace("P.O. Box","").replace("’","'").replace(" ́e","e").replace("'s", "s").replace("'", " "))))))).strip()
     
  #   result = re.sub(r'(?<! )[–—-](?! )', ' ', input_string)
 
   #  print('h',input_string)
 
-    result = remove_stop_words(replace_double_consonants(replace_roman_numerals(insert_space_between_lower_and_upper(input_string).lower())))
+    result = remove_stop_words(replace_double_consonants(replace_roman_numerals((input_string).lower())))
 
     
     # Remove characters that are not from the Latin alphabet, or allowed punctuation
@@ -489,7 +555,7 @@ def description(aff_string):
             descr.append('country')
             countries_.append('usa')   
         
-        elif w in ['univer', 'institu', 'hospital', 'labora', 'colege']:
+        elif w in ['univer', 'instit', 'hospital', 'labora', 'colege']:
             
             descr.append('basic_key')
         elif w == 'and':
@@ -584,9 +650,9 @@ def reduce(light_aff):
     aff_no_symbols_d =  substrings_dict(light_aff)
     substring_list = list(aff_no_symbols_d.values())
     #light_aff_final = ', '.join((substring_list))
- #   print('h', substring_list)
+    # print('h', substring_list)
     light_aff_final = split_and(', '.join((substring_list)))
- #   print('th', light_aff_final)
+    # print('th', light_aff_final)
     return split_sub(light_aff_final)
     
         
@@ -622,6 +688,7 @@ def str_radius_u(string, radius_u):
     return result 
 
 
+sp_specific = [k for k in categ_dicts if categ_dicts[k] == 'Specific' and ' ' in k]
 
 def str_radius_spec(string):
     spec = False
@@ -633,7 +700,23 @@ def str_radius_spec(string):
         except:
             pass
     if spec == False:
-        return string        
+        for x in sp_specific:
+            if x in string:# or categ_dicts[x] == 'Acronyms':
+                spec = True
+                # print('CHECK',x)
+                return x
+        if spec ==False:
+            return string 
+#
+# def str_radius_spec(string):
+#     spec = False
+#     for x in only_specific:
+#         if x in string:# or categ_dicts[x] == 'Acronyms':
+#             spec = True
+#             return x
+#     if spec ==False:
+#         return string        
+
     
 
 def shorten_keywords(affiliations_simple, radius_u):
@@ -648,6 +731,8 @@ def shorten_keywords(affiliations_simple, radius_u):
         elif 'univer' in aff:
             affiliations_simple_n.extend(str_radius_u(aff, radius_u))
         
+        elif 'research' in aff:
+            affiliations_simple_n.append(aff)
 
         else:
             affiliations_simple_n.append(str_radius_spec(aff))

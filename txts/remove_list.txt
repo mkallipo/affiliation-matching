@@ -1,5 +1,5 @@
 colege street
-research institu
+research instit
 labora
 gmbh
 inc
@@ -7,17 +7,17 @@ ltd
 research center
 foundation
 faculty
-national institu
+national instit
 school medicine
 univer school
 graduate school
 graduate school engineering
-institu tropical medicine
-institu virology
+instit tropical medicine
+instit virology
 faculty medicine
 labora
 univer park
-institu science
+instit science
 polytechnic univer
 univer 1
 ciudad univer
@@ -32,6 +32,6 @@ univer
 institu st
 po box 
 rijksuniver
-institu
+instit
 hochschule
 united states america

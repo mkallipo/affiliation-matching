@@ -1,14 +1,9 @@
-turkiye
-trinidad
-united
-hong
-niederland
-holand
-deutschland
-usa
-uk
-korea
-africa
+oldenburg
+neuherberg
+martinsried
+clausthal
+donauworth
+munchen
 6th october city
 aabenraa
 aachen
