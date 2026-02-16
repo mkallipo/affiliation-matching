@@ -58,7 +58,7 @@ def _init_sets():
 
 def _check_exclusion_words(text):
     """Pre-compile exclusion word checks."""
-    exclusion_words = {'assistant', 'researcher', 'phd', 'student', 'section', 'prof', 'director'}
+    exclusion_words = {'asistant', 'researcher', 'phd', 'student', 'section', 'prof', 'director'}
     required_words = {'school', 'univ', 'inst', 'lab', 'fac'}
     
     return any(word in text for word in exclusion_words), any(word in text for word in required_words)

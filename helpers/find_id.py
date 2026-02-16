@@ -14,7 +14,7 @@ country_synonyms["south korea"] = ["south korea", "korea"]
 
 special_countries = {'united states', 'united kngdom', 'germany', 'china','turkey'}
 
-excluded = ['univ', 'inst', 'national', 'nacional', 'colege']
+excluded = {'univ', 'inst', 'national', 'nacional', 'colege', 'center', 'organization', 'hospital'}
 
 
     
@@ -35,13 +35,14 @@ def keep_highest_score(data):
 
 def find_id(input, best_names, dix_name):
     # print('start find_id')
-    # print(best_names)
     # print(input)
     clean_aff = input[0]
     light_aff = input[1]
     id_list = []   
-                        
+    # print("best_names", best_names)
+                    
     for org_list in best_names:
+        # print('org_list',org_list)
         org = org_list[0]
         # print('org:', org)
         conf = org_list[1]
@@ -51,8 +52,16 @@ def find_id(input, best_names, dix_name):
             id_ = dix_name[org][0]['id']
             city_ = dix_name[org][0]['city']
             country_ = dix_name[org][0]['country']
-            # print(city_, country_)
-            # print('c',set(country_synonyms[country_]))
+            country_set = {
+            synonym
+            for country in country_
+            for synonym in country_synonyms.get(country, [])}
+     
+
+
+            
+            # print(city_, 'country_', country_)
+            # print('c',country_set)
             # print('l',set(light_aff.split()))
             if org == light_aff:
                 id_list.append([org, conf, id_])
@@ -61,8 +70,9 @@ def find_id(input, best_names, dix_name):
                 # ('univ' in org and 'institu' in org)
                 # or
                 (
-                    city_ not in light_aff
-                    and not set(country_synonyms[country_]) & set(light_aff.split())
+                   not any(city in light_aff for city in city_) \
+                    and not country_set & set(light_aff.split())
+
                     # and 'univ' not in org
                     # and 'inst' not in org
                     # and 'national' not in org
@@ -70,7 +80,7 @@ def find_id(input, best_names, dix_name):
                     # and 'colege' not in org
                     and not any(word in org for word in excluded)
 
-                    and valueToCategory(org)[1] not in ['Company', 'Acronyms', 'Specific']
+                    and valueToCategory(org)[1] not in {'Company', 'Acronyms', 'Specific'}
                   
                 ) 
             ):
@@ -90,21 +100,24 @@ def find_id(input, best_names, dix_name):
                 # print('city', city_)
                 id_ = quadruple['id']
                 
-                if city_ in clean_aff:
-                    if city_ not in org: 
+                if any(c in clean_aff for c in city_):
+                    if not any(city in org for city in city_): 
                         id_list.append([org, conf, id_])
                         match_found = True
                         # break
                     else:
-                        if clean_aff.count(city_) >1:
+                        if any(clean_aff.count(city) > 1 for city in city_):
                             id_list.append([org, conf, id_])
                             match_found = True
+                            # print('done')
                             # break
                         
             if not match_found:
-                # print('no city helped', len(dix_name[org]))
+                # print('no city helped', len(dix_name[org]), quadruple['country'])
        
-                countries_ids = {quadruple['country'] for  quadruple in dix_name[org]}
+                countries_ids = {country
+                for quadruple in dix_name[org]
+                for country in quadruple['country']}
                 if countries_ids & special_countries:
                     # print('special country')
                     for quadruple in dix_name[org]:
@@ -117,11 +130,11 @@ def find_id(input, best_names, dix_name):
                         text = clean_aff.lower()
                         # print('text', text)
 
-                        if ((country_ == 'united states' and ('united states' in text or {'usa', 'usa.'} & tokens or 'u.s.a.' in text)) or 
-                            (country_ == 'germany' and ('deutschland' in text )) or 
-                            (country_ == 'united kingdom' and ('united kingdom' in text or ({'uk', 'uk.'} & tokens) or 'u.k.' in text)) or 
-                            (country_ == 'turkey' and ('turkiye' in text)) or 
-                            (country_ == 'china' and ('chinese' in text or 'prc' in text))):
+                        if (('united states' in country_  and ('united states' in text or {'usa', 'usa.'} & tokens or 'u.s.a.' in text)) or 
+                            ('germany' in country_ and ('deutschland' in text )) or 
+                            ('united kingdom' in country_ and ('united kingdom' in text or ({'uk', 'uk.'} & tokens) or 'u.k.' in text)) or 
+                            ('turkey' in country_ and ('turkiye' in text)) or 
+                            ('china' in country_  and ('chinese' in text or 'prc' in text))):
                             # print('specific country found')
                             id_list.append([org, conf, id_])
                             match_found = True
@@ -134,9 +147,9 @@ def find_id(input, best_names, dix_name):
                         country_ = quadruple['country']
                         id_ = quadruple['id']   
                         # print(country_)
-                        if country_.split()[0] in clean_aff:
+                        if any(country.split()[0] in clean_aff for country in country_):
                             # print('no specific found')
-                            if country_ not in org:
+                            if not any(country in org for country in country_):
                                 id_list.append([org, conf, id_])
                                 match_found = True
                                 break
@@ -146,12 +159,13 @@ def find_id(input, best_names, dix_name):
                     for quadruple in dix_name[org]:
                         country_ = quadruple['country']
                         id_ = quadruple['id']   
-                        if country_ in clean_aff and country_ in org:
+                        if any(c in clean_aff for c in country_) and any(c in org for c in country_):
                             id_list.append([org, conf, id_])
                             match_found = True
                             # break  
                         
                 if not match_found:
+                    # print('no country helped')
                     # print('check sp')
                     for sp in specific:
                         if sp in org:
@@ -174,7 +188,13 @@ def find_id(input, best_names, dix_name):
                     for quadruple in dix_name[org]:
                         if 'department' not in org and 'labora' not in org and quadruple['first'] == 'y':
                             id_list.append([org, conf, quadruple['id']])
+                            match_found = True
+
                             break
+                # if not match_found:
+                #     print('nichts')
+                #     break
+
 
     # print('id_list',id_list)       
     id_list_final = keep_highest_score(id_list)

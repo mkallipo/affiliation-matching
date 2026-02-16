@@ -22,18 +22,18 @@ def load_json(file_path):
         
 categ_string = 'Academia|Hospitals|Foundations|Specific|Government|Company|Acronyms'
 
-us_states = [
+us_states = {
     "alabama", "alaska", "arizona", "arkansas", "california",
     "colorado", "conecticut", "delaware", "florida", "georgia",
     "hawaii", "idaho", "ilinois", "indiana", "iowa",
     "kansas", "kentucky", "louisiana", "maine", "maryland",
     "masachusets", "michigan", "minesota", "misisipi", "misouri",
     "montana", "nebraska", "nevada", "new hampshire", "new jersey",
-    "new mexico", "new york", "north carolina", "north dakota", "ohio",
-    "oklahoma", "oregon", "pensylvania", "rhode island", "south carolina",
-    "south dakota", "tennesee", "texas", "utah", "vermont",
-    "virginia", "washington", "west virginia", "wisconsin", "wyoming"
-]
+    "new mexico", "new york", "carolina", "dakota", "ohio",
+    "oklahoma", "oregon", "pensylvania", "rhode island",
+    "dakota", "tennesee", "texas", "utah", "vermont",
+    "virginia", "washington", "wisconsin", "wyoming"
+}
 
 dix_name = load_json('./jsons/dix_name.json.gz')
 
@@ -51,6 +51,7 @@ def replace_double_consonants(text):
 #stop_words = ['from', 'the', 'of', 'at', 'de','for','et','für','des', 'in','as','a','and','fur','for','und','di']
 
 def remove_stop_words(text):
+    text = text.replace('present adres', '')
     words = text.split()
     filtered_words = []
     
@@ -135,15 +136,6 @@ def get_candidates(country_list, key_list):
     else:
         return cand_names
 
-
-# def get_candidates(country_list):
-#     if len(country_list) >0:
-#         cand =  [dix_country_legalnames[country] for country in country_list if country in dix_country_legalnames]
-#         return list(set([item for sublist in cand for item in sublist]))
-#     else:
-#         return list(dix_name.keys())
-
-
 def is_contained(s, w):
     """
     Checks if all words in the string 's' are present in the iterable 'w'.
@@ -197,7 +189,10 @@ def remove_leading_numbers(s):
     return re.sub(r'^\d+', '', s)
 
 def remove_multi_digit_numbers(text):
-    return re.sub(r'\b\d{2,}\b', '', text).strip()
+    if 'inserm' in text or 'cnrs' in text:
+        return re.sub(r'\b\d{5,}\b', '', text).strip()
+    else:
+        return re.sub(r'\b\d{4,}\b', '', text).strip()
 
 def remove_outer_parentheses(string):
     """Remove outer parentheses from the string if they enclose the entire string."""
@@ -537,10 +532,10 @@ def clean_string(input_string):
 def description(aff_string):
     aff_string = aff_string.replace('turkiye', 'turkey').lower()
     aff_string = aff_string.replace('kirgizistan', 'kyrgyzstan')
-    
+    aff_string = aff_string.replace('u.s.a.', 'usa').replace('u.k.', 'uk')
     descr = []
     countries_ = []
-    words = re.split(r'[ ,;:/]+', aff_string)
+    words = re.split(r'[ ,;:/.]+', aff_string)
 #    words = [word.strip() for word in re.split(r'[,;:]+', aff_string) if word.strip()]
 
     for w in words:
@@ -551,11 +546,20 @@ def description(aff_string):
             descr.append('country')
             countries_.append(w)
             
-        if replace_acronyms(w) in us_states:
+        if (
+        replace_acronyms(w) in us_states
+        or any(
+            state in aff_string
+            for state in ('new york', 'new hampshire', 'new jersey', 'new mexico')
+        )
+    ):
+
+            
+        # if replace_acronyms(w) in us_states or any(['new york', "new hampshire", "new jersey", "new mexico"] in aff_string.lower()):
             descr.append('country')
             countries_.append('usa')   
-        
-        elif w in ['univer', 'instit', 'hospital', 'labora', 'colege']:
+      
+        elif w in ['univer', 'instit', 'hospital', 'labora', 'colege', 'foundation']:
             
             descr.append('basic_key')
         elif w == 'and':
@@ -568,7 +572,7 @@ def description(aff_string):
         else:
             descr.append('other')  # Optional: label words that don’t fit any category
         
-    return [descr, countries_]
+    return [descr, set(countries_)]
 
 
 def is_subsequence(sublst, lst):

@@ -115,8 +115,11 @@ def best_sim_score(clean_aff, light_raw, candidate_num, pairs_list, multi, simU,
     # First, check priority pairs
     priority_pairs = []
     for group in pairs_list:
+        # print(group)
         for _, org, conf in group:
+            # print(_)
             if conf > 0.98:
+                # print('org good',org)
                 priority_pairs.append((org, conf))
             elif org in _ or _ in org:
                 priority_pairs.append((org, conf))
@@ -126,6 +129,7 @@ def best_sim_score(clean_aff, light_raw, candidate_num, pairs_list, multi, simU,
         max_conf = max(conf for _, conf in priority_pairs)
         winners = [(org, conf) for org, conf in priority_pairs if conf == max_conf]
         if len(winners) == 1:
+            # print(list(winners[0]))
             return [list(winners[0])]
     
     # Fallback: find unique max across all pairs
@@ -165,7 +169,7 @@ def best_sim_score(clean_aff, light_raw, candidate_num, pairs_list, multi, simU,
         num_uni_p = affil.count('univ')
         
         # Pre-compute for this group
-        affil_has_univ = 'univ' in affil.lower()
+    #    affil_has_univ = 'univ' in affil.lower()
         
         for p in pair_group:
             organization, confidence = p[1], p[2]
@@ -204,7 +208,7 @@ def best_sim_score(clean_aff, light_raw, candidate_num, pairs_list, multi, simU,
                     if similarity > 0.1:
                         # Use Levenshtein to better handle misspellings
                         if organization in affil:
-                            similarity_l = 1.0
+                            similarity_l = 1
                         else:
                             similarity_l = (
                                 1 

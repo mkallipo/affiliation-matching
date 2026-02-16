@@ -10,10 +10,10 @@ us_states = [
     "kansas", "kentucky", "louisiana", "maine", "maryland",
     "masachusets", "michigan", "minesota", "misisipi", "misouri",
     "montana", "nebraska", "nevada", "new hampshire", "new jersey",
-    "new mexico", "new york", "north carolina", "north dakota", "ohio",
-    "oklahoma", "oregon", "pensylvania", "rhode island", "south carolina",
-    "south dakota", "tennesee", "texas", "utah", "vermont",
-    "virginia", "washington", "west virginia", "wisconsin", "wyoming"
+    "new mexico", "new york", "carolina", "dakota", "ohio",
+    "oklahoma", "oregon", "pensylvania", "rhode island",
+    "tenesee", "texas", "utah", "vermont",
+    "virginia", "washington", "wisconsin", "wyoming"
 ]
 
 
@@ -21,74 +21,107 @@ def contains_us_state(text):
     text = text.lower()
     return any(state in text for state in us_states)
 
-# def get_city(name, dix_name):
-#     return {x['city'] : x['id'] for x in dix_name[name]}
-
-
 # weak_keywords = ['department']
 
-
 def convert_to_result(id_list_, dix_id):
-    """
-    id_list_ rows: [something, score, value]
-    dix_id: mapping from id -> {'name':..., 'country':..., 'status': [primary, secondary_list]}
-    """
-    result_dict = []
+    result = []
+    seen = set()
+
     for r in id_list_:
-        # Confidence is in r[1]
-        score = min(r[1], 1.0)
+        score = r[1]
+        if score > 1.0:
+            score = 1.0
+
         value = r[2]
-
         rec = dix_id.get(value)
-
-        if rec is None:
-            # missing metadata for this id — skip (or log if you want)
+        if not rec:
             continue
 
         name = rec.get('name')
         country = rec.get('country')
-        status_field = rec.get('status', [])
-        primary_status = status_field[0] if len(status_field) > 0 else None
-        secondary = status_field[1] if len(status_field) > 1 else []
 
-        def make_entry(pid, val, nm, conf, st, ctry):
-            return {
+        status = rec.get('status') or []
+        primary = status[0] if status else None
+        secondary = status[1] if len(status) > 1 else []
+
+        # openorgs
+        if "openorgs" in value:
+            key = ('openorgs', value)
+            if key not in seen:
+                seen.add(key)
+                result.append({
+                    'provenance': 'affro',
+                    'version': VERSION,
+                    'pid': 'openorgs',
+                    'value': value,
+                    'name': name,
+                    'confidence': float(score),
+                    'status': 'active',
+                    'country': country
+                })
+            continue
+
+        # ROR active
+        if primary == 'active':
+            key = ('ror', value)
+            if key not in seen:
+                seen.add(key)
+                result.append({
+                    'provenance': 'affro',
+                    'version': VERSION,
+                    'pid': 'ror',
+                    'value': value,
+                    'name': name,
+                    'confidence': float(score),
+                    'status': 'active',
+                    'country': country
+                })
+            continue
+
+        # ROR inactive
+        key = ('ror', value)
+        if key not in seen:
+            seen.add(key)
+            result.append({
                 'provenance': 'affro',
                 'version': VERSION,
-                'pid': pid,
-                'value': val,
-                'name': nm,
-                'confidence': conf,
-                'status': st,
-                'country': ctry
-            }
+                'pid': 'ror',
+                'value': value,
+                'name': name,
+                'confidence': float(score),
+                'status': primary,
+                'country': country
+            })
 
-        if "openorgs" in value:
-            result_dict.append(make_entry('openorgs', value, name, score, 'active', country))
-            continue
-
-        # ROR branch
-        if primary_status == 'active':
-            result_dict.append(make_entry('ror', value, name, score, 'active', country))
-            continue
-
-        # primary is not active
-        # treat case where secondary exists and its first element is empty string specially
-        if secondary and secondary[0] == '':
-            result_dict.append(make_entry('ror', value, name, score, primary_status, country))
-        else:
-            # append parent (non-active)
-            result_dict.append(make_entry('ror', value, name, score, primary_status, country))
-            # append linked records (use link's own metadata)
+        # linked active records
+        if secondary and secondary[0] != '':
             for link in secondary:
                 if not link:
                     continue
-                link_rec = dix_id.get(link, {})
-                link_name = link_rec.get('name')
-                link_country = link_rec.get('country')
-                result_dict.append(make_entry('ror', link, link_name, score, 'active', link_country))
 
-    return result_dict
+                link_key = ('ror', link)
+                if link_key in seen:
+                    continue
+
+                link_rec = dix_id.get(link)
+                if not link_rec:
+                    continue
+
+                seen.add(link_key)
+                result.append({
+                    'provenance': 'affro',
+                    'version': VERSION,
+                    'pid': 'ror',
+                    'value': link,
+                    'name': link_rec.get('name'),
+                    'confidence': float(score),
+                    'status': 'active',
+                    'country': link_rec.get('country')
+                })
+
+    return result
+
+
 
 def count_active(items):
     return sum(1 for x in items if x.get("status") == "active")
@@ -101,19 +134,27 @@ def disamb(input, id_list_,dix_id):
     clean_aff = input[0]
     # print(input)
     result_dict = convert_to_result(id_list_, dix_id)
+    # print('result_dict',result_dict)
     num_actives = count_active(result_dict)
     # print('result_dict',result_dict)
     # print('num_actives', num_actives)
     if len(id_list_) ==1:
-        # print('1')
         return result_dict
         
     elif len(description(clean_aff)[1]) == 0: 
         # print('no country in affiliation')  
         # polytechnic?
-        countries_uni = [res['country'] for res in result_dict if 'Uni' in res['name']]
+        countries_uni = {
+    country
+    for res in result_dict
+    if 'Uni' in res['name']
+    for country in res['country']
+}
+        # print('countries_uni',countries_uni)
+
+        #[res['country'] for res in result_dict if 'Uni' in res['name']]
         if len(countries_uni) >0:
-            final_matching = [res for res in result_dict if res['country'] in countries_uni]
+            final_matching = [res for res in result_dict if any(c in countries_uni for c in res['country'])]
             return final_matching
         else:
             # print('no universities')
@@ -124,21 +165,23 @@ def disamb(input, id_list_,dix_id):
         final_matching = []
         light_aff_tokens = [clean_string_ror(x) for x in set(clean_aff.split())]
         for res in result_dict:
+            # print('res',res)
             country = res['country']
-            if country == 'united states':
+            if 'united states' in country:
                 if 'united states' in clean_aff or 'usa' in light_aff_tokens or contains_us_state(clean_aff):
                     final_matching.append(res)
 
-            elif country == 'united kingdom':
+            elif 'united kingdom' in country:
                 if 'united kingdom' in clean_aff or 'uk' in light_aff_tokens:
                     final_matching.append(res)
             
-            elif 'korea' in country:
+            elif 'korea' in str(country):
           
                 if 'korea' in light_aff_tokens:
                     final_matching.append(res)
 
-            elif country in clean_aff:
+            elif any(c in clean_aff for c in country): #country in clean_aff:
+            
                 final_matching.append(res)
                     
             
