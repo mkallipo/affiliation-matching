@@ -1,7 +1,7 @@
 # `run_affro` — Affiliation Matching Pipeline Documentation
 
-**Version:** 3.3.0  
-**Module:** `core_fast.py`  
+**Version:** 3.3.4  
+**Module:** `core.py`  
 **Entry point:** `run_affro(aff: str) → list[dict]`
 
 ---
@@ -11,7 +11,7 @@
 `run_affro` is the main entry point of the **affro** affiliation-matching pipeline. It takes a raw affiliation string (as it appears in a publication metadata record) and returns a list of matched organisations with their identifiers (ROR and/or OpenOrgs), confidence scores, and status information.
 
 ```python
-from core_fast import run_affro
+from core import run_affro
 
 results = run_affro("Department of Physics, University of Milan, Italy")
 ```
@@ -218,7 +218,7 @@ Each item in the returned list is a dictionary:
 | Field | Type | Description |
 |---|---|---|
 | `provenance` | `str` | `"affro"` (algorithm path) or `"affro_direct"` (direct mapping) |
-| `version` | `str` / `int` | Pipeline version (`"3.3.0"` for affro, `1` for direct) |
+| `version` | `str` / `int` | Pipeline version (`"3.3.4"` for affro, `1` for direct) |
 | `pid` | `str` | `"ror"` or `"openorgs"` |
 | `value` | `str` | The organisation identifier (ROR URI or OpenOrgs ID) |
 | `name` | `str` | Official organisation name |
@@ -231,7 +231,7 @@ Each item in the returned list is a dictionary:
 [
   {
     "provenance": "affro",
-    "version": "3.3.0",
+    "version": "3.3.4",
     "pid": "ror",
     "value": "https://ror.org/00wra1b14",
     "name": "University of Milan",
@@ -279,25 +279,11 @@ Maps **organisation IDs** to metadata:
 
 ### Command-line
 
+From the project root directory:
+
 ```bash
-python core_fast.py "Department of Chemistry, ETH Zurich, Switzerland"
-```
+python3 -c "from affro.cores import run_affro; print(run_affro('university of athens'))"
 
-### Python API
-
-```python
-from core_fast import run_affro
-
-# Single affiliation
-result = run_affro("Fraunhofer Institute for Manufacturing Engineering, Stuttgart, Germany")
-
-# Batch processing
-affiliations = [
-    "MIT, Cambridge, MA, USA",
-    "Max Planck Institute for Biology, Tübingen",
-    "CNR-ISTI, Pisa, Italy",
-]
-results = [run_affro(aff) for aff in affiliations]
 ```
 
 ### Expected behaviour by case
@@ -321,7 +307,7 @@ results = [run_affro(aff) for aff in affiliations]
 ## Module Dependencies
 
 ```
-core_fast.py
+core.py
 ├── helpers/functions.py          # string cleaning, dix_name/dix_id loading, regex, utils
 ├── helpers/create_input.py       # create_df_algorithm, valueToCategory, substrings_dict
 ├── helpers/matching.py           # find_candidate, get_candidates, best_sim_score, cosine similarity
