@@ -1,0 +1,2 @@
+recursive-include affro/jsons *.json.gz
+recursive-include affro/txts *.txt

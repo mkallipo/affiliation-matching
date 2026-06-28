@@ -1,3 +1,21 @@
+Metadata-Version: 2.4
+Name: affro
+Version: 3.3.4
+Summary: A tool to resolve organization names to ROR or OpenOrgs IDs
+Home-page: https://code-repo.d4science.org/mkallipo/affRo
+Author: Myrto Kallipoliti
+License: GPL-3.0-or-later
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: summary
+
 # `run_affro` — Affiliation Matching Pipeline Documentation
 
 **Version:** 3.3.0  
