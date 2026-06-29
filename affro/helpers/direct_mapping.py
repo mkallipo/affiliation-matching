@@ -92,7 +92,7 @@ def direct_mapping(aff):
             shorten_aff = shorten_aff.replace('mary immaculate colege', ',')
 
     if 'foundation research techn' in shorten_aff and ('helas' in shorten_aff or 'greece' in shorten_aff):
-        print('h')
+        # print('h')
         assigned.append('https://ror.org/052rphn09')
         shorten_aff = shorten_aff.replace('foundation research techn', '')
     if 'instit' in shorten_aff or "istituto" in shorten_aff:
